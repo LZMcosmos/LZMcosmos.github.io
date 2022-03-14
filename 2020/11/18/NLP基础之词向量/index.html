@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NLP基础之词向量 | LZMcosmos</title><meta name="keywords" content="词向量"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="词(Word) 对于人类所理解的词语，英文单词（比如apple）为一个词，中文里一个字（中）或者一个词语（苹果）为一个词。 1 词向量(Word Vector) 1.1 词向量简介 词向量也叫做词嵌入(Word Embedding)，将人类所理解的自然语言的词映射为实数向量，也就是将文本中的词转换为数字向量的方法。一般情况下是将一个单词用高维的向量来表示，例如： &quot;狗&quot;表示为[2, 3,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP基础之词向量">
+<meta property="og:url" content="https://lzmcosmos.github.io/2020/11/18/NLP%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%AF%8D%E5%90%91%E9%87%8F/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="词(Word) 对于人类所理解的词语，英文单词（比如apple）为一个词，中文里一个字（中）或者一个词语（苹果）为一个词。 1 词向量(Word Vector) 1.1 词向量简介 词向量也叫做词嵌入(Word Embedding)，将人类所理解的自然语言的词映射为实数向量，也就是将文本中的词转换为数字向量的方法。一般情况下是将一个单词用高维的向量来表示，例如： &quot;狗&quot;表示为[2, 3,">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-11-18T03:54:12.000Z">
+<meta property="article:modified_time" content="2021-03-01T03:09:12.357Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="词向量">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2020/11/18/NLP%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%AF%8D%E5%90%91%E9%87%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-01 11:09:12'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">NLP基础之词向量</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-11-18T03:54:12.000Z" title="Created 2020-11-18 11:54:12">2020-11-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-01T03:09:12.357Z" title="Updated 2021-03-01 11:09:12">2021-03-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/NLP/">NLP</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="词word">词(Word)</h2>
+<p>对于人类所理解的词语，英文单词（比如apple）为一个词，中文里一个字（中）或者一个词语（苹果）为一个词。</p>
+<h2 id="词向量word-vector">1 词向量(Word Vector)</h2>
+<h3 id="词向量简介">1.1 词向量简介</h3>
+<p>词向量也叫做词嵌入(Word Embedding)，将人类所理解的自然语言的词映射为实数向量，也就是将文本中的词转换为数字向量的方法。一般情况下是将一个单词用高维的向量来表示，例如：</p>
+<p>"<strong>狗</strong>"表示为[2, 3, 3]</p>
+<p>"<strong>猫</strong>"表示为[1, 2, 3]</p>
+<p>"<strong>雪</strong>"表示为[14, 2, 1]</p>
+<h3 id="词向量相似性度量">1.2 词向量相似性度量</h3>
+<p>对于上述三个词向量，常见的方法是使用<strong>余弦相似度</strong>来计算词向量之间的距离：</p>
+<p>狗和猫的余弦相似度： <span class="math display">\[
+cos(\theta_1) = \frac{2\times1+3\times2+3\times3}{\sqrt{2\times2+3\times3+3\times3}\sqrt{1\times1+2\times2+3\times3}} = 0.969
+\]</span></p>
+<p>狗和雪的余弦相似度为： <span class="math display">\[
+cos(\theta_2) = \frac{2\times14+3\times2+3\times1}{\sqrt{4+9+9}\sqrt{196+4+1}} = 0.556
+\]</span></p>
+<blockquote>
+<p>两个向量之间的<strong>夹角<span class="math inline">\(\theta\)</span>越小</strong>，两个向量靠的越近，通过比较向量之间夹角的余弦值的大小（夹角越小，余弦值越大）判断向量之间的相似性也就是词之间的相似性。</p>
+</blockquote>
+<p>再举例来看，假设Agriculture文档和History文档与词<code>disease</code>的共现次数分别为20、30，与词<code>eggs</code>的共现次数分别为40、20，在二维坐标中显示如下图，同时计算Agriculture和History对应的两个向量之间的余弦相似度。</p>
+<p><img src="/img/word_vector_cosine.png" /></p>
+<p>此外还可以用<strong>欧式距离</strong>等来计算向量之间的距离(相似性)。距离来看，假设文档A为娱乐文档(Entertainment)，文档B为机器学习文档，它们与<code>film</code>的共现次数分别为7000、1000，与<code>data</code>的共现次数分别为500、9320，放在二维坐标中如下图所示，计算两者之间的欧式距离可以表示两者之间的相似性。</p>
+<p><img src="/img/word_vector_euclidean.png" /></p>
+<h3 id="词的编码演变">1.3 词的编码演变</h3>
+<p><strong>词向量(Word Embedding)</strong></p>
+<p>上世纪五十年代语言学家Joos、Harris、Firth等人提出了分布式假说：出现在相似语境的词往往有相似的含义。将<strong>一个词用它的上下文来表示</strong>的分布式词向量表现形式脱颖而出。用一个简单的例子来解释：</p>
+<p>啊，今天天气真<strong>好</strong>啊！ 真开心，今天遇到的人都超<strong>好</strong>。</p>
+<p>啊，今天的天气非常<strong>棒</strong>啊！ 真开心，今天遇到的人都非常<strong>棒</strong>。</p>
+<blockquote>
+<p>在众多的语句当中只选上面各两个句子，通过很多类似的句子的学习，<strong>好</strong>和<strong>棒</strong>拥有十分相近的含义，因为它们有十分相近的上下文。（在我们看来更是如此，<strong>好</strong>和<strong>棒</strong>的意思十分接近。）</p>
+</blockquote>
+<p>在词向量出现之前的一些编码：</p>
+<ul>
+<li><p>One-Hot编码</p>
+<p>最早的对此进行编码的方式是One-Hot，对所有词进行一位有效位编码，即在向量中只有一个位置为1其余所有位置为0。</p>
+<p>例如下面对apple、bag、cat等的编码： <img src="/img/one-hot.png" /></p>
+<blockquote>
+<p>one-hot编码的问题在于世界上的词太多太多了，这让向量的长度十分长，而且one-hot编码的词无法表现出不同词之间的相似性(词向量之间的余弦值恒为0)。</p>
+</blockquote></li>
+<li><p>Word Class</p>
+<p>既然one-hot没办法拥有不同词直接的关系，Word Class就是将不同的词进行分类，这样词之间的关系就比较明了了。 <img src="/img/word-class.png" /></p>
+<blockquote>
+<p>Word Class虽然有效的表示了不同词的类别，但是如何分类是个很大的问题。</p>
+</blockquote></li>
+</ul>
+<h3 id="词向量的运算">1.4 词向量的运算</h3>
+<p>通过对词向量的运算，我们可以做出一定的推理，如下图中问题： <img src="/img/word_vector_country_capital.png" /></p>
+<p>现有拥有一个假设的二维向量空间，在其中不同的国家和首都有不同的向量表示： <img src="/img/word_vector_c_c.png" /></p>
+<p>已经知道USA的首都是Washington，两者之差的向量<code>[5 -1]</code>如下图所示，对于Russia，加上<code>[5 -1]</code>就可以大致得到它的首都的向量<code>[10 4]</code>，通过对比向量相似度发现<code>[9 3]</code>也就是Moscow是其首都。 <img src="/img/word_vector_cc.png" /></p>
+<p>通过对词向量的不同运算可以得到我们想要的结果，也就是通过已知的其他词向量之间的关系进行预测。</p>
+<p>关于词向量的运算更详细的实验见另一篇博客<a href="">传送门</a>。</p>
+<h2 id="词嵌入word-embedding方法">2 词嵌入(Word Embedding)方法</h2>
+<h3 id="tf-idf">1 TF-IDF</h3>
+<p>TF-IDF(Term Frequency-Inverse Document Frequency)，是一种统计方法，基于信息检索(Information Retrieval, IR)进行的。首先来看最简单的基于IR的方式：<strong>worf-word matrix(词-词矩阵)</strong></p>
+<ul>
+<li><p><strong>word-word matrix</strong></p>
+<p>首先我们确定好初始的word-word matrix，它的一行代表一个目标词，列代表上下文的词，确定好所有的行和列，然后在训练的语料库中进行统计，使用一定大小的窗口（2或3或4等都可以）统计目标词(对应行)上下文的词(对应列)出现的次数。</p>
+<blockquote>
+<p>统计时对目标词所使用的窗口是指统计目标词左边多少词右边多少词，例如窗口为2代表检索时只看中心词左边两个个和右边两个词，见下图(来自Stanford的CS224N课PPT)。</p>
+</blockquote>
+<p><img src="/img/context-window.png" /></p>
+<p>现在来看在维基百科语料库中进行统计得到的word-word矩阵(来自《Speech and Language Processing》一书的pdf,希望它尽快写完出版)，选取很小的一部分，包含<strong>cherry</strong>,<strong>strawberry</strong>,<strong>digital</strong>,<strong>information</strong>四个word：</p>
+<p><img src="/img/word-word.png" /></p>
+<p>目标词<strong>digital</strong>用红色标注的行向量来表示，可以看出<strong>digital</strong>和<strong>information</strong>拥有比较相近的上下文表示(向量靠的近)。</p>
+<p>word-word matrix还是存在一些问题，像<strong>the</strong>,<strong>that</strong>,<strong>it</strong>等高频出现的无意义的词会影响其他频率出现少但是和中心词有实在联系和意义的词。这就出现了一个悖论：频繁出现在中心词附近的词能够代表中心词的语境，比出现次数少的词重要；但，频繁出现在中心词附近的普遍出现的词(像<strong>the</strong>这种)又是不重要的，无法代表中心词的含义、语境。<strong>TF-IDF</strong>的方法就平衡了上述悖论的冲突。</p></li>
+<li><p><strong>TF-IDF</strong></p>
+<p>TF-IDF所利用的思想是如果某个词在一篇文章中出现的频率高并且在其他文章中出现的次数比较少，那么这个词就适合用来区分。TF-IDF是<strong>TF(词频)</strong>和<strong>IDF</strong>(逆向文章频率)的<strong>乘积</strong>。</p>
+<ul>
+<li><strong>TF(词频)</strong></li>
+</ul>
+<p>TF(词频)就是一个词t(当前的词记为t)在文章d中出现的频率(次数),可以记为： <span class="math inline">\(tf_{t,d} = count(t, d)\)</span> 可以对上述词频进行一下压缩，也就是对<span class="math inline">\(tf_{t,d}\)</span>取对数(<span class="math inline">\(log_{10}\)</span>),为了防止有些词的出现次数为0导致无法取对数，所以对统计的次数全部加1： <span class="math inline">\(tf_{t,d} = log_{10}(count(t,d) + 1)\)</span></p>
+<blockquote>
+<p>有时为了防止词频偏向长的文章，通常会将tf-{t,d}进行归一化，就是增加一个文章d中全部的词出现的次数的分母(即除以文章的总次数)。</p>
+</blockquote>
+<ul>
+<li><strong>IDF(逆向文章频率)</strong></li>
+</ul>
+<p>IDF就是为了让仅仅出现在某一些文章中的词拥有较大的权重，而那些频繁出现在很多文章中的词(毫无信息上的帮助)拥有较小的权重。<span class="math inline">\(idf_{t}\)</span>可以表示为： <span class="math inline">\(idf_{t} = \frac{N}{df_{t}}\)</span> 其中，N为语料库中文章的总数，<span class="math inline">\(df_{t}\)</span>为词t所出现的文章的总数。词t出现的文章越少，它越具备区分能力，<span class="math inline">\(idf_{t}\)</span>越大。同样为了压缩一下IDF值的大小，对其取对数如下： <span class="math inline">\(idf_{t} = log_{10}(\frac{N}{df_{t}+1})\)</span></p>
+<blockquote>
+<p><span class="math inline">\(idf_{t}的分母中加1是为了避免分母为0\)</span></p>
+</blockquote>
+<p>最后，<span class="math inline">\(TF-IDF = tf_{t,d} \times idf_{t}\)</span></p>
+<p><strong>Python代码实现</strong>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line">def loadDataSet():</span><br><span class="line">    dataset &#x3D; [</span><br><span class="line">        [&#39;my&#39;, &#39;dog&#39;, &#39;has&#39;, &#39;flea&#39;, &#39;problems&#39;, &#39;help&#39;, &#39;please&#39;],</span><br><span class="line">        [&#39;maybe&#39;, &#39;not&#39;, &#39;take&#39;, &#39;him&#39;, &#39;to&#39;, &#39;dog&#39;, &#39;park&#39;, &#39;stupid&#39;],</span><br><span class="line">        [&#39;my&#39;, &#39;dalmation&#39;, &#39;is&#39;, &#39;so&#39;, &#39;cute&#39;, &#39;I&#39;, &#39;love&#39;, &#39;him&#39;],</span><br><span class="line">        [&#39;stop&#39;, &#39;posting&#39;, &#39;stupid&#39;, &#39;worthless&#39;, &#39;garbage&#39;],</span><br><span class="line">        [&#39;mr&#39;, &#39;licks&#39;, &#39;ate&#39;, &#39;my&#39;, &#39;steak&#39;, &#39;how&#39;, &#39;to&#39;, &#39;stop&#39;, &#39;him&#39;],</span><br><span class="line">        [&#39;quit&#39;, &#39;buying&#39;, &#39;worthless&#39;, &#39;dog&#39;, &#39;food&#39;, &#39;stupid&#39;],</span><br><span class="line">    ]  #随便的一组示例数据</span><br><span class="line">    return dataset</span><br><span class="line">def tf_idf(t, d, data_list):</span><br><span class="line">    #词t 文档d</span><br><span class="line">    #tf</span><br><span class="line">    count_t &#x3D; 0</span><br><span class="line">    for word in data_list[d]:</span><br><span class="line">        if word &#x3D;&#x3D; t:</span><br><span class="line">            count_t +&#x3D; 1</span><br><span class="line">    tf &#x3D; count_t &#x2F; len(data_list[d])</span><br><span class="line">    #idf</span><br><span class="line">    N &#x3D; len(data_list)</span><br><span class="line">    df &#x3D; 0</span><br><span class="line">    for i in range(len(data_list)):</span><br><span class="line">        if t in data_list[i]:</span><br><span class="line">          df +&#x3D; 1</span><br><span class="line">    idf &#x3D; math.log(N&#x2F;(df+1),10)</span><br><span class="line">    # print(idf)</span><br><span class="line">    return tf*idf</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    data_list &#x3D; loadDataSet()  #加载数据</span><br><span class="line">    tf_idf_value&#x3D; list()</span><br><span class="line">    for d in range(len(data_list)):  #文章的序号</span><br><span class="line">        d_word &#x3D; dict() #记录d中所有词的tf-idf</span><br><span class="line">        #文章d中词t的tf-idf</span><br><span class="line">        for i in range(len(data_list[d])):</span><br><span class="line">            t &#x3D; data_list[d][i]</span><br><span class="line">            d_word[t] &#x3D; tf_idf(t, d, data_list)</span><br><span class="line">        tf_idf_value.append(d_word)</span><br><span class="line">    print(tf_idf_value)</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="word2vec">2 word2vec</h3>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/peghoty/p/3857839.html">参考链接</a></p>
+<h3 id="glove">3 GloVe</h3>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2020/11/18/NLP%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%AF%8D%E5%90%91%E9%87%8F/">https://lzmcosmos.github.io/2020/11/18/NLP%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%AF%8D%E5%90%91%E9%87%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AF%8D%E5%90%91%E9%87%8F/">词向量</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2020/11/18/nlp%E4%BB%BB%E5%8A%A1/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">NLP的任务</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8Dword"><span class="toc-number">1.</span> <span class="toc-text">词(Word)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E5%90%91%E9%87%8Fword-vector"><span class="toc-number">2.</span> <span class="toc-text">1 词向量(Word Vector)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F%E7%AE%80%E4%BB%8B"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 词向量简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F%E7%9B%B8%E4%BC%BC%E6%80%A7%E5%BA%A6%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 词向量相似性度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E7%9A%84%E7%BC%96%E7%A0%81%E6%BC%94%E5%8F%98"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 词的编码演变</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F%E7%9A%84%E8%BF%90%E7%AE%97"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 词向量的运算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E5%B5%8C%E5%85%A5word-embedding%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">2 词嵌入(Word Embedding)方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tf-idf"><span class="toc-number">3.1.</span> <span class="toc-text">1 TF-IDF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#word2vec"><span class="toc-number">3.2.</span> <span class="toc-text">2 word2vec</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#glove"><span class="toc-number">3.3.</span> <span class="toc-text">3 GloVe</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

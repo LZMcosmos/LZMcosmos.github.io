@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>自然语言处理库——NLTK | LZMcosmos</title><meta name="keywords" content="NLTK"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="NLTK NLTK介绍 NLTK(Natural Language Toolkit)是Python上著名的自然语言处理库，它自带语料库、词性分类库，还自带分词(tokenize)、分类等等功能。 NLTK有强大的社区(community)支持。 NLTK安装 Linux安装nltk命令： $pip install -U nltk  -U参数是指update(更新)。  测试是否安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自然语言处理库——NLTK">
+<meta property="og:url" content="https://lzmcosmos.github.io/2020/11/19/nltk/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="NLTK NLTK介绍 NLTK(Natural Language Toolkit)是Python上著名的自然语言处理库，它自带语料库、词性分类库，还自带分词(tokenize)、分类等等功能。 NLTK有强大的社区(community)支持。 NLTK安装 Linux安装nltk命令： $pip install -U nltk  -U参数是指update(更新)。  测试是否安">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-11-19T12:51:35.000Z">
+<meta property="article:modified_time" content="2021-01-21T07:15:28.667Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="NLTK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2020/11/19/nltk/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-21 15:15:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">自然语言处理库——NLTK</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-11-19T12:51:35.000Z" title="Created 2020-11-19 20:51:35">2020-11-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-01-21T07:15:28.667Z" title="Updated 2021-01-21 15:15:28">2021-01-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/NLP/">NLP</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="nltk">NLTK</h1>
+<h2 id="nltk介绍">NLTK介绍</h2>
+<p>NLTK(Natural Language Toolkit)是<strong>Python</strong>上著名的自然语言处理库，它自带语料库、词性分类库，还自带分词(tokenize)、分类等等功能。</p>
+<p>NLTK有强大的社区(community)支持。</p>
+<h2 id="nltk安装">NLTK安装</h2>
+<p>Linux安装nltk命令： <code>$pip install -U nltk</code></p>
+<blockquote>
+<p>-U参数是指update(更新)。</p>
+</blockquote>
+<p><strong>测试</strong>是否安装成功： 在终端窗口： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python</span><br><span class="line">&gt;&gt;&gt; import nltk</span><br></pre></td></tr></table></figure> ## NLTK的使用</p>
+<h3 id="安装语料库">安装语料库</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import nltk</span><br><span class="line">nltk.download()</span><br></pre></td></tr></table></figure>
+<p>下载时可能会出现[error connecting to sever]，就是出现连接失败的情况，原因是nltk语料库的服务器需要连外网才能访问，所以修改下DNS地址。</p>
+<blockquote>
+<p>Linux修改DNS地址： <code>sudo vim /etc/resolv.conf</code>,将文件中的nameserver后的ip改为8.8.8.8</p>
+</blockquote>
+<p>选择要下载的内容，这里我只下载了nltk的book。 <img src="/img/nltk_download.png" /> 下载到的路径可以自己更改。</p>
+<h3 id="nltk模块和自然语言处理任务">NLTK模块和自然语言处理任务</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">自然语言处理任务</th>
+<th style="text-align: center;">NLTK模块</th>
+<th style="text-align: center;">功能示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">获取语料库</td>
+<td style="text-align: center;">corpus</td>
+<td style="text-align: center;">语料库和词典的标准接口</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">字符串处理</td>
+<td style="text-align: center;">tokenize, stem</td>
+<td style="text-align: center;">tokenizers(分词器),sentence tokenizers(句子分词器),stemmers(词干提取器)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">词组发现</td>
+<td style="text-align: center;">collocations</td>
+<td style="text-align: center;">t检验、卡方检验、PMI(两个词之间的关联度)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">词性标记(POS tagging)</td>
+<td style="text-align: center;">tag</td>
+<td style="text-align: center;">n-gram, backoff, Brill, HMM, TnT</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">机器学习</td>
+<td style="text-align: center;">分类(classify), 聚类(cluser), tbl</td>
+<td style="text-align: center;">决策树、最大熵、朴素贝叶斯、最大期望、k均值</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">断句(Chunking)</td>
+<td style="text-align: center;">chunk</td>
+<td style="text-align: center;">正则表达式、n-gram、命名实体</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">句法分析</td>
+<td style="text-align: center;">parse, ccg</td>
+<td style="text-align: center;">chart, feature-based, unification(一致性), probabilistic(概率), dependency(依赖)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">语意解释</td>
+<td style="text-align: center;">sem, inference</td>
+<td style="text-align: center;">lambda calculus(λ微分), first-order logic(一阶逻辑), model checking(模型检验)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">评价指标</td>
+<td style="text-align: center;">metrics</td>
+<td style="text-align: center;">精度、召回率、一致性系数</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">概率与估计</td>
+<td style="text-align: center;">probability</td>
+<td style="text-align: center;">频率分布、平滑概率分布</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>参考并翻译自《Natural Language Processing with Python---Analyzing Text with the Natural Language Toolkit》 (<a target="_blank" rel="noopener" href="http://www.nltk.org/book/">这本书</a>贼适合上手！)</p>
+</blockquote>
+<h3 id="nltk的简单使用">NLTK的简单使用</h3>
+<ul>
+<li>python的命令行模式导入nltk中的book，这时会显示一些欢迎信息并加载了一些书的文本。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from nltk.book import *</span><br><span class="line">*** Introductory Examples for the NLTK Book ***</span><br><span class="line">Loading text1, ..., text9 and sent1, ..., sent9</span><br><span class="line">Type the name of the text or sentence to view it.</span><br><span class="line">Type: &#39;texts()&#39; or &#39;sents()&#39; to list the materials.</span><br><span class="line">text1: Moby Dick by Herman Melville 1851</span><br><span class="line">text2: Sense and Sensibility by Jane Austen 1811</span><br><span class="line">text3: The Book of Genesis</span><br><span class="line">text4: Inaugural Address Corpus</span><br><span class="line">text5: Chat Corpus</span><br><span class="line">text6: Monty Python and the Holy Grail</span><br><span class="line">text7: Wall Street Journal</span><br><span class="line">text8: Personals Corpus</span><br><span class="line">text9: The Man Who Was Thursday by G . K . Chesterton 1908</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接着在text1中查看"monstrous"一词的上下文。<code>concordance</code>函数可以展示某个词和其上下文。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; text1.concordance(&quot;monstrous&quot;)</span><br><span class="line">Displaying 11 of 11 matches:</span><br><span class="line">ong the former , one was of a most monstrous size . ... This came towards us ,</span><br><span class="line">ON OF THE PSALMS . &quot; Touching that monstrous bulk of the whale or ork we have r</span><br><span class="line">ll over with a heathenish array of monstrous clubs and spears . Some were thick</span><br><span class="line">d as you gazed , and wondered what monstrous cannibal and savage could ever hav</span><br><span class="line">that has survived the flood ; most monstrous and most mountainous ! That Himmal</span><br><span class="line">they might scout at Moby Dick as a monstrous fable , or still worse and more de</span><br><span class="line">th of Radney .&#39;&quot; CHAPTER 55 Of the monstrous Pictures of Whales . I shall ere l</span><br><span class="line">ing Scenes . In connexion with the monstrous pictures of whales , I am strongly</span><br><span class="line">ere to enter upon those still more monstrous stories of them which are to be fo</span><br><span class="line">ght have been rummaged out of this monstrous cabinet there is no telling . But</span><br><span class="line">of Whale - Bones ; for Whales of a monstrous size are oftentimes cast up dead u</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>利用<code>similar</code>函数可以查看某个词的相似词(出现在相似的上下文语境的词)，由下面的输出可以看出不同text中monstrous的相似词不太一样，这和作者写作相关。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; text1.similar(&quot;monstrous&quot;)</span><br><span class="line">mean part maddens doleful gamesome subtly uncommon careful untoward</span><br><span class="line">exasperate loving passing mouldy christian few true mystifying</span><br><span class="line">imperial modifies contemptible</span><br><span class="line">&gt;&gt;&gt; text2.similar(&quot;monstrous&quot;)</span><br><span class="line">very heartily so exceedingly remarkably as vast a great amazingly</span><br><span class="line">extremely good sweet</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>利用<code>dispersion_plot</code>函数可以很直观地看某个词在文本中的出现的位置，下面的示例是220年的美国总统就职演讲稿首尾相接的文本中一些词的出现，通过词汇散布图可以发现一些信息，例如用词的趋势。(需要numpy和matpltlib包，提前import)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; text4.dispersion_plot([&quot;citizens&quot;, &quot;democracy&quot;, &quot;freedom&quot;, &quot;duties&quot;, &quot;America&quot;])</span><br></pre></td></tr></table></figure>
+<p><img src="/img/nltk_word.png" /></p>
+<h3 id="基于nltk进行文本分析">基于NLTK进行文本分析</h3>
+<h4 id="词汇统计">词汇统计</h4>
+<ul>
+<li><p>统计文本的长度，包括word和标点符号： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; len(text3)</span><br><span class="line">44764</span><br></pre></td></tr></table></figure></p>
+<p>所有text3包含word和标点共有44764个，或者说<strong>token</strong>共有444764个</p></li>
+<li><p>想要知道文本中有多少不同的token可以通过集合(set)实现，并用<code>sorted</code>函数排好序：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sorted(set(text3))</span><br><span class="line">[&#39;!&#39;, &quot;&#39;&quot;, &#39;(&#39;, &#39;)&#39;, &#39;,&#39;, &#39;,)&#39;, &#39;.&#39;, &#39;.)&#39;, &#39;:&#39;, &#39;;&#39;, &#39;;)&#39;, &#39;?&#39;, &#39;?)&#39;,</span><br><span class="line">&#39;A&#39;, &#39;Abel&#39;, &#39;Abelmizraim&#39;, &#39;Abidah&#39;, &#39;Abide&#39;, &#39;Abimael&#39;, &#39;Abimelech&#39;,&#39;Abr&#39;, &#39;Abrah&#39;, &#39;Abraham&#39;, &#39;Abram&#39;, &#39;Accad&#39;, &#39;Achbor&#39;, &#39;Adah&#39;, ...]</span><br><span class="line">&gt;&gt;&gt; len(sorted(set(text3)))</span><br><span class="line">2789</span><br></pre></td></tr></table></figure> 分析text3的总长度，它有44764个tokens，但是仅有2789个<strong>不同</strong>的token，也就是有2789个<strong>word type(word)</strong>和<strong>type(标点符号)</strong>。</p></li>
+<li><p>对token进行分析</p>
+<p>想要了解某个词在文本中出现的次数以及它在文本中出现的百分比： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; text3.count(&quot;smote&quot;)</span><br><span class="line">5</span><br><span class="line">&gt;&gt;&gt; 100 * text4.count(&quot;a&quot;) &#x2F; len(text4)</span><br><span class="line">1.4643016433938312</span><br></pre></td></tr></table></figure> 求文本中词汇的丰富性和文本中某个词出现次数的占比十分常见，写出函数备用： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def lexical_diversity(text):</span><br><span class="line">	return len(set(text)) &#x2F; len(text)</span><br><span class="line">def percentage(word, text):</span><br><span class="line">	return 100 * text.count(word) &#x2F; len(text)</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h4 id="令文本不同的统计特征">令文本不同的统计特征</h4>
+<blockquote>
+<p>是什么让文本之间有区别的？</p>
+</blockquote>
+<ul>
+<li><p><strong>频率分布</strong>(Frequency Distribution)</p>
+<p>频率分布代表的是文本中所有词的出现的频率。</p>
+<p>对于一个文本来说出现次数特别多的词在一定程度上能够代表文本的内容，NLTK中的<code>FreqDist</code>(Frequency Distribution)可以用来看常见词：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; fdist &#x3D; FreqDist(text5)</span><br><span class="line">&gt;&gt;&gt; print(fdist)</span><br><span class="line">&lt;FreqDist with 6066 samples and 45010 outcomes&gt;</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; fdist.most_common(100)</span><br><span class="line">[(&#39;.&#39;, 1268), (&#39;JOIN&#39;, 1021), (&#39;PART&#39;, 1016), (&#39;?&#39;, 737), (&#39;lol&#39;, 704), (&#39;to&#39;, 658), (&#39;i&#39;, 648), (&#39;the&#39;, 646), (&#39;you&#39;, 635), (&#39;,&#39;, 596), (&#39;I&#39;, 576), (&#39;a&#39;, 568), (&#39;hi&#39;, 546), (&#39;me&#39;, 415), (&#39;...&#39;, 412), (&#39;is&#39;, 372), (&#39;..&#39;, 361), (&#39;in&#39;, 357), (&#39;ACTION&#39;, 346), (&#39;!&#39;, 342), (&#39;and&#39;, 335), (&#39;it&#39;, 332), (&#39;that&#39;, 274), (&#39;hey&#39;, 264), (&#39;my&#39;, 242), (&#39;of&#39;, 202), (&#39;u&#39;, 200), (&quot;&#39;s&quot;, 195), (&#39;for&#39;, 188), (&#39;on&#39;, 186), (&#39;what&#39;, 183), (&#39;here&#39;, 181), (&#39;are&#39;, 178), (&#39;not&#39;, 170), (&#39;....&#39;, 170), (&#39;do&#39;, 168), (&#39;all&#39;, 165), (&#39;have&#39;, 164), (&#39;up&#39;, 160), (&#39;like&#39;, 156), (&#39;no&#39;, 155), (&#39;with&#39;, 152), (&#39;chat&#39;, 142), (&#39;was&#39;, 142), (&quot;n&#39;t&quot;, 141), (&#39;so&#39;, 139), (&#39;your&#39;, 137), (&#39;&#x2F;&#39;, 133), (&quot;&#39;m&quot;, 133), (&#39;good&#39;, 130), (&#39;im&#39;, 128), (&#39;how&#39;, 128), (&#39;too&#39;, 125), (&#39;just&#39;, 125), (&#39;any&#39;, 123), (&#39;there&#39;, 120), (&#39;U7&#39;, 119), (&#39;U34&#39;, 119), (&#39;pm&#39;, 108), (&#39;wanna&#39;, 107), (&#39;out&#39;, 107), (&#39;lmao&#39;, 107), (&#39;be&#39;, 107), (&#39;can&#39;, 105), (&#39;Hi&#39;, 104), (&#39;know&#39;, 103), (&#39;get&#39;, 102), (&#39;:)&#39;, 101), (&#39;U35&#39;, 101), (&#39;ya&#39;, 100), (&#39;who&#39;, 99), (&#39;room&#39;, 98), (&#39;if&#39;, 98), (&#39;at&#39;, 98), (&#39;:&#39;, 96), (&#39;ok&#39;, 96), (&#39;am&#39;, 93), (&#39;-&#39;, 93), (&#39;from&#39;, 92), (&#39;did&#39;, 92), (&#39;U18&#39;, 92), (&#39;wb&#39;, 91), (&#39;but&#39;, 90), (&#39;or&#39;, 88), (&#39;one&#39;, 87), (&#39;&quot;&#39;, 87), (&#39;LOL&#39;, 87), (&#39;this&#39;, 86), (&#39;he&#39;, 84), (&#39;well&#39;, 81), (&#39;m&#39;, 81), (&#39;U30&#39;, 81), (&#39;now&#39;, 79), (&#39;oh&#39;, 79), (&#39;U19&#39;, 79), (&#39;back&#39;, 78), (&#39;hiya&#39;, 78), (&#39;they&#39;, 77), (&#39;U52&#39;, 77), (&#39;dont&#39;, 75)]</span><br><span class="line">&gt;&gt;&gt; fdist.plot(50)</span><br></pre></td></tr></table></figure> 对text5最常见的50个词画出来如下图所示，因为text5为chat corpus,所以有很多日常用语，但是这种词没有给出有效信息，除了出现了142次的"chat"，所以还需要其他的方式来提取有效信息。 <img src="/img/common.png" /></p></li>
+</ul>
+<blockquote>
+<p>NLTK中频率分布包含如下函数：</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">示例</th>
+<th style="text-align: center;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">fdist = FreqDist(samples)</td>
+<td style="text-align: center;">生成给定样本的频率分布</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">fdist['room']</td>
+<td style="text-align: center;">样本中room一词出现的次数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">fdist.freq('room')</td>
+<td style="text-align: center;">样本中room一次的频率</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">fdist.N()</td>
+<td style="text-align: center;">样本中所有token的总数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">fdist.most_common(n)</td>
+<td style="text-align: center;">样本中数量排名前n的token</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">for sample in fdist</td>
+<td style="text-align: center;">对样本中的数据迭代</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">fdist.max()</td>
+<td style="text-align: center;">样本中出现次数的token</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">fdist.plot()</td>
+<td style="text-align: center;">频率分布的图像展示</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; fdist &#x3D; FreqDist(text9)</span><br><span class="line">&gt;&gt;&gt; fdist[&#39;eyes&#39;]</span><br><span class="line">74</span><br><span class="line">&gt;&gt;&gt; fdist.freq(&#39;eyes&#39;)</span><br><span class="line">0.0010691633074711398</span><br><span class="line">&gt;&gt;&gt; print(fdist)</span><br><span class="line">&lt;FreqDist with 6807 samples and 69213 outcomes&gt;</span><br><span class="line">&gt;&gt;&gt; fdist.N()</span><br><span class="line">69213</span><br><span class="line">&gt;&gt;&gt; fdist.max()</span><br><span class="line">&#39;,&#39;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>词组与bigram(词对)</p>
+<p>词组(<strong>collocation</strong>)就是常见的几个词(word)的组合，<strong>bigram</strong>是从文本中提取的词对(<strong>word pair</strong>)。<code>bigram()</code>函数提供了给出word pair的功能： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; list(bigrams([&#39;I&#39;, &#39;get&#39;, &#39;up&#39;, &#39;late&#39;, &#39;this&#39;, &#39;morning&#39;]))</span><br><span class="line">[(&#39;I&#39;, &#39;get&#39;), (&#39;get&#39;, &#39;up&#39;), (&#39;up&#39;, &#39;late&#39;), (&#39;late&#39;, &#39;this&#39;), (&#39;this&#39;, &#39;morning&#39;)]</span><br></pre></td></tr></table></figure> collocation就是频繁出现的bigram。<code>collocation()</code>函数帮我们找出了文本中频繁出现的bigram： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; text9.collocations()</span><br><span class="line">said Syme; asked Syme; Saffron Park; Comrade Gregory; Leicester</span><br><span class="line">Square; Colonel Ducroix; red hair; old gentleman; could see; Inspector</span><br><span class="line">Ratcliffe; Anarchist Council; blue card; Scotland Yard; dark room;</span><br><span class="line">blue eyes; common sense; straw hat; hundred yards; said Gregory; run</span><br><span class="line">away</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2020/11/19/nltk/">https://lzmcosmos.github.io/2020/11/19/nltk/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NLTK/">NLTK</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/11/22/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">推荐系统简介</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/18/HowToSolve/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">0 如何解决一个问题?</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nltk"><span class="toc-number">1.</span> <span class="toc-text">NLTK</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nltk%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">NLTK介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nltk%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.</span> <span class="toc-text">NLTK安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%AD%E6%96%99%E5%BA%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">安装语料库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nltk%E6%A8%A1%E5%9D%97%E5%92%8C%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.2.2.</span> <span class="toc-text">NLTK模块和自然语言处理任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nltk%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.3.</span> <span class="toc-text">NLTK的简单使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8Enltk%E8%BF%9B%E8%A1%8C%E6%96%87%E6%9C%AC%E5%88%86%E6%9E%90"><span class="toc-number">1.2.4.</span> <span class="toc-text">基于NLTK进行文本分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%8D%E6%B1%87%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">词汇统计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A4%E6%96%87%E6%9C%AC%E4%B8%8D%E5%90%8C%E7%9A%84%E7%BB%9F%E8%AE%A1%E7%89%B9%E5%BE%81"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">令文本不同的统计特征</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

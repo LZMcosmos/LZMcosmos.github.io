@@ -1,0 +1,899 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Latex数学公式 | LZMcosmos</title><meta name="keywords" content="Latex数学公式"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="如何插入公式 LATEX 的数学公式有两种：行中公式和独立公式（行间公式）。行中公式放在文中与其它文字混编，独立公式单独成行。 行中公式可以用如下方法表示： $数学公式$ 独立公式可以用如下方法表示： $$  数学公式  $$ 函数、符号及特殊字符 声调 &#x2F; 变音符号 \dot&amp;#123;a&amp;#125;, \ddot&amp;#123;a&amp;#125;, \acute&amp;#123;a&amp;#125">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Latex数学公式">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/01/07/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="如何插入公式 LATEX 的数学公式有两种：行中公式和独立公式（行间公式）。行中公式放在文中与其它文字混编，独立公式单独成行。 行中公式可以用如下方法表示： $数学公式$ 独立公式可以用如下方法表示： $$  数学公式  $$ 函数、符号及特殊字符 声调 &#x2F; 变音符号 \dot&amp;#123;a&amp;#125;, \ddot&amp;#123;a&amp;#125;, \acute&amp;#123;a&amp;#125">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-01-07T12:17:02.000Z">
+<meta property="article:modified_time" content="2021-01-09T08:32:47.140Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="Latex数学公式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/01/07/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-09 16:32:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Latex数学公式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-01-07T12:17:02.000Z" title="Created 2021-01-07 20:17:02">2021-01-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-01-09T08:32:47.140Z" title="Updated 2021-01-09 16:32:47">2021-01-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C/">论文写作</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="如何插入公式">如何插入公式</h1>
+<p>LATEX 的数学公式有两种：行中公式和独立公式（行间公式）。行中公式放在文中与其它文字混编，独立公式单独成行。</p>
+<p>行中公式可以用如下方法表示：</p>
+<p><code>$数学公式$</code></p>
+<p>独立公式可以用如下方法表示：</p>
+<p><code>$$  数学公式  $$</code></p>
+<h2 id="函数符号及特殊字符">函数、符号及特殊字符</h2>
+<h3 id="声调-变音符号">声调 / 变音符号</h3>
+<p><code>\dot&#123;a&#125;, \ddot&#123;a&#125;, \acute&#123;a&#125;, \grave&#123;a&#125;</code></p>
+<p><span class="math inline">\(\dot{a}, \ddot{a}, \acute{a}, \grave{a}\)</span></p>
+<p><code>\check&#123;a&#125;, \breve&#123;a&#125;, \tilde&#123;a&#125;, \bar&#123;a&#125;</code></p>
+<p><span class="math inline">\(\check{a}, \breve{a}, \tilde{a}, \bar{a}\)</span></p>
+<p><code>\hat&#123;a&#125;, \widehat&#123;a&#125;, \vec&#123;a&#125;</code></p>
+<p><span class="math inline">\(\hat{a}, \widehat{a}, \vec{a}\)</span></p>
+<h3 id="标准函数">标准函数</h3>
+<h4 id="指数">指数</h4>
+<p><code>\exp_a b = a^b, \exp b = e^b, 10^m</code></p>
+<p><span class="math inline">\(\exp_a b = a^b, \exp b = e^b, 10^m\)</span></p>
+<h4 id="对数">对数</h4>
+<p><code>\ln c, \lg d = \log e, \log_&#123;10&#125; f</code></p>
+<p><span class="math inline">\(\ln c, \lg d = \log e, \log_{10} f\)</span></p>
+<h4 id="三角函数">三角函数</h4>
+<p><code>\sin a, \cos b, \tan c, \cot d, \sec e, \csc f</code></p>
+<p><span class="math inline">\(\sin a, \cos b, \tan c, \cot d, \sec e, \csc f\)</span></p>
+<p><code>\arcsin a, \arccos b, \arctan c</code></p>
+<p><span class="math inline">\(\arcsin a, \arccos b, \arctan c\)</span></p>
+<p><code>\arccot d, \arcsec e, \arccsc f</code></p>
+<p><span class="math inline">\(\arccot d, \arcsec e, \arccsc f\)</span></p>
+<p><code>\sinh a, \cosh b, \tanh c, \coth d</code></p>
+<p><span class="math inline">\(\sinh a, \cosh b, \tanh c, \coth d\)</span></p>
+<p><code>\operatorname&#123;sh&#125;k, \operatorname&#123;ch&#125;l, \operatorname&#123;th&#125;m, \operatorname&#123;coth&#125;n</code></p>
+<p><span class="math inline">\(\operatorname{sh}k, \operatorname{ch}l, \operatorname{th}m, \operatorname{coth}n\)</span></p>
+<p><code>\operatorname&#123;argsh&#125;o, \operatorname&#123;argch&#125;p, \operatorname&#123;argth&#125;</code></p>
+<p><span class="math inline">\(\operatorname{argsh}o, \operatorname{argch}p, \operatorname{argth}q\)</span></p>
+<h3 id="符号函数绝对值">符号函数，绝对值</h3>
+<p><code>\sgn r, \left\vert s \right\vert</code></p>
+<p><span class="math inline">\(\sgn r, \left\vert s \right\vert\)</span></p>
+<h3 id="最大值最小值">最大值，最小值</h3>
+<p><code>\min(x,y), \max(x,y)</code></p>
+<p><span class="math inline">\(\min(x,y), \max(x,y)\)</span></p>
+<h3 id="界限极限">界限，极限</h3>
+<p><code>\min x, \max y, \inf s, \sup t</code></p>
+<p><span class="math inline">\(\min x, \max y, \inf s, \sup t\)</span></p>
+<p><code>\lim u, \liminf v, \limsup w</code></p>
+<p><span class="math inline">\(\lim u, \liminf v, \limsup w\)</span></p>
+<p><code>\lim_&#123;x \to \infty&#125; \frac&#123;1&#125;&#123;n(n+1)&#125;</code></p>
+<p><span class="math inline">\(\lim_{x \to \infty} \frac{1}{n(n+1)}\)</span></p>
+<p><code>\dim p, \deg q, \det m, \ker\phi</code></p>
+<p><span class="math inline">\(\dim p, \deg q, \det m, \ker\phi\)</span></p>
+<h3 id="投射">投射</h3>
+<p><code>\Pr j, \hom l, \lVert z \rVert, \arg z</code></p>
+<p><span class="math inline">\(\Pr j, \hom l, \lVert z \rVert, \arg z\)</span></p>
+<h3 id="微分及导数">微分及导数</h3>
+<p><code>dt, \mathrm&#123;d&#125;t, \partial t, \nabla\psi</code></p>
+<p><span class="math inline">\(dt, \mathrm{d}t, \partial t, \nabla\psi\)</span></p>
+<p><code>dy/dx, \mathrm&#123;d&#125;y/\mathrm&#123;d&#125;x, \frac&#123;dy&#125;&#123;dx&#125;, \frac&#123;\mathrm&#123;d&#125;y&#125;&#123;\mathrm&#123;d&#125;x&#125;, \frac&#123;\partial^2&#125;&#123;\partial x_1\partial x_2&#125;y</code></p>
+<p><span class="math inline">\(dy/dx, \mathrm{d}y/\mathrm{d}x, \frac{dy}{dx}, \frac{\mathrm{d}y}{\mathrm{d}x}, \frac{\partial^2}{\partial x_1\partial x_2}y\)</span></p>
+<p><code>\prime, \backprime, f^\prime, f', f'', f^&#123;(3)&#125;, \dot y, \ddot</code></p>
+<p><span class="math inline">\(\prime, \backprime, f^\prime, f&#39;, f&#39;&#39;, f^{(3)}, \dot y, \ddot y\)</span></p>
+<h3 id="类字母符号及常数">类字母符号及常数</h3>
+<p><code>\infty, \aleph, \complement, \backepsilon, \eth, \Finv, \hbar</code></p>
+<p>$, , , , , ,  $</p>
+<p><code>\Im, \imath, \jmath, \Bbbk, \ell, \mho, \wp, \Re, \circledS</code></p>
+<p>$, , , , , , , ,  $</p>
+<h3 id="模运算">模运算</h3>
+<p><code>s_k \equiv 0 \pmod&#123;m&#125;</code></p>
+<p><span class="math inline">\(s_k \equiv 0 \pmod{m}\)</span></p>
+<p><code>a \bmod b</code></p>
+<p><span class="math inline">\(a \bmod b\)</span></p>
+<p><code>\gcd(m, n), \operatorname&#123;lcm&#125;(m, n)</code></p>
+<p><span class="math inline">\(\gcd(m, n), \operatorname{lcm}(m, n)\)</span></p>
+<p><code>\mid, \nmid, \shortmid, \nshortmid</code></p>
+<p><span class="math inline">\(\mid, \nmid, \shortmid, \nshortmid\)</span></p>
+<h3 id="根号">根号</h3>
+<p><code>\surd, \sqrt&#123;2&#125;, \sqrt[n]&#123;&#125;, \sqrt[3]&#123;\frac&#123;x^3+y^3&#125;&#123;2&#125;&#125;</code></p>
+<p><span class="math inline">\(\surd, \sqrt{2}, \sqrt[n]{}, \sqrt[3]{\frac{x^3+y^3}{2}}\)</span></p>
+<h3 id="运算符">运算符</h3>
+<p><code>+, -, \pm, \mp, \dotplus</code></p>
+<p><span class="math inline">\(+, -, \pm, \mp, \dotplus\)</span></p>
+<p><code>\times, \div, \divideontimes, /, \backslash</code></p>
+<p><span class="math inline">\(\times, \div, \divideontimes, /, \backslash\)</span></p>
+<p><code>\cdot, * \ast, \star, \circ, \bullet</code></p>
+<p><span class="math inline">\(\cdot, * \ast, \star, \circ, \bullet\)</span></p>
+<p><code>\boxplus, \boxminus, \boxtimes, \boxdot</code></p>
+<p><span class="math inline">\(\boxplus, \boxminus, \boxtimes, \boxdot\)</span></p>
+<p><code>\oplus, \ominus, \otimes, \oslash, \odot</code></p>
+<p><span class="math inline">\(\oplus, \ominus, \otimes, \oslash, \odot\)</span></p>
+<p><code>\circleddash, \circledcirc, \circledast</code></p>
+<p><span class="math inline">\(\circleddash, \circledcirc, \circledast\)</span></p>
+<p><code>\bigoplus, \bigotimes, \bigodot</code></p>
+<p><span class="math inline">\(\bigoplus, \bigotimes, \bigodot\)</span></p>
+<h2 id="集合">集合</h2>
+<p><code>\&#123; \&#125;, \O \empty \emptyset, \varnothing</code></p>
+<p><span class="math inline">\(\{ \}, \O \empty \emptyset, \varnothing\)</span></p>
+<p><code>\in, \notin \not\in, \ni, \not\ni</code></p>
+<p><span class="math inline">\(\in, \notin \not\in, \ni, \not\ni\)</span></p>
+<p><code>\cap, \Cap, \sqcap, \bigcap</code></p>
+<p><span class="math inline">\(\cap, \Cap, \sqcap, \bigcap\)</span></p>
+<p><code>\cup, \Cup, \sqcup, \bigcup, \bigsqcup, \uplus, \biguplus</code></p>
+<p><span class="math inline">\(\cup, \Cup, \sqcup, \bigcup, \bigsqcup, \uplus, \biguplus\)</span></p>
+<p><code>\setminus, \smallsetminus, \times</code></p>
+<p><span class="math inline">\(\setminus, \smallsetminus, \times\)</span></p>
+<p><code>\subset, \Subset, \sqsubset</code></p>
+<p><span class="math inline">\(\subset, \Subset, \sqsubset\)</span></p>
+<p><code>\supset, \Supset, \sqsupset</code></p>
+<p><span class="math inline">\(\supset, \Supset, \sqsupset\)</span></p>
+<p><code>\subseteq, \nsubseteq, \subsetneq, \varsubsetneq, \sqsubseteq</code></p>
+<p><span class="math inline">\(\subseteq, \nsubseteq, \subsetneq, \varsubsetneq, \sqsubseteq\)</span></p>
+<p><code>\supseteq, \nsupseteq, \supsetneq, \varsupsetneq, \sqsupseteq</code></p>
+<p><span class="math inline">\(\supseteq, \nsupseteq, \supsetneq, \varsupsetneq, \sqsupseteq\)</span></p>
+<p><code>\subseteqq, \nsubseteqq, \subsetneqq, \varsubsetneqq</code></p>
+<p>$, , , </p>
+<p>, , , </p>
+<p>⫆,,⫌,</p>
+<p>关系符号# =, , , , </p>
+<p>=,≠,≠,≡,≢</p>
+<p>, , , :=</p>
+<p>≐,≑,=def,:=</p>
+<p>, , , , , , , , </p>
+<p>∼,≁,∽,∼,≃,⋍,≂,≅,≆</p>
+<p>, , , , , </p>
+<p>≈,≈,≊,≍,∝,∝</p>
+<p>&lt;, , , , , , </p>
+<p>&lt;,≮,≪,≪̸,⋘,⋘̸,⋖</p>
+<blockquote>
+<p>, , , , , , </p>
+</blockquote>
+<blockquote>
+<p>,≯,≫,≫̸,⋙,⋙̸,⋗</p>
+</blockquote>
+<p>, , , , , , , </p>
+<p>≤,≤,⪇,≦,≰,,≨,</p>
+<p>, , , , , , , </p>
+<p>≥,≥,⪈,≧,≱,,≩,</p>
+<p>, , , , , </p>
+<p>≶,⋚,⪋,≷,⋛,⪌</p>
+<p>, , </p>
+<p>⩽,,⪕</p>
+<p>, , </p>
+<p>⩾,,⪖</p>
+<p>, , , </p>
+<p>≲,⋦,⪅,⪉</p>
+<p>, , , </p>
+<p>≳,⋧,⪆,⪊</p>
+<p>, , , , </p>
+<p>≺,⊀,⪯,⋠,⪵</p>
+<p>, , , , </p>
+<p>≻,⊁,⪰,⋡,⪶</p>
+<p>, </p>
+<p>≼,⋞</p>
+<p>, </p>
+<p>≽,⋟</p>
+<p>, , , </p>
+<p>≾,⋨,⪷,⪹</p>
+<p>, , , </p>
+<p>≿,⋩,⪸,⪺</p>
+<p>几何符号# , , , </p>
+<p>∥,∦,∥,</p>
+<p>, , , , 45^</p>
+<p>⊥,∠,∢,∡,45∘</p>
+<p>, , , , , </p>
+<p>□,■,⋄,◊◊,⧫,★</p>
+<p>, , , </p>
+<p>◯,△,△,▽</p>
+<p>, </p>
+<p>△,▽</p>
+<p>, , , </p>
+<p>▲,▼,◀,▶</p>
+<p>逻辑符号# , , </p>
+<p>∀,∃,∄</p>
+<p>, , </p>
+<p>∴,∵,&amp;</p>
+<p>, , </p>
+<p>∨,∨,∨,⋎,⋁</p>
+<p>\and , , </p>
+<p>∧,∧,∧,⋏,⋀</p>
+<p>{q}, {abc}, , ,</p>
+<p>, , , </p>
+<p>q¯,abc¯,q¯¯,abc¯¯¯¯¯¯¯,</p>
+<p>¬¬,/R,⊥,⊤</p>
+<p>, , , </p>
+<p>⊢,⊣,⊨,⊩,⊨</p>
+<p>⊪,⊬,⊮,⊭,⊯</p>
+<p>┌┐└┘</p>
+<p>箭头# , </p>
+<p>⇛,⇚</p>
+<p>, , </p>
+<p>⇒,⇏,⟹,⟹</p>
+<p>, , </p>
+<p>⇐,⇍,⟸</p>
+<p>, , </p>
+<p>⇔,⇎,⟺⟺</p>
+<p>, , </p>
+<p>⇑,⇓,⇕</p>
+<p>, , </p>
+<p>→→,↛,⟶</p>
+<p>, , </p>
+<p>←←,↚,⟵</p>
+<p>, , </p>
+<p>↔︎,↮,⟷</p>
+<p>, , </p>
+<p>↑,↓,↕</p>
+<p>, , , </p>
+<p>↗,↙,↖,↘</p>
+<p>, </p>
+<p>↦,⟼</p>
+<p>⇀,⇁,↼,↽,↿,↾,⇃,⇂,⇌,⇋</p>
+<p>↶,↺,↰,⇈,⇉,⇄,↣,↬</p>
+<p>↷,↻,↱,⇊,⇇,⇆,↢,↫</p>
+<p>↪,↩︎,⊸,↭,⇝,↠,↞</p>
+<p>特殊符号# 省略号：数学公式中常见的省略号有两种，表示与文本底线对齐的省略号，表示与文本中线对齐的省略号。</p>
+<p>% </p>
+<p>⨿%†‡…⋯</p>
+<p>⌣⌢≀◃▹</p>
+<p>, , , , , , , </p>
+<p>♢,♡,♣,♠,⅁,♭,♮,♯</p>
+<p>未分类# </p>
+<p>╱,╲,⋅,⋉,⋊,⋋,⋌</p>
+<p>≖,≗,≜,≏,≎,≑,≓,≒</p>
+<p>⊺,⊼,⊻,⩞,≬,⋔</p>
+<p>⊲,⋪,⊳,⋫</p>
+<p>⊴,⋬,⊵,⋭</p>
+<p>关于这些符号的更多语义，参阅 TeX Cookbook 的简述。</p>
+<p>上标、下标及积分等# 功能|语法|效果</p>
+<p>^ 表示上标, _ 表示下标。如果上下标的内容多于一个字符，需要用 {} 将这些内容括成一个整体。上下标可以嵌套，也可以同时使用。</p>
+<p>上标</p>
+<p>a^2</p>
+<p>a2</p>
+<p>下标</p>
+<p>a_2</p>
+<p>a2</p>
+<p>组合</p>
+<p>a^{2+2}</p>
+<p>a2+2</p>
+<p>a_{i,j}</p>
+<p>ai,j</p>
+<p>结合上下标</p>
+<p>x_2^3</p>
+<p>x32</p>
+<p>前置上下标</p>
+<p>{}_1<sup>2!X_3</sup>4</p>
+<p>21X43</p>
+<p>导数（HTML）</p>
+<p>x'</p>
+<p>x′</p>
+<p>导数（PNG）</p>
+<p>x^</p>
+<p>x′</p>
+<p>导数（错误）</p>
+<p>x</p>
+<p>x′</p>
+<p>导数点</p>
+<p>x˙</p>
+<p>y¨</p>
+<p>向量</p>
+<p>（只有一个字母）</p>
+<p>c⃗</p>
+<p>ab←</p>
+<p>cd→</p>
+<p>ab↔︎</p>
+<p>efgˆ</p>
+<p>上弧</p>
+<p>（注: 正确应该用 ，但在这里行不通。要用建议的语法作为解决办法。）（使用  overarc 时需要引入 {arcs} 包。）</p>
+<p> {AB}</p>
+<p>AB⌢</p>
+<p>上划线</p>
+<p>hij¯¯¯¯¯¯¯</p>
+<p>下划线</p>
+<p></p>
+<p>klm––––</p>
+<p>上括号</p>
+<p>1+2+⋯+100</p>
+<span class="math display">\[\begin{matrix} 5050 \\ \overbrace{ 1+2+\cdots+100 } \end{matrix}\]</span>
+<p>50501+2+⋯+100</p>
+<p>下括号</p>
+<p>a+b+⋯+z</p>
+<span class="math display">\[\begin{matrix} \underbrace{ a+b+\cdots+z } \\ 26 \end{matrix}\]</span>
+<p>a+b+⋯+z26</p>
+<p>求和（累加）</p>
+<p>_{k=1}^N k^2</p>
+<p>∑k=1Nk2</p>
+<span class="math display">\[\begin{matrix} \sum_{k=1}^N k^2 \end{matrix}\]</span>
+<p>∑Nk=1k2</p>
+<p>求积（累乘）</p>
+<p>_{i=1}^N x_i</p>
+<p>∏i=1Nxi</p>
+<span class="math display">\[\begin{matrix} \prod_{i=1}^N x_i \end{matrix}\]</span>
+<p>∏Ni=1xi</p>
+<p>上积</p>
+<p>_{i=1}^N x_i</p>
+<p>∐i=1Nxi</p>
+<span class="math display">\[\begin{matrix} \coprod_{i=1}^N x_i \end{matrix}\]</span>
+<p>∐Ni=1xi</p>
+<p>极限</p>
+<p>_{n }x_n</p>
+<p>limn→∞xn</p>
+<span class="math display">\[\begin{matrix} \lim_{n \to \infty}x_n \end{matrix}\]</span>
+<p>limn→∞xn</p>
+<p>积分</p>
+<p>_{-N}^{N} e^x, {}x</p>
+<p>∫N−Nexdx</p>
+<p>本例中 , 和 {} 部分可省略，但建议加入，能使式子更美观。{}可以用等价替换。</p>
+<span class="math display">\[\begin{matrix} \int_{-N}^{N} e^x\, \mathrm{d}x \end{matrix}\]</span>
+<p>（矩阵中积分符号变小）</p>
+<p>∫N−Nexdx</p>
+<p>双重积分</p>
+<p>_{D}^{W} , x,y</p>
+<p>∬WDdxdy</p>
+<p>三重积分</p>
+<p>_{E}^{V} , x,y,z</p>
+<p>∭VEdxdydz</p>
+<p>闭合的曲线、曲面积分</p>
+<p>_{C} x^3, x + 4y^2, y</p>
+<p>∮Cx3dx+4y2dy</p>
+<p>交集</p>
+<p>_1^{n} p</p>
+<p>⋂1np</p>
+<p>并集</p>
+<p>_1^{k} p</p>
+<p>⋃1kp</p>
+<p>分数# 通常使用  {分母} 命令产生一个分数，分数可嵌套。 便捷情况可直接输入 ab 来快速生成一个 ab 。 如果分式很复杂，亦可使用 分子 分母 命令，此时分数仅有一层。</p>
+<p>功能|语法|效果</p>
+<p>分数</p>
+<p>=0.5</p>
+<p>24=0.5</p>
+<p>小型分数</p>
+<p> = 0.5</p>
+<p>24=0.5</p>
+<p>连分式（大型嵌套分式）</p>
+<p> = a</p>
+<p>2c+2d+24=a</p>
+<p>大型不嵌套分式</p>
+<p> = 0.5  = a</p>
+<p>24=0.52c+2d+24=a</p>
+<p>二项式系数</p>
+<p>==_n^r=_n^{n-r}</p>
+<p>(nr)=(nn−r)=Crn=Cn−rn</p>
+<p>小型二项式系数</p>
+<p>==_n^r=_n^{n-r}</p>
+<p>(nr)=(nn−r)=Crn=Cn−rn</p>
+<p>大型二项式系数</p>
+<p>==_n^r=_n^{n-r}</p>
+<p>(nr)=(nn−r)=Crn=Cn−rn</p>
+<p>在以e为底的指数函数、极限和积分中尽量不要使用 符号：它会使整段函数看起来很怪，而且可能产生歧义。也正是因此它在专业数学排版中几乎从不出现。 横着写这些分式，中间使用斜线间隔 / （用斜线代替分数线）。</p>
+例子： Copy
+<span class="math display">\[\begin{array}{cc}
+\mathrm{Bad} &amp; \mathrm{Better} \\
+\hline \\
+e^{i\frac{\pi}2} \quad e^{\frac{i\pi}2}&amp; e^{i\pi/2} \\
+\int_{-\frac\pi2}^\frac\pi2 \sin x\,dx &amp; \int_{-\pi/2}^{\pi/2}\sin x\,dx \\
+\end{array}\]</span>
+<p>显示： Badeiπ2eiπ2∫π2−π2sinxdxBettereiπ/2∫π/2−π/2sinxdx 矩阵、条件表达式、方程组# 语法：</p>
+Copy
+<p>类型可以是：矩阵 matrix pmatrix bmatrix Bmatrix vmatrix Vmatrix、条件表达式 cases、多行对齐方程式 aligned、数组 array。</p>
+<p>在公式内容中：在每一行中插入 &amp; 来指定需要对齐的内容，在每行结尾处使用 \ 换行。</p>
+<p>无框矩阵# 在开头使用 begin{matrix}，在结尾使用 end{matrix}，在中间插入矩阵元素，每个元素之间插入 &amp; ，并在每行结尾处使用 \ 。</p>
+Copy
+<span class="math display">\[\begin{matrix}
+x &amp; y \\
+z &amp; v
+\end{matrix}\]</span>
+<p>xzyv</p>
+<p>有框矩阵# 在开头将 matrix 替换为 pmatrix bmatrix Bmatrix vmatrix Vmatrix 。</p>
+Copy
+<span class="math display">\[\begin{vmatrix}
+x &amp; y \\
+z &amp; v
+\end{vmatrix}\]</span>
+<p>∣∣∣xzyv∣∣∣</p>
+Copy
+<span class="math display">\[\begin{Vmatrix}
+x &amp; y \\
+z &amp; v
+\end{Vmatrix}\]</span>
+<p>∥∥∥xzyv∥∥∥</p>
+<p>使用 ⋯ , ⋱ , ⋮ 来输入省略符号。</p>
+Copy
+<span class="math display">\[\begin{bmatrix}
+0      &amp; \cdots &amp; 0      \\
+\vdots &amp; \ddots &amp; \vdots \\
+0      &amp; \cdots &amp; 0
+\end{bmatrix}\]</span>
+<p>⎡⎣⎢⎢0⋮0⋯⋱⋯0⋮0⎤⎦⎥⎥</p>
+Copy
+<span class="math display">\[\begin{Bmatrix}
+x &amp; y \\
+z &amp; v
+\end{Bmatrix}\]</span>
+<p>{xzyv}</p>
+Copy
+<span class="math display">\[\begin{pmatrix}
+x &amp; y \\
+z &amp; v
+\end{pmatrix}\]</span>
+<p>(xzyv)</p>
+条件表达式# Copy f(n) =
+<span class="math display">\[\begin{cases} 
+n/2,  &amp; \text{if }n\text{ is even} \\
+3n+1, &amp; \text{if }n\text{ is odd}
+\end{cases}\]</span>
+<p>f(n)={n/2,3n+1,if n is evenif n is odd</p>
+多行等式、同余式# 人们经常想要一列整齐且居中的方程式序列。使用
+<span class="math display">\[\begin{aligned}…\end{aligned}\]</span>
+<p>。</p>
+Copy
+<span class="math display">\[\begin{aligned}
+f(x) &amp; = (m+n)^2 \\
+     &amp; = m^2+2mn+n^2 \\
+\end{aligned}\]</span>
+<p>f(x)=(m+n)2=m2+2mn+n2</p>
+<p>Copy begin{aligned} 3<sup>{6n+3}+4</sup>{6n+3} &amp; (3<sup>3)</sup>{2n+1}+(4<sup>3)</sup>{2n+1}\<br />
+&amp; <sup>{2n+1}+64</sup>{2n+1}\<br />
+&amp; <sup>{2n+1}+(-27)</sup>{2n+1}\ &amp; <sup>{2n+1}-27</sup>{2n+1}\ &amp;  \ \end{aligned} 36n+3+46n+3≡(33)2n+1+(43)2n+1≡272n+1+642n+1≡272n+1+(−27)2n+1≡272n+1−272n+1≡0(mod91)</p>
+Copy
+<span class="math display">\[\begin{alignedat}{3}
+f(x) &amp; = (m-n)^2 \\
+f(x) &amp; = (-m+n)^2 \\
+     &amp; = m^2-2mn+n^2 \\
+\end{alignedat}\]</span>
+<p>f(x)f(x)=(m−n)2=(−m+n)2=m2−2mn+n2</p>
+方程组# Copy
+<span class="math display">\[\begin{cases}
+3x + 5y +  z \\
+7x - 2y + 4z \\
+-6x + 3y + 2z
+\end{cases}\]</span>
+<p>⎧⎩⎨3x+5y+z7x−2y+4z−6x+3y+2z 或</p>
+Copy {
+<span class="math display">\[\begin{aligned}
+3x + 5y +  z \\
+7x - 2y + 4z \\
+-6x + 3y + 2z
+\end{aligned}\]</span>
+. ⎧⎩⎨3x+5y+z7x−2y+4z−6x+3y+2z 数组与表格# 通常，一个格式化后的表格比单纯的文字或排版后的文字更具有可读性。数组和表格均以
+<span class="math display">\[\begin{array} 开头，并在其后定义列数及每一列的文本对齐属性，c l r 分别代表居中、左对齐及右对齐。若需要插入垂直分割线，在定义式中插入 | ，若要插入水平分割线，在下一行输入前插入 \hline 。与矩阵相似，每行元素间均须要插入 &amp; ，每行元素以 \\ 结尾，最后以 \end{array}\]</span>
+<p>结束数组。</p>
+例子： Copy
+<span class="math display">\[\begin{array}{c|lcr}
+n &amp; \text{左对齐} &amp; \text{居中对齐} &amp; \text{右对齐} \\
+\hline
+1 &amp; 0.24 &amp; 1 &amp; 125 \\
+2 &amp; -1 &amp; 189 &amp; -8 \\
+3 &amp; -20 &amp; 2000 &amp; 1+10i
+\end{array}\]</span>
+显示： n123左对齐0.24−1−20居中对齐11892000右对齐125−81+10i 例子: Copy
+<span class="math display">\[\begin{array}{lcl}
+z        &amp; = &amp; a \\
+f(x,y,z) &amp; = &amp; x + y + z 
+\end{array}\]</span>
+<p>显示： zf(x,y,z)==ax+y+z</p>
+例子: Copy
+<span class="math display">\[\begin{array}{lcr}
+z        &amp; = &amp; a \\
+f(x,y,z) &amp; = &amp; x + y + z    
+\end{array}\]</span>
+<p>显示: zf(x,y,z)==ax+y+z</p>
+例子: Copy
+<span class="math display">\[\begin{array}{ccc}
+a &amp; b &amp; S \\
+\hline
+0&amp;0&amp;1\\
+0&amp;1&amp;1\\
+1&amp;0&amp;1\\
+1&amp;1&amp;0\\
+\end{array}\]</span>
+<p>显示: a0011b0101S1110 嵌套数组或表格# 多个数组/表格可 互相嵌套 并组成一组数组/一组表格。 使用嵌套前必须声明 $$ 符号。</p>
+例子： Copy % outer vertical array of arrays 外层垂直表格
+<span class="math display">\[\begin{array}{c}
+    % inner horizontal array of arrays 内层水平表格
+    \begin{array}{cc}
+        % inner array of minimum values 内层&quot;最小值&quot;数组
+        \begin{array}{c|cccc}
+        \text{min} &amp; 0 &amp; 1 &amp; 2 &amp; 3\\
+        \hline
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+        1 &amp; 0 &amp; 1 &amp; 1 &amp; 1\\
+        2 &amp; 0 &amp; 1 &amp; 2 &amp; 2\\
+        3 &amp; 0 &amp; 1 &amp; 2 &amp; 3
+        \end{array}
+    &amp;
+        % inner array of maximum values 内层&quot;最大值&quot;数组
+        \begin{array}{c|cccc}
+        \text{max}&amp;0&amp;1&amp;2&amp;3\\
+        \hline
+        0 &amp; 0 &amp; 1 &amp; 2 &amp; 3\\
+        1 &amp; 1 &amp; 1 &amp; 2 &amp; 3\\
+        2 &amp; 2 &amp; 2 &amp; 2 &amp; 3\\
+        3 &amp; 3 &amp; 3 &amp; 3 &amp; 3
+        \end{array}
+    \end{array}
+    % 内层第一行表格组结束
+    \\
+    % inner array of delta values 内层第二行Delta值数组
+        \begin{array}{c|cccc}
+        \Delta&amp;0&amp;1&amp;2&amp;3\\
+        \hline
+        0 &amp; 0 &amp; 1 &amp; 2 &amp; 3\\
+        1 &amp; 1 &amp; 0 &amp; 1 &amp; 2\\
+        2 &amp; 2 &amp; 1 &amp; 0 &amp; 1\\
+        3 &amp; 3 &amp; 2 &amp; 1 &amp; 0
+        \end{array}
+        % 内层第二行表格组结束
+\end{array}\]</span>
+<p>显示： min012300000101112012230123max012300123111232222333333Δ012300123110122210133210 用数组实现带分割符号的矩阵# 例子： Copy <span class="math display">\[
+\left[
+    \begin{array}{cc|c}
+      1&amp;2&amp;3\\
+      4&amp;5&amp;6
+    \end{array}
+\right]
+\]</span> 显示： [142536] 其中 cc|c 代表在一个三列矩阵中的第二和第三列之间插入分割线。</p>
+<p>字体# 希腊字母# 输入 和 来分别输入小写和大写希腊字母。</p>
+<p>ABΓΔEZHΘ</p>
+<p>IKΛMNOΞΠ</p>
+<p>PΣTΥΦXΨΩ</p>
+<p>αβγδϵζηθ</p>
+<p>ικλμνoξπ</p>
+<p>ρστυϕχψω</p>
+<p>部分字母有变量专用形式，以 - 开头。</p>
+<p>εϝϰϖ</p>
+<p>ϱςϑφ</p>
+<p>希伯来符号# </p>
+<p>ℵℶℷℸ</p>
+<p>部分字体的简称# 若要对公式的某一部分字符进行字体转换，可以用 {} 命令，其中 部分可以参照下表选择合适的字体。一般情况下，公式默认为意大利体 italic 。</p>
+<p>输入 说明 显示 输入 说明 显示 </p>
+<p>ABCDEFGHI</p>
+<p>JKLMNOPQR</p>
+<p>STUVWXYZ</p>
+<p>粗体 </p>
+<p>ABCDEFGHI</p>
+<p>JKLMNOPQR</p>
+<p>STUVWXYZ</p>
+<p>abcdefghijklm</p>
+<p>nopqrstuvwxyz</p>
+<p>0123456789</p>
+<p>粗体希腊字母 </p>
+<p>ABΓΔEZHΘ</p>
+<p>IKΛMNΞΠP</p>
+<p>ΣTΥΦXΨΩ</p>
+<p>αβγδϵζηθ</p>
+<p>ικλμνξπρ</p>
+<p>στυϕχψω</p>
+<p>εϝϰϖ</p>
+<p>ϱςϑφ</p>
+<p>斜体（拉丁字母默认） </p>
+<p>0123456789</p>
+<p>斜体希腊字母（小写字母默认） </p>
+<p>ABΓΔEZHΘ</p>
+<p>IKΛMNΞΠP</p>
+<p>ΣTΥΦXΨΩ</p>
+<p>罗马体 </p>
+<p>ABCDEFGHI</p>
+<p>JKLMNOPQR</p>
+<p>STUVWXYZ</p>
+<p>abcdefghijklm</p>
+<p>nopqrstuvwxyz</p>
+<p>0123456789</p>
+<p>无衬线体 </p>
+<p>ABCDEFGHI</p>
+<p>JKLMNOPQR</p>
+<p>STUVWXYZ</p>
+<p>abcdefghijklm</p>
+<p>nopqrstuvwxyz</p>
+<p>0123456789</p>
+<p>无衬线体希腊字母（仅大写） </p>
+<p>ABΓΔEZHΘ</p>
+<p>IKΛMNΞΠP</p>
+<p>ΣTΥΦXΨΩ</p>
+<p>手写体 / 花体 </p>
+<p>ABCDEFGHI</p>
+<p>JKLMNOPQR</p>
+<p>STUVWXYZ</p>
+<p>Fraktur 体 </p>
+<p>ABCDEFGHI</p>
+<p>JKLMNOPQR</p>
+<p>STUVWXYZ</p>
+<p>abcdefghijklm</p>
+<p>nopqrstuvwxyz</p>
+<p>0123456789</p>
+<p>小型手写体 {}</p>
+<p>abcdefghijklm</p>
+<p>混合字体# 特征|语法|渲染效果</p>
+<p>斜体字符（忽略空格）</p>
+<p>x y z</p>
+<p>xyz</p>
+<p>非斜体字符</p>
+<p>x y z</p>
+<p>混合斜体（差）</p>
+<p> n </p>
+<p>ifnis even</p>
+<p>混合斜体（好）</p>
+<p>n</p>
+<p>if n is even</p>
+<p>混合斜体（替代品：~ 或者  强制空格）</p>
+<p>~n </p>
+<p>if n is even</p>
+<p>注释文本# 使用  来添加注释文本（注释文本不会被识别为公式，不用斜体显示）。中仍可以使用 <span class="math inline">\(公式\)</span> 插入其它公式。</p>
+例子： Copy f(n)=
+<span class="math display">\[\begin{cases}
+n/2, &amp; \text {if $n$ is even} \\
+3n+1, &amp;\text{if $n$ is odd}
+\end{cases}\]</span>
+<p>显示： f(n)={n/2,3n+1,if n is evenif n is odd 括号# ()、[] 和 | 表示符号本身，使用 {} 来表示 {} 。</p>
+<p>功能|语法|显示</p>
+<p>短括号</p>
+<ol start="12" type="1">
+<li></li>
+</ol>
+<p>长括号</p>
+<p>( )</p>
+<ol start="12" type="1">
+<li></li>
+</ol>
+<p>使用 和 来创建自动匹配高度的 (圆括号)，[方括号] 和 {花括号} 。</p>
+<p>功能|语法|显示</p>
+<p>圆括号，小括号</p>
+<p>(  )</p>
+<p>(ab)</p>
+<p>方括号，中括号</p>
+<p>[ab]</p>
+<p>花括号，大括号</p>
+<p>{ab}</p>
+<p>角括号</p>
+<p> </p>
+<p>⟨ab⟩</p>
+<p>单竖线，绝对值</p>
+<p>|  |</p>
+<p>∣∣ab∣∣</p>
+<p>双竖线，范</p>
+<p>|  |</p>
+<p>∥∥ab∥∥</p>
+<p>取整函数</p>
+<p> </p>
+<p>⌊ab⌋</p>
+<p>取顶函数</p>
+<p> </p>
+<p>⌈cd⌉</p>
+<p>斜线与反斜线</p>
+<p>/  </p>
+<p>/ab<br />
+</p>
+<p>上下箭头</p>
+<p> </p>
+<p>↑⏐⏐⏐ab⏐↓⏐⏐</p>
+<p> </p>
+<p>⇑‖‖‖ab‖⇓‖‖</p>
+<p> </p>
+<p>↑↓⏐⏐ab⇑⇓‖‖</p>
+<p>混合括号</p>
+<p>)</p>
+<p>显示︰</p>
+<p>([{⟨∣∣∥ab∥∣∣⟩}]) 空格# 注意 TeX 能够自动处理大多数的空格，但是您有时候需要自己来控制。</p>
+<p>功能|语法|显示|宽度</p>
+<p>2 个 quad 空格# </p>
+<p>αβ</p>
+<p>mm</p>
+<p>quad 空格# </p>
+<p>αβ</p>
+<p>m</p>
+<p>大空格#  </p>
+<p>α β</p>
+<p>m3</p>
+<p>中等空格# ;</p>
+<p>αβ</p>
+<p>2m7</p>
+<p>小空格# ,</p>
+<p>αβ</p>
+<p>m6</p>
+<p>没有空格# </p>
+<p>αβ</p>
+<p>0</p>
+<p>紧贴# !</p>
+<p>αβ</p>
+<p>−m6</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/01/07/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/">https://lzmcosmos.github.io/2021/01/07/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/">Latex数学公式</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/09/hexo%E5%8D%9A%E5%AE%A2%E6%B8%B2%E6%9F%93%E5%99%A8-pandoc/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">hexo博客渲染器--pandoc</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/06/%E8%AE%BA%E6%96%87%E4%B9%8BDynamic%20Fusion%20Network%20for%20Multi-Domain%20End-to-end%20Task-Oriented%20Dialog/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">ACL2020:Dynamic Fusion Network for Multi-Domain End-to-end Task-Oriented Dialog</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8F%92%E5%85%A5%E5%85%AC%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">如何插入公式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%AC%A6%E5%8F%B7%E5%8F%8A%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6"><span class="toc-number">1.1.</span> <span class="toc-text">函数、符号及特殊字符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E8%B0%83-%E5%8F%98%E9%9F%B3%E7%AC%A6%E5%8F%B7"><span class="toc-number">1.1.1.</span> <span class="toc-text">声调 &#x2F; 变音符号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">标准函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E6%95%B0"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">指数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%95%B0"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">对数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">三角函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E5%87%BD%E6%95%B0%E7%BB%9D%E5%AF%B9%E5%80%BC"><span class="toc-number">1.1.3.</span> <span class="toc-text">符号函数，绝对值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%80%BC%E6%9C%80%E5%B0%8F%E5%80%BC"><span class="toc-number">1.1.4.</span> <span class="toc-text">最大值，最小值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%95%8C%E9%99%90%E6%9E%81%E9%99%90"><span class="toc-number">1.1.5.</span> <span class="toc-text">界限，极限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%B0%84"><span class="toc-number">1.1.6.</span> <span class="toc-text">投射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E5%88%86%E5%8F%8A%E5%AF%BC%E6%95%B0"><span class="toc-number">1.1.7.</span> <span class="toc-text">微分及导数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%AD%97%E6%AF%8D%E7%AC%A6%E5%8F%B7%E5%8F%8A%E5%B8%B8%E6%95%B0"><span class="toc-number">1.1.8.</span> <span class="toc-text">类字母符号及常数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E8%BF%90%E7%AE%97"><span class="toc-number">1.1.9.</span> <span class="toc-text">模运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B9%E5%8F%B7"><span class="toc-number">1.1.10.</span> <span class="toc-text">根号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.1.11.</span> <span class="toc-text">运算符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88"><span class="toc-number">1.2.</span> <span class="toc-text">集合</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

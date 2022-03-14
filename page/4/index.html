@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LZMcosmos</title><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="LZMcosmos">
+<meta property="og:url" content="https://lzmcosmos.github.io/page/4/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://lzmcosmos.github.io/img/cosmos.jpg">
+<meta property="article:author" content="李子梅">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzmcosmos.github.io/img/cosmos.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/page/4/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-03-14 09:54:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/Green_Planet_Space_Satellite_Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">LZMcosmos</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/02/28/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/" title="深度学习推荐系统模型搭建基础">深度学习推荐系统模型搭建基础</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-02-28T05:31:23.000Z" title="Created 2021-02-28 13:31:23">2021-02-28</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/NLP/">NLP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/">深度学习推荐系统模型搭建基础</a></span></div><div class="content">深度学习推荐系统模型搭建基础
+编程基础(Keras函数式API编程)
+本项目中所有代码都通过Tensorflow2.x实现，所以熟悉Tensorflow的基础操作，以及tf2中keras的使用(与早期的keras的使用基本上是一致的)，对于TF及keras的基础这里不做太多的介绍，可以参考相关的资料进行学习。这里主要说一下keras函数式编程的基本用法。
+keras搭建模型主要有两种模式，一种是Sequential API，另外一种是Functional API。前者主要是通过层的有序堆叠形成一个模型，在大多数情况下可以快速的搭建一个模型，但是搭建的模型更适合简单的堆叠模型，对于复杂模型(多输入、多输出、共享层)的搭建就比较困难，所以后者函数式API可以更加灵活的搭建复杂网络，函数式API搭建模型是通过创建层的实例并将将层与层之间连接在一起，最后只需要指定模型的输入和输出就可以完成模型的搭建，不同层的实例可以表示不同的操作，搭建模型的时候只需要考虑层与层之间的关系，以及复杂层的搭建就可以很方便的搭建起一个复杂网络。
+回顾Sequential API搭建模型：
+12345678 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/02/25/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%83%85%E6%84%9F%E8%AF%86%E5%88%AB/" title="朴素贝叶斯分类器实现情感识别">朴素贝叶斯分类器实现情感识别</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-02-25T06:20:48.000Z" title="Created 2021-02-25 14:20:48">2021-02-25</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/NLP/">NLP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%83%85%E6%84%9F%E8%AF%86%E5%88%AB/">朴素贝叶斯分类器实现情感识别</a></span></div><div class="content">朴素贝叶斯分类器实现情感识别
+利用逻辑回归分类器实现的博客在这里
+任务描述
+识别推文中的情感是积极的还是消极的。
+给定一个推文： I am happy because I am learning NLP
+现在，任务目标就是判断上面的推文是积极的情感(positive sentiment)还是消极的情感(nagetive sentiment)。
+给定一个训练集，训练集中包含推文和其对应的标签(label)，标签取值为1(代表positive)和0(代表negative)。
+
+任务数据集
+NLTK语料库中的tweet数据集。
+目录
+
+一、数据预处理
+二、训练朴素贝叶斯训练模型
+三、测试朴素贝叶斯模型
+
+一、数据预处理
+1.1 预处理文本
+1 stop words 和 punctuation(标点)
+在提取特征前，需要去除stop words，因为stop words通常是没有意义的词语，例如下图中的stop words表，这只是其中很小的一部分(对当前例子来说完全足够)。有时候文本中的punctuation(标点)对任务没有影响，这时就可以根据punc ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/02/23/%E5%AD%97%E5%85%B8%E6%A0%91/" title="字典树(Trie)">字典树(Trie)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-02-23T02:59:45.000Z" title="Created 2021-02-23 10:59:45">2021-02-23</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/Trie/">Trie</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%AD%97%E5%85%B8%E6%A0%91/">字典树</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/">前缀树</a></span></div><div class="content">字典树(Trie)
+0 字典树的引入
+我们已经知道树和二叉搜索树等数据结构，那么字典树或者前缀树是用来做什么的呢？
+假设我们需要创建一个能提供单词拼写检查的程序，它能给出这个单词是否有效(不需要给出建议的单词)。那么我们该如何实现呢？
+最简单的方式是利用一个具有所有已知词汇的哈希表，该哈希表能在O(1)的时间内判断单词是否存在，但是它需要的存储将会是O(n*m)，n是单词的个数，m是单词的长度。如果利用字典树(前缀树)，那么将能够降低空间复杂度只牺牲一点时间性能。
+1 基础的字典树
+首先来看有着"a"，"add"和"hi"的基础字典树: 
+利用字典实现： 123456789101112basic_trie = &#123;	# a 和 add	&#x27;a&#x27;:&#123;		&#x27;d&#x27;:&#123;			&#x27;d&#x27;:&#123;&#x27;word_end&#x27;: True&#125;,			&#x27;word_end&#x27;: False&#125;,		&#x27;word_end&#x27;: True&#12 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/02/09/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%83%85%E6%84%9F%E8%AF%86%E5%88%AB/" title="逻辑回归分类器实现情感识别">逻辑回归分类器实现情感识别</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-02-09T07:56:03.000Z" title="Created 2021-02-09 15:56:03">2021-02-09</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/NLP/">NLP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%83%85%E6%84%9F%E8%AF%86%E5%88%AB/">逻辑回归分类器实现情感识别</a></span></div><div class="content">逻辑回归分类器实现情感识别
+任务描述
+识别推文中的情感是积极的还是消极的。
+给定一个推文： I am happy because I am learning NLP
+现在，任务目标就是判断上面的推文是积极的情感(positive sentiment)还是消极的情感(nagetive sentiment)。
+给定一个训练集，训练集中包含推文和其对应的标签(label)，标签取值为1(代表positive)和0(代表negative)。
+
+任务数据集
+NLTK语料库中的tweet数据集。
+目录
+
+一、数据预处理
+二、逻辑回归分类器
+三、特征提取
+四、训练模型
+五、测试所写逻辑回归分类器
+
+一、数据预处理
+1.1 用向量表示文本(represent a text as a vector)
+为了用向量来表示文本，首先需要创建一个词汇表(vocabulary)，根据词汇表把文本(text)编码为数组(数组里面是数字)。
+在该任务中，遍历数据集所有的推文，将所有的推文用到的全部词汇整理为词汇表(不含重复的词语)。
+
+根据上述词汇表，进行推文的特征提取(f ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/02/08/%E6%AD%A3%E5%88%99%E5%8C%96/" title="正则化">正则化</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-02-08T02:47:52.000Z" title="Created 2021-02-08 10:47:52">2021-02-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="content">正则化
+为什么需要正则化？
+在训练的过程中学习权重的时候存在一个问题就是模型会完美匹配训练数据。如果一个特征十分适合预测结果，它就会被赋上一个很大的权重。特征的权重会努力去完美拟合训练样本的细节，这时的完美其实就是过完美，它会学到偶然发生的噪声。这样的结果就是，模型在训练集上的效果很好，但是在测试集上的效果比较差，也就是 \(\color{purple}{过拟合}\)。一个好的模型应该有能力从训练集到测试集(unseen test set)进行泛化(generalize)，也就是对没有见过的样本也能比较好地进行分类。
+为了避免过拟合问题，模型可以加入正则化。
+什么是正则化？
+正则化项(regularization term) \(R(\theta)\) 可以加到目标方程中来防止过拟合。例如如下最大化正确分类的对数概率公式中(假设是mini-batch训练，m个样本一个batch，公式里去掉了1/m这个系数，因为不影响目标)： 
+新的正则化项 \(R(\theta)\) 用于惩罚大的权重。所以对于一个能对训练数据很好分类的权重集合A(但它使用很多值很大的权重做到的)和一个对训 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/02/04/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" title="二分查找">二分查找</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-02-04T02:46:02.000Z" title="Created 2021-02-04 10:46:02">2021-02-04</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">二分查找</a></span></div><div class="content">二分查找
+1 什么是二分查找
+首先，我们来看 \(\color{purple}{线性查找(Linear Search)}\) 。对于一组无序的数字，想要从中查找某个数字的话就得从这组数字的头开始，依次往后比较，要么找到了该数字，要么找到了尾部都没有，那就是不存在这个数。上述过程就是线性查找，这组数字越长查找的性能就越差，时间复杂度为 O(n)。
+是否有更好的查找方式呢？
+二分查找就是。
+如果我们拿到的是一组有序的数字，进行二分查找的方式是：首先比较 \(color{green}{中间位置}\) 的数字和目标是否相同，如果相同则结束查找，如果目标值小于中间位置的数字那么从左半边再找(查找步骤和上面一致)，如果目标值大于中间位置的数字那么从右半边再找(查找步骤和上面一致)。
+
+这个查找过程每次都直接缩减了一半的查找空间。现在来计算二分查找的时间效率：
+\(color{purple}{最好的情况}\)： 第一次直接在中间位置找到。
+\(color{purple}{最坏的情况}\)：找到了最后也没找到。那么查找的次数可以通过下面的方式计算：
+
+长度为n为一组数字，累积的查 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/01/22/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/" title="概率分布">概率分布</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-22T09:43:57.000Z" title="Created 2021-01-22 17:43:57">2021-01-22</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/">概率分布</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E4%BC%AF%E5%8A%AA%E5%88%A9%E5%88%86%E5%B8%83/">伯努利分布</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E4%BA%8C%E9%A1%B9%E5%88%86%E5%B8%83/">二项分布</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/%E5%A4%9A%E9%A1%B9%E5%88%86%E5%B8%83/">多项分布</a><span class="article-meta__link">•</span><a class="article-meta__tags" href="/tags/KL%E6%95%A3%E5%BA%A6/">KL散度</a></span></div><div class="content">概率分布
+
+参考链接：链接1 链接2
+
+每时每刻都有各种事情正在发生：骰子掷出、雨滴落下、巴士在路上。事件发生之前，我们只能讨论结果的可能性。概率分布描述了每种结果出现的概率。事件发生之后，特定的结果便确定了：掷出3点、今日降雨量是半英寸、巴士3分钟到站。有些时候，我们更关心概率分布，而不是最可能出现的单个结果。概率分布有各种形状，但是概率分布的概率之和恒等于1。
+常见的概率分布包括均匀分布、伯努利分布、二项分布、多项分布、β分布、狄利克雷分布、高斯分布、KL散度。
+均匀分布
+均匀分布是定义在区间[a,b]上连续变量的简单概率分布，其概率密度函数 \(p(x)=\frac{1}{b-a}\) (b小于x小于a)如下图所示： 
+举例来说，掷骰子的结果可能是1到6之间的任意一个，得到任何一个结果的概率都一样(1/6)。
+伯努利分布(Bernoulli)
+抛掷一枚均匀硬币有两种结果：正面和反面(假设硬币不可能立起)。在扔硬币之前，我们相信有0.5的概率扔到正面，有0.5的概率扔到反面。这便是扔硬币的概率分布，也便是伯努利分布。
+一个事件有两种离散结果：0或1(0、1分别 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/01/22/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" title="机器学习中的优化方法">机器学习中的优化方法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-22T09:29:00.000Z" title="Created 2021-01-22 17:29:00">2021-01-22</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">优化方法</a></span></div><div class="content">机器学习中的优化方法
+梯度下降法
+梯度下降的目标是找到最优的权重 \(w\) 来最小化交叉熵损失函数。在下面的 最小化损失公式 中，损失方程 \(L_{CE}\) 的参数是权重---在机器学习中一般表示为 \(\theta\) (在逻辑回归里 \(\theta = w,b\))。所以，目标是找到最小化所有样本的平均损失函数的权重集合。 
+梯度下降法的思想与 \(\color{purple}{找一条下山最快的路}\)一致，也就是从当前位置最陡峭的方向往下走。\(\color{blue}{梯度}\) 用于描述函数曲线的陡峭程度，选择梯度最大也就是 \(\color{green}{最陡峭的方向走一定长度的步子}\)(步长也成为学习率--learning rate \(\eta\))，也就往最低的地方更近了一步，如下图所示(以单变量为例)。(最低的地方也就是损失函数的最低点或者极低点)。对于逻辑回归来说，交叉熵损失函数是凸函数，只有一个最低点，不会陷入到局部极小值，所以梯度下降从任一点开始都能找到最低点。
+
+梯度下降对权重参数(如上图所示的单变量w)的做出的改变就是： 
+其中，\( ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/01/18/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" title="正则表达式">正则表达式</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-18T02:54:19.000Z" title="Created 2021-01-18 10:54:19">2021-01-18</time></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">正则表达式</a></span></div><div class="content">
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2021/01/15/%E5%8C%BB%E7%96%97%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3%E4%BA%8C/" title="医疗问答系统详解二">医疗问答系统详解二</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2021-01-15T08:36:05.000Z" title="Created 2021-01-15 16:36:05">2021-01-15</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/NLP/">NLP</a></span><span class="article-meta tags"><span class="article-meta__separator">|</span><i class="fas fa-tag article-meta__icon"></i><a class="article-meta__tags" href="/tags/%E5%8C%BB%E7%96%97%E9%97%AE%E7%AD%94%E7%B3%BB%E7%BB%9F%E8%AF%A6%E8%A7%A3%E4%BA%8C/">医疗问答系统详解二</a></span></div><div class="content">医疗问答系统详解二
+医疗问答系统介绍：博客
+这部分是学习如何获得意图后查询知识图谱中的相关回答。
+知识图谱中进行答案的查询
+在知识图谱中进行问题答案的查询所用到的主体类 AnswerSearching框架：
+12345678910111213141516171819class AnswerSearching:	def __init__(self):		pass	## 根据不同的实体和意图构造cypher查询语句	def question_parser(self, data):		pass	## 将问题转变为cypher语句	def transfer_to_sql(self, label, entities, intent):		pass	## 执行cypher查询语句，返回结果	def searching(self, sqls):		pass	## 根据不同的意图返回不同模板的答案	def answer_template(self, intent, answers):		pass
+根据不同的实体和意图构造cypher查询语句
+12345678910111213141516 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/3/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>Categories</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/NLP/"><span class="card-category-list-name">NLP</span><span class="card-category-list-count">27</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/SQL/"><span class="card-category-list-name">SQL</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/hexo%E5%86%99%E5%8D%9A%E5%AE%A2/"><span class="card-category-list-name">hexo写博客</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/python/"><span class="card-category-list-name">python</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"><span class="card-category-list-name">推荐系统</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"><span class="card-category-list-name">数据结构与算法</span><span class="card-category-list-count">28</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">机器学习</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/"><span class="card-category-list-name">编程</span><span class="card-category-list-count">2</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>More</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/AC%E8%87%AA%E5%8A%A8%E6%9C%BA-AC-Tree/" style="font-size: 1.1em; color: #999">AC自动机(AC Tree)</a> <a href="/tags/Adaboost/" style="font-size: 1.1em; color: #999">Adaboost</a> <a href="/tags/Albert%E5%AE%9E%E6%88%98%E4%B9%8BSentence-pair-classification/" style="font-size: 1.1em; color: #999">Albert实战之Sentence pair classification</a> <a href="/tags/B-%E6%A0%91/" style="font-size: 1.1em; color: #999">B+树</a> <a href="/tags/BERT/" style="font-size: 1.1em; color: #999">BERT</a> <a href="/tags/Bagging/" style="font-size: 1.1em; color: #999">Bagging</a> <a href="/tags/Blending/" style="font-size: 1.1em; color: #999">Blending</a> <a href="/tags/Boosting/" style="font-size: 1.1em; color: #999">Boosting</a> <a href="/tags/B%E6%A0%91/" style="font-size: 1.1em; color: #999">B树</a> <a href="/tags/ConvLab%E4%BD%BF%E7%94%A8/" style="font-size: 1.1em; color: #999">ConvLab使用</a> <a href="/tags/DFS%E4%B8%8EBFS/" style="font-size: 1.1em; color: #999">DFS与BFS</a> <a href="/tags/Few-shot-Learning/" style="font-size: 1.1em; color: #999">Few-shot Learning</a> <a href="/tags/GBDT/" style="font-size: 1.1em; color: #999">GBDT</a> <a href="/tags/Glyph-vector/" style="font-size: 1.1em; color: #999">Glyph-vector</a> <a href="/tags/KL%E6%95%A3%E5%BA%A6/" style="font-size: 1.1em; color: #999">KL散度</a> <a href="/tags/LRU-%E6%9C%80%E8%BF%91%E6%9C%80%E5%B0%91%E4%BD%BF%E7%94%A8%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">LRU(最近最少使用算法)</a> <a href="/tags/Latex%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/" style="font-size: 1.1em; color: #999">Latex数学公式</a> <a href="/tags/LightGBM/" style="font-size: 1.1em; color: #999">LightGBM</a> <a href="/tags/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" style="font-size: 1.1em; color: #999">Mysql环境搭建</a> <a href="/tags/NLP%E4%B8%8E%E5%B8%B8%E8%A7%81%E5%9F%BA%E7%A1%80%E4%BB%BB%E5%8A%A1%E3%80%81%E5%BA%94%E7%94%A8/" style="font-size: 1.1em; color: #999">NLP与常见基础任务、应用</a> <a href="/tags/NLP%E7%9A%84%E4%BB%BB%E5%8A%A1/" style="font-size: 1.1em; color: #999">NLP的任务</a> <a href="/tags/NLTK/" style="font-size: 1.1em; color: #999">NLTK</a> <a href="/tags/Neo4J/" style="font-size: 1.5em; color: #99a9bf">Neo4J</a> <a href="/tags/Numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 1.1em; color: #999">Numpy与线性代数</a> <a href="/tags/PCA%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%9E%E6%88%98/" style="font-size: 1.1em; color: #999">PCA简介与实战</a> <a href="/tags/Pandas/" style="font-size: 1.1em; color: #999">Pandas</a> <a href="/tags/Stacking/" style="font-size: 1.1em; color: #999">Stacking</a> <a href="/tags/Stacking%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E6%A1%88%E4%BE%8B%E4%B8%80/" style="font-size: 1.1em; color: #999">Stacking集成学习案例一</a> <a href="/tags/Stacking%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E6%A1%88%E4%BE%8B%E4%BA%8C/" style="font-size: 1.1em; color: #999">Stacking集成学习案例二</a> <a href="/tags/Transformer/" style="font-size: 1.1em; color: #999">Transformer</a> <a href="/tags/Trie/" style="font-size: 1.1em; color: #999">Trie</a> <a href="/tags/VSCode%E4%B8%8A%E9%9D%A2%E8%BF%9B%E8%A1%8CLeetcode%E7%BC%96%E7%A8%8B/" style="font-size: 1.1em; color: #999">VSCode上面进行Leetcode编程</a> <a href="/tags/XGBoost/" style="font-size: 1.1em; color: #999">XGBoost</a> <a href="/tags/cache-%E7%BC%93%E5%AD%98/" style="font-size: 1.1em; color: #999">cache(缓存)</a> <a href="/tags/hexo%E5%8D%9A%E5%AE%A2%E6%B8%B2%E6%9F%93%E5%99%A8-pandoc/" style="font-size: 1.1em; color: #999">hexo博客渲染器--pandoc</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" style="font-size: 1.1em; color: #999">二分查找</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" style="font-size: 1.1em; color: #999">二叉搜索树</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 1.1em; color: #999">二叉树</a> <a href="/tags/%E4%BA%8C%E9%A1%B9%E5%88%86%E5%B8%83/" style="font-size: 1.1em; color: #999">二项分布</a> <a href="/tags/%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" style="font-size: 1.1em; color: #999">优化方法</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/03/"><span class="card-archive-list-date">March 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">November 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/07/"><span class="card-archive-list-date">July 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">June 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">May 2021</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">April 2021</span><span class="card-archive-list-count">12</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/03/"><span class="card-archive-list-date">March 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/02/"><span class="card-archive-list-date">February 2021</span><span class="card-archive-list-count">11</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>More</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">89</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">Last Push :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-03-14T01:54:44.064Z"></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Green_Planet_Space_Satellite_Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    var typed = new Typed("#subtitle", {
+      strings: "活着的每一瞬间都是存在的意义,你一定能够成为你想要去成为的人,Never put off till tomorrow what you can do today".split(","),
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = '活着的每一瞬间都是存在的意义'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') subtitleType()
+  else $.getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js', subtitleType)
+} else {
+  subtitleType()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

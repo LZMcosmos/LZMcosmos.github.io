@@ -1,0 +1,364 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GBDT | LZMcosmos</title><meta name="keywords" content="GBDT,前向分布算法"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="梯度提升决策树——GBDT(Gradient Boosting Decision Tree) 1 前向分布算法 梯度提升决策树GBDT算法的整体框架逻辑用到了前向分布算法。这里首先来看前向分布算法是什么。其实，在Adaboost传送门的算法中我们已经接触了它： (1) 加法模型 在Adaboost算法中，每个基学习器(基分类器)合成一个复杂的学习器(分类器)的方式是通过对每个基学习器进行加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GBDT">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/04/22/GBDT/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="梯度提升决策树——GBDT(Gradient Boosting Decision Tree) 1 前向分布算法 梯度提升决策树GBDT算法的整体框架逻辑用到了前向分布算法。这里首先来看前向分布算法是什么。其实，在Adaboost传送门的算法中我们已经接触了它： (1) 加法模型 在Adaboost算法中，每个基学习器(基分类器)合成一个复杂的学习器(分类器)的方式是通过对每个基学习器进行加">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-04-22T05:29:41.000Z">
+<meta property="article:modified_time" content="2021-04-26T12:00:22.525Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="GBDT">
+<meta property="article:tag" content="前向分布算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/04/22/GBDT/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-26 20:00:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">GBDT</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-22T05:29:41.000Z" title="Created 2021-04-22 13:29:41">2021-04-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-26T12:00:22.525Z" title="Updated 2021-04-26 20:00:22">2021-04-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="梯度提升决策树gbdtgradient-boosting-decision-tree">梯度提升决策树——GBDT(Gradient Boosting Decision Tree)</h1>
+<h2 id="前向分布算法">1 前向分布算法</h2>
+<p>梯度提升决策树GBDT算法的整体框架逻辑用到了前向分布算法。这里首先来看前向分布算法是什么。其实，在Adaboost<a href="https://lzmcosmos.github.io/2021/04/19/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBoosting/">传送门</a>的算法中我们已经接触了它：</p>
+<p><strong>(1) 加法模型</strong></p>
+<p>在Adaboost算法中，每个基学习器(基分类器)合成一个复杂的学习器(分类器)的方式是通过对每个基学习器进行加权求和，即： <span class="math display">\[f(x)=\sum_{m=1}^{M} \beta_{m} b\left(x ; \gamma_{m}\right)\]</span></p>
+<p>其中，<span class="math inline">\(b\left(x ; \gamma_{m}\right)\)</span>为即基分类器，<span class="math inline">\(\gamma_{m}\)</span>为基分类器的参数，<span class="math inline">\(\beta_m\)</span>为基本分类器的权重。从形式上很容易看出，这是一个加法模型。</p>
+<p>给定了训练数据<span class="math inline">\(x\)</span>以及损失函数<span class="math inline">\(L(y, f(x))\)</span>的条件下，已知加法模型:<span class="math inline">\(f(x)=\sum_{m=1}^{M} \beta_{m} b\left(x ; \gamma_{m}\right)\)</span>，那么该任务的优化问题便是求解下面函数的最优解： <span class="math display">\[
+\min _{\beta_{m}, \gamma_{m}} \sum_{i=1}^{N} L\left(y_{i}, \sum_{m=1}^{M} \beta_{m} b\left(x_{i} ; \gamma_{m}\right)\right)
+\]</span></p>
+<p>上面函数最优解的求解是一个复杂的优化问题，很难通过简单的凸优化求解的方式来解决。所以对于上面的加法模型的优化函数，我们可以使用前向分布算法来求解：<strong>从前往后，每一步只优化一个基函数及其系数(也就是一个基学习器)，逐步逼近目标函数，这样就能降低优化的复杂度</strong>。通过前向分布算法，我们最后需要关注的就只是<strong>每一步的优化函数</strong>： <span class="math display">\[
+\min _{\beta, \gamma} \sum_{i=1}^{N} L\left(y_{i}, \beta b\left(x_{i} ; \gamma\right)\right)
+\]</span></p>
+<p><strong>(2) 前向分布算法</strong></p>
+<p>上面介绍了加法模型，那么我们这部分来看用前向分布算法来求解最优的加法模型。</p>
+<p><strong>任务设定</strong></p>
+<p>给定二分类任务的数据集<span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}\)</span>，<span class="math inline">\(x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}\)</span>，<span class="math inline">\(y_{i} \in \mathcal{Y}=\{+1,-1\}\)</span>。损失函数<span class="math inline">\(L(y, f(x))\)</span>，基函数集合<span class="math inline">\(\{b(x ; \gamma)\}\)</span>。</p>
+<p><strong>前向分布算法的输出</strong></p>
+<p>加法模型(函数)<span class="math inline">\(f(x)\)</span>。</p>
+<p><strong>算法流程</strong></p>
+<ul>
+<li><p>初始化：<span class="math inline">\(f_{0}(x)=0\)</span></p></li>
+<li><p>对m = 1,2,...,M(M是基学习器的个数):</p>
+<ul>
+<li>极小化损失函数：<span class="math inline">\(\left(\beta_{m}, \gamma_{m}\right)=\arg \min _{\beta, \gamma} \sum_{i=1}^{N} L\left(y_{i}, f_{m-1}\left(x_{i}\right)+\beta b\left(x_{i} ; \gamma\right)\right)\)</span>，得到参数<span class="math inline">\(\beta_{m}\)</span>与<span class="math inline">\(\gamma_{m}\)</span><br />
+</li>
+<li>更新：<span class="math inline">\(f_{m}(x)=f_{m-1}(x)+\beta_{m} b\left(x ; \gamma_{m}\right)\)</span></li>
+</ul></li>
+<li><p>得到加法模型：<br />
+<span class="math display">\[
+f(x)=f_{M}(x)=\sum_{m=1}^{M} \beta_{m} b\left(x ; \gamma_{m}\right)
+\]</span></p></li>
+</ul>
+<p>这样，前向分步算法将同时求解从m=1到M的所有参数<span class="math inline">\(\beta_{m}\)</span>，<span class="math inline">\(\gamma_{m}\)</span>的优化问题简化为逐次求解各个<span class="math inline">\(\beta_{m}\)</span>，<span class="math inline">\(\gamma_{m}\)</span>的问题。</p>
+<blockquote>
+<p>Adaboost算法是前向分布算法的一种应用。Adaboost是由基学习器组成的加法模型，优化函数(损失函数)为指数损失函数。</p>
+</blockquote>
+<h2 id="提升决策树bdtboosting-decision-tree">2 提升决策树——BDT(Boosting Decision Tree)</h2>
+<p>提升决策树BDT是指以CART回归树(二叉树)为基学习器，利用上一基学习器预测值和真实值之间的差值(残差)作为输入进行训练。从框架上看，提升树算法是依靠<strong>加法模型+前向分布算法</strong>框架的解决问题的算法。</p>
+<p><strong>BDT算法流程</strong></p>
+<ul>
+<li><p>初始化<span class="math inline">\(f_0(x) = 0\)</span></p></li>
+<li><p>对m = 1,2,...,M(M是CART回归树的个数)：</p>
+<ul>
+<li><p>计算每个样本的残差:<span class="math inline">\(r_{m i}=y_{i}-f_{m-1}\left(x_{i}\right), \quad i=1,2, \cdots, N\)</span></p></li>
+<li><p>拟合残差<span class="math inline">\(r_{mi}\)</span>学习一棵回归树(最小化平方误差)，得到<span class="math inline">\(T\left(x ; \Theta_{m}\right)\)</span><br />
+</p></li>
+<li><p>更新<span class="math inline">\(f_{m}(x)=f_{m-1}(x)+T\left(x ; \Theta_{m}\right)\)</span></p></li>
+</ul></li>
+<li><p>得到最终的回归问题的提升树：<span class="math inline">\(f_{M}(x)=\sum_{m=1}^{M} T\left(x ; \Theta_{m}\right)\)</span></p></li>
+</ul>
+<p><strong>BDT案例</strong></p>
+<blockquote>
+<p>案例来源：《统计学习方法》 李航</p>
+</blockquote>
+<p>问题描述：学习下面训练数据表中回归问题的提升树模型。考虑只用树桩(只有一个分叉，而且因为是CART回归树，所以分叉是二叉，也就是只选择一个分裂点)作为基函数。</p>
+<p><img src="/img/BDT1.png" /> <img src="/img/BDT2.png" /> <img src="/img/BDT3.png" /> <img src="/img/BDT4.png" /> <img src="/img/BDT5.png" /></p>
+<h2 id="梯度提升决策树gbdt">3 梯度提升决策树——GBDT</h2>
+<h3 id="什么是gbdt">3.1 什么是GBDT？</h3>
+<p>提升树利用加法模型+前向分步算法实现学习的过程，当损失函数为平方损失和指数损失时，每一步优化是相当简单的，也就是前面探讨的提升树算法和Adaboost算法。但是对于一般的损失函数而言，往往每一步的优化不是那么容易。梯度提升决策树算法利用 损失函数的负梯度在当前模型的值<span class="math inline">\(-\left[\frac{\partial L\left(y, f\left(x_{i}\right)\right)}{\partial f\left(x_{i}\right)}\right]_{f(x)=f_{m-1}(x)}\)</span>作为回归问题提升树算法中的残差的近似值，拟合回归树。</p>
+<blockquote>
+<p>与其说负梯度作为残差的近似值，不如说残差是负梯度的一种特例。</p>
+</blockquote>
+<p><strong>GBDT算法流程</strong></p>
+<p>输入训练数据集<span class="math inline">\(T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}, x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}, y_{i} \in \mathcal{Y} \subseteq \mathbf{R}\)</span>和损失函数<span class="math inline">\(L(y, f(x))\)</span>，输出回归树<span class="math inline">\(\hat{f}(x)\)</span>。<br />
+- 初始化<span class="math inline">\(f_{0}(x)=\arg \min _{c} \sum_{i=1}^{N} L\left(y_{i}, c\right)\)</span></p>
+<ul>
+<li>对于m=1,2,...,M(M是基学习器的个数)：
+<ul>
+<li><p>对i = 1,2,...,N计算：<span class="math inline">\(r_{m i}=-\left[\frac{\partial L\left(y_{i}, f\left(x_{i}\right)\right)}{\partial f\left(x_{i}\right)}\right]_{f(x)=f_{m-1}(x)}\)</span></p></li>
+<li><p>对<span class="math inline">\(r_{mi}\)</span>拟合一个回归树，得到第m棵树的叶结点区域<span class="math inline">\(R_{m j}, j=1,2, \cdots, J\)</span></p></li>
+<li><p>对j=1,2,...J，计算：<span class="math inline">\(c_{m j}=\arg \min _{c} \sum_{x_{i} \in R_{m j}} L\left(y_{i}, f_{m-1}\left(x_{i}\right)+c\right)\)</span><br />
+</p></li>
+<li><p>更新<span class="math inline">\(f_{m}(x)=f_{m-1}(x)+\sum_{j=1}^{J} c_{m j} I\left(x \in R_{m j}\right)\)</span> (I为指示函数，括号里条件满足为1，不满足为0)</p></li>
+</ul></li>
+<li>得到回归树：<span class="math inline">\(\hat{f}(x)=f_{M}(x)=\sum_{m=1}^{M} \sum_{j=1}^{J} c_{m j} I\left(x \in R_{m j}\right)\)</span></li>
+</ul>
+<h3 id="基于sklearn的gbdt的使用">3.2 基于sklearn的GBDT的使用</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_friedman1</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor</span><br><span class="line"></span><br><span class="line">X, y = make_friedman1(n_samples=<span class="number">1200</span>, random_state=<span class="number">0</span>, noise=<span class="number">1.0</span>)</span><br><span class="line">X_train, X_test = X[:<span class="number">200</span>], X[<span class="number">200</span>:]</span><br><span class="line">y_train, y_test = y[:<span class="number">200</span>], y[<span class="number">200</span>:]</span><br><span class="line">est = GradientBoostingRegressor(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.1</span>,</span><br><span class="line">    max_depth=<span class="number">1</span>, random_state=<span class="number">0</span>, loss=<span class="string">&#x27;ls&#x27;</span>).fit(X_train, y_train)</span><br><span class="line">mean_squared_error(y_test, est.predict(X_test))</span><br></pre></td></tr></table></figure>
+<p>输出：<code>5.009154859960321</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_regression</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">X, y = make_regression(random_state=<span class="number">0</span>)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(</span><br><span class="line">    X, y, random_state=<span class="number">0</span>)</span><br><span class="line">reg = GradientBoostingRegressor(random_state=<span class="number">0</span>)</span><br><span class="line">reg.fit(X_train, y_train)</span><br><span class="line">reg.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<p>输出：<code>0.440031029624667</code></p>
+<blockquote>
+<p>补充：GradientBoostingRegressor与GradientBoostingClassifier函数各个参数的含义如下。</p>
+</blockquote>
+<ul>
+<li><p><strong>GradientBoostingRegressor</strong>参数及其含义</p>
+<ol type="1">
+<li><p>loss：{ls,lad,huber,quantile}, default=ls。其中，</p>
+<ul>
+<li><p>ls：指最小二乘回归；</p></li>
+<li><p>lad：(最小绝对偏差)是仅基于输入变量的顺序信息，具有高度鲁棒的损失函数；</p></li>
+<li><p>huber：上述两者的结合；</p></li>
+<li><p>quantile：允许分位数回归（用于alpha指定分位数）。</p></li>
+</ul></li>
+<li><p>learning_rate：学习率用于缩小每棵树的贡献learning_rate，在learning_rate和n_estimators之间需要权衡。</p></li>
+<li><p>n_estimators：执行迭代次数。</p></li>
+<li><p>subsample：用于拟合各个基学习器的样本比例。如果小于1.0，将使得随机梯度增强。subsample与参数n_estimators有关联，选择subsample&lt;1.0会导致方差减少和偏差增加。</p></li>
+<li><p>criterion：{friedman_mse，mse，mae}，默认为friedman_mse：mse是均方误差，mae是平均绝对误差。默认值friedman_mse通常是最好的，因为在大多情况下可以提供更好的近似值。</p></li>
+<li><p>min_samples_split：默认为2，拆分内部节点所需的最少样本数。</p></li>
+<li><p>min_samples_leaf：默认为1，在叶节点处需要的最小样本数。</p></li>
+<li><p>min_weight_fraction_leaf：默认为0.0，在所有叶节点处（所有输入样本）的权重总和中的最小加权数。如果未提供sample_weight，则样本的权重相等</p></li>
+<li><p>min_impurity_decrease：如果节点拆分会导致不纯度大于或等于该值，则该节点将被拆分。</p></li>
+<li><p>min_impurity_split：提前停止树生长的阈值。如果节点的不纯度高于该值，则该节点将拆分。</p></li>
+<li><p>max_depth：默认为3，各个回归模型的最大深度。最大深度限制了树中节点的数量。调整此参数以获得最佳性能；最佳值取决于输入变量。</p></li>
+<li><p>max_features {auto, sqrt, log2}，int或float：寻找最佳切分点时要考虑的特征个数。其中，</p>
+<ul>
+<li><p>如果是int，则表示节点切分的特征个数；</p></li>
+<li><p>如果是float，max_features则为小数，根据公式int(max_features * n_features)确定节点切分的特征个数；</p></li>
+<li><p>如果是auto，则max_features=n_features；</p></li>
+<li><p>如果是sqrt，则max_features=sqrt(n_features)；</p></li>
+<li><p>如果为log2，则为max_features=log2(n_features)；</p></li>
+<li><p>如果没有，则max_features=n_features。</p></li>
+</ul></li>
+</ol></li>
+<li><p><strong>GradientBoostingClassifier</strong>参数及其含义</p>
+<ol type="1">
+<li><p>loss：{deviance,exponential}, default=deviance。deviance是指对具有概率输出的分类（等同于logistic回归）；对于exponential梯度提升方法，可等同于AdaBoost算法。</p></li>
+<li><p>learning_rate：学习率用于缩小每棵树的贡献learning_rate，在learning_rate和n_estimators之间需要权衡。</p></li>
+<li><p>n_estimators：执行迭代次数</p></li>
+<li><p>subsample：用于拟合各个基学习器的样。本比例。如果小于1.0，将使得随机梯度增强。subsample与参数n_estimators有关联，选择subsample&lt;1.0会导致方差减少和偏差增加。</p></li>
+<li><p>criterion：{friedman_mse，mse，mae}，默认为friedman_mse：mse是均方误差，mae是平均绝对误差。默认值friedman_mse通常是最好的，因为在大多情况下可以提供更好的近似值。</p></li>
+<li><p>min_samples_split：默认为2，拆分内部节点所需的最少样本数。</p></li>
+<li><p>min_samples_leaf：默认为1，在叶节点处需要的最小样本数。</p></li>
+<li><p>min_weight_fraction_leaf：默认为0.0，在所有叶节点处（所有输入样本）的权重总和中的最小加权数。如果未提供sample_weight，则样本的权重相等。</p></li>
+<li><p>max_depth：默认为3，各个回归模型的最大深度。最大深度限制了树中节点的数量。调整此参数以获得最佳性能；最佳值取决于输入变量。</p></li>
+<li><p>min_impurity_decrease：如果节点拆分会导致不纯度大于或等于该值，则该节点将被拆分。</p></li>
+<li><p>min_impurity_split：提前停止树生长的阈值。如果节点的不纯度高于该值，则该节点将拆分。</p></li>
+<li><p>max_features {auto, sqrt, log2}，int或float：寻找最佳切分点时要考虑的特征个数。其中，</p>
+<ul>
+<li><p>如果是int，则表示节点切分的特征个数；</p></li>
+<li><p>如果是float，max_features则为小数，根据公式int(max_features * n_features)确定节点切分的特征个数；</p></li>
+<li><p>如果是auto，则max_features=n_features；</p></li>
+<li><p>如果是sqrt，则max_features=sqrt(n_features)；</p></li>
+<li><p>如果为log2，则为max_features=log2(n_features)；</p></li>
+<li><p>如果没有，则max_features=n_features。</p></li>
+</ul></li>
+</ol></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/04/22/GBDT/">https://lzmcosmos.github.io/2021/04/22/GBDT/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GBDT/">GBDT</a><a class="post-meta__tags" href="/tags/%E5%89%8D%E5%90%91%E5%88%86%E5%B8%83%E7%AE%97%E6%B3%95/">前向分布算法</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/26/XGBoost/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">XGBoost与LightGBM</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/19/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBoosting/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">集成学习之Boosting</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E5%86%B3%E7%AD%96%E6%A0%91gbdtgradient-boosting-decision-tree"><span class="toc-number">1.</span> <span class="toc-text">梯度提升决策树——GBDT(Gradient Boosting Decision Tree)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E5%88%86%E5%B8%83%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">1 前向分布算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8D%87%E5%86%B3%E7%AD%96%E6%A0%91bdtboosting-decision-tree"><span class="toc-number">1.2.</span> <span class="toc-text">2 提升决策树——BDT(Boosting Decision Tree)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E5%86%B3%E7%AD%96%E6%A0%91gbdt"><span class="toc-number">1.3.</span> <span class="toc-text">3 梯度提升决策树——GBDT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFgbdt"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 什么是GBDT？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8Esklearn%E7%9A%84gbdt%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 基于sklearn的GBDT的使用</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Numpy与线性代数 | LZMcosmos</title><meta name="keywords" content="Numpy与线性代数"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Numpy与线性代数(Linear Algebra) Numpy是基于python的一个常用库，利用它来方便地操纵数组。 在python中使用numpy这个库需要提前导入，并起个别名为np： 1import numpy as np 1 numpy数组与python列表 定义python列表： 1alist &#x3D; [1, 2, 3, 4] 利用numpy定义数组： 1narray &#x3D; np.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Numpy与线性代数">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/02/28/Numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="Numpy与线性代数(Linear Algebra) Numpy是基于python的一个常用库，利用它来方便地操纵数组。 在python中使用numpy这个库需要提前导入，并起个别名为np： 1import numpy as np 1 numpy数组与python列表 定义python列表： 1alist &#x3D; [1, 2, 3, 4] 利用numpy定义数组： 1narray &#x3D; np.">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-02-28T05:31:23.000Z">
+<meta property="article:modified_time" content="2021-02-28T08:48:53.422Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="Numpy与线性代数">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/02/28/Numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-28 16:48:53'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Numpy与线性代数</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-02-28T05:31:23.000Z" title="Created 2021-02-28 13:31:23">2021-02-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-02-28T08:48:53.422Z" title="Updated 2021-02-28 16:48:53">2021-02-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/python/">python</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="numpy与线性代数linear-algebra">Numpy与线性代数(Linear Algebra)</h1>
+<p>Numpy是基于python的一个常用库，利用它来方便地操纵数组。</p>
+<p>在python中使用numpy这个库需要提前导入，并起个别名为<code>np</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h2 id="numpy数组与python列表">1 numpy数组与python列表</h2>
+<p>定义python列表： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alist = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure> 利用numpy定义数组： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">narray = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br></pre></td></tr></table></figure> 输出进行观察和对比两者： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&#x27;alist:&#x27;</span>, alist)</span><br><span class="line">print(<span class="string">&#x27;narray:&#x27;</span>, narray)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;Type of alist:&#x27;</span>, <span class="built_in">type</span>(alist))</span><br><span class="line">print(<span class="string">&#x27;Type of narray:&#x27;</span>, <span class="built_in">type</span>(narray))</span><br></pre></td></tr></table></figure> <code>[1, 2, 3, 4]</code></p>
+<p><code>[1 2 3 4]</code></p>
+<p><code>&lt;class 'list'&gt;</code></p>
+<p><code>&lt;class 'numpy.ndarray'&gt;</code></p>
+<h2 id="numpy数组与python列表的运算符">2 numpy数组与python列表的运算符</h2>
+<p>numpy数组与python列表的<code>+</code>和<code>*</code>含义不同，其中numpy数组是真正在进行代数运算。</p>
+<p><code>+</code>的不同： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(narray + narray)</span><br></pre></td></tr></table></figure> <code>[2 4 6 8]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(alist + alist)</span><br></pre></td></tr></table></figure>
+<p><code>[1, 2, 3, 4, 1, 2, 3, 4]</code></p>
+<p><code>*</code>的不同： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(narray * <span class="number">3</span>)</span><br></pre></td></tr></table></figure> <code>[ 3  6  9 12]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(alist * <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p><code>[1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]</code></p>
+<h2 id="矩阵matrix">3 矩阵(Matrix)</h2>
+<p>在线性代数中，矩阵是指一种由n行m列的结构，它是一个矩形，所以每一行都有相同的列数。利用numpy创建矩阵：</p>
+<p>numpy可以用数组(array)或者列表来初始化一个矩阵，但最后都是数组(array)的类型。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">matrix1 = np.array([narray, narray, narray])</span><br><span class="line">matrix2 = np.array([alist, alist, alist])</span><br><span class="line">matrix3 = np.array([narray, [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], narray])</span><br></pre></td></tr></table></figure> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&#x27;matrix1:&#x27;</span>, matrix1)</span><br><span class="line">print(<span class="string">&#x27;matrix2:&#x27;</span>, matrix2)</span><br><span class="line">print(<span class="string">&#x27;matrix3&#x27;</span>, matrix3)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">matrix1:</span><br><span class="line">[[1 2 3 4]</span><br><span class="line"> [1 2 3 4]</span><br><span class="line"> [1 2 3 4]]</span><br><span class="line">matrix2:</span><br><span class="line">[[1 2 3 4]</span><br><span class="line"> [1 2 3 4]</span><br><span class="line"> [1 2 3 4]]</span><br><span class="line">matrix3:</span><br><span class="line">[[1 2 3 4]</span><br><span class="line"> [1 1 1 1]</span><br><span class="line"> [1 2 3 4]]</span><br></pre></td></tr></table></figure> 一定要注意每行的列数要相同，不然会出现问题。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">badmatrix = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]]) <span class="comment"># Define a matrix. Note the third row contains 3 elements</span></span><br><span class="line">print(badmatrix) <span class="comment"># Print the malformed matrix</span></span><br><span class="line">print(badmatrix * <span class="number">2</span>) <span class="comment"># It is supposed to scale the whole matrixz</span></span><br></pre></td></tr></table></figure> <code>[list([1, 2]) list([3, 4]) list([5, 6, 7])]</code> <code>[list([1, 2, 1, 2]) list([3, 4, 3, 4]) list([5, 6, 7, 5, 6, 7])]</code></p>
+<h3 id="矩阵的四则运算">3.1 矩阵的四则运算</h3>
+<p>定义一个矩阵： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">okmatrix = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure> #### 加法和减法</p>
+<p>矩阵进行加减时要逐渐两个矩阵是拥有相同结构的，即行和列数要对应相同。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resutlt1 = okmatrix + okmatrix</span><br><span class="line">result2 = okmatrix - okmatrix</span><br><span class="line"></span><br><span class="line">print(result1)</span><br><span class="line">print(result2)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[2 4]</span><br><span class="line"> [6 8]]</span><br><span class="line"></span><br><span class="line">[[0 0]</span><br><span class="line"> [0 0]]</span><br></pre></td></tr></table></figure> #### 乘法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = okmatrix * <span class="number">2</span></span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[2 4]</span><br><span class="line"> [6 8]]</span><br></pre></td></tr></table></figure>
+<p>假如是矩阵和矩阵相乘，它是基于元素进行相乘，每个元素和对应位置的元素相乘。矩阵乘法要和点积(dot product)区分。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = okmatrix * okmatrix <span class="comment"># Multiply each element by itself</span></span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[ 1  4]</span><br><span class="line"> [ 9 16]]</span><br></pre></td></tr></table></figure> #### 除法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = okmatrix / okmatrix</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[1. 1.]</span><br><span class="line"> [1. 1.]]</span><br></pre></td></tr></table></figure>
+<h3 id="矩阵的转置">3.2 矩阵的转置</h3>
+<p>矩阵的转置是指将矩阵沿着对角线进行翻转，行变成列。如果转置前的矩阵是<code>n*m</code>，那么转置后的矩阵是<code>m*n</code>。<strong>T</strong>代表numpy矩阵的转置操作。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">matrix = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]]) <span class="comment"># Define a 3x2 matrix</span></span><br><span class="line">print(<span class="string">&#x27;Original matrix 3 x 2&#x27;</span>)</span><br><span class="line">print(matrix)</span><br><span class="line">print(<span class="string">&#x27;Transposed matrix 2 x 3&#x27;</span>)</span><br><span class="line">print(matrix.T)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Original matrix 3 x 2</span><br><span class="line">[[1 2]</span><br><span class="line"> [3 4]</span><br><span class="line"> [5 6]]</span><br><span class="line">Transposed matrix 2 x 3</span><br><span class="line">[[1 3 5]</span><br><span class="line"> [2 4 6]]</span><br></pre></td></tr></table></figure> 转置对一维数组没有作用： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nparray = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]) <span class="comment"># Define an array</span></span><br><span class="line">print(<span class="string">&#x27;Original array&#x27;</span>)</span><br><span class="line">print(nparray)</span><br><span class="line">print(<span class="string">&#x27;Transposed array&#x27;</span>)</span><br><span class="line">print(nparray.T)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Original array</span><br><span class="line">[1 2 3 4]</span><br><span class="line">Transposed array</span><br><span class="line">[1 2 3 4]</span><br></pre></td></tr></table></figure> 但是对一维的矩阵(1xn)有作用: <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">narray = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">print(<span class="string">&#x27;Original array&#x27;</span>)</span><br><span class="line">print(nparray)</span><br><span class="line">print(<span class="string">&#x27;Transposed array&#x27;</span>)</span><br><span class="line">print(nparray.T)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Original array</span><br><span class="line">[[1 2 3 4]]</span><br><span class="line">Transposed array</span><br><span class="line">[[1]</span><br><span class="line"> [2]</span><br><span class="line"> [3]</span><br><span class="line"> [4]]</span><br></pre></td></tr></table></figure> ## 4 向量或矩阵的Norm(2-范数，或者叫做模)</p>
+<p>此处为2-范数。</p>
+<p><strong>向量的2-范数</strong>描述向量在空间中的大小(距离)。向量范数的本质是距离，存在的意义是为了实现比较。比如，在一维实数集合中，我们随便取两个点4和9，我们知道9比4大，但是到了二维实数空间中，取两个点（1，1）和（0，3），这个时候我们就没办法比较它们之间的大小，因为它们不是可以比较的实数，于是我们引入范数这个概念，把我们的（1，1）和（0，3）通过范数分别映射到实数<span class="math inline">\(\sqrt{2}\)</span> 和 3 ，这样我们就比较这两个点了。对于向量<span class="math inline">\(x = (x_1;x_2; ...; x_n)\)</span>,它的Norm为 <span class="math display">\[
+||x|| = \sqrt{x^T x} = (\sum_{i=1}^n x_i^2)^{\frac 12} = \sqrt{x_1^2 +x_2^2 + ...+x_n^2}
+\]</span></p>
+<p>矩阵的对于<code>m*n</code>的<strong>矩阵</strong><span class="math inline">\(A\)</span>来说，Norm为： <span class="math display">\[
+||A|| = \sqrt{\sum_{ij}{|a_{ij}|}^2}
+\]</span></p>
+<p>利用numpy下的子包<strong>linalg</strong>中的<code>norm</code>函数可以进行计算。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">nparray1 = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line">norm1 = np.linalg.norm(nparray1)</span><br><span class="line"></span><br><span class="line">nparray2 = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">norm2 = np.linalg.norm(nparray2)</span><br><span class="line"></span><br><span class="line">print(norm1)</span><br><span class="line">print(norm2)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">5.477225575051661</span><br><span class="line">5.477225575051661</span><br></pre></td></tr></table></figure> 当然对于矩阵来说，可以通过设置<code>norm</code>函数中的参数<code>axis</code>来计算每行或者每列的范数。 * <strong>axis=0</strong> 得到每列的范数。 * <strong>axis=1</strong> 得到每行的范数。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nparray2 = np.array([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]]) <span class="comment"># Define a 3 x 2 matrix. </span></span><br><span class="line">print(<span class="string">&#x27;nparray2:&#x27;</span>)</span><br><span class="line">print(nparray2)</span><br><span class="line"></span><br><span class="line">normByCols = np.linalg.norm(nparray2, axis=<span class="number">0</span>)</span><br><span class="line">normByRows = np.linalg.norm(nparray2, axis=<span class="number">1</span>)</span><br><span class="line">print(<span class="string">&#x27;normByCols&#x27;</span>)</span><br><span class="line">print(normByCols)</span><br><span class="line">print(<span class="string">&#x27;normByRows&#x27;</span>)</span><br><span class="line">print(normByRows)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">nparray2:</span><br><span class="line">[[1 1]</span><br><span class="line"> [2 2]</span><br><span class="line"> [3 3]]</span><br><span class="line">normByCols</span><br><span class="line">[3.74165739 3.74165739]</span><br><span class="line">normByRows</span><br><span class="line">[1.41421356 2.82842712 4.24264069]</span><br></pre></td></tr></table></figure> ## 5 点积</p>
+<p>向量的点积： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nparray1 = np.array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]) <span class="comment"># Define an array</span></span><br><span class="line">nparray2 = np.array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]) <span class="comment"># Define an array</span></span><br><span class="line"></span><br><span class="line">result = np.dot(nparray1, nparray2)</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure> <code>38</code></p>
+<h2 id="按行或按列求和">6 按行或按列求和</h2>
+<p>numpy中的<code>sum</code>函数可以进行求和，通过设置<code>axis</code>实现行(1)或列(0)的求和。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">nparray2 = np.array([[<span class="number">1</span>, -<span class="number">1</span>], [<span class="number">2</span>, -<span class="number">2</span>], [<span class="number">3</span>, -<span class="number">3</span>]]) <span class="comment"># Define a 3 x 2 matrix. </span></span><br><span class="line"></span><br><span class="line">print(nparray2)</span><br><span class="line"></span><br><span class="line">sumByCols = np.<span class="built_in">sum</span>(nparray2, axis=<span class="number">0</span>)</span><br><span class="line">sunByRows = np.<span class="built_in">sum</span>(nparray2, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;Sum by columns: &#x27;</span>)</span><br><span class="line">print(sumByCols)</span><br><span class="line">print(<span class="string">&#x27;Sum by rows:&#x27;</span>)</span><br><span class="line">print(sumByRows)</span><br></pre></td></tr></table></figure> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[[ 1 -1]</span><br><span class="line"> [ 2 -2]</span><br><span class="line"> [ 3 -3]]</span><br><span class="line">Sum by columns: </span><br><span class="line">[ 6 -6]</span><br><span class="line">Sum by rows:</span><br><span class="line">[0 0 0]</span><br></pre></td></tr></table></figure> ## 7 按行或按列求均值</p>
+<p>利用<code>np.mean()</code>或者<code>array.mean()</code>。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">nparray2 = np.array([[<span class="number">1</span>, -<span class="number">1</span>], [<span class="number">2</span>, -<span class="number">2</span>], [<span class="number">3</span>, -<span class="number">3</span>]]) <span class="comment"># Define a 3 x 2 matrix. Chosen to be a matrix with 0 mean</span></span><br><span class="line"></span><br><span class="line">mean = np.mean(nparray2) <span class="comment"># Get the mean for the whole matrix</span></span><br><span class="line">meanByCols = np.mean(nparray2, axis=<span class="number">0</span>) <span class="comment"># Get the mean for each column. Returns 2 elements</span></span><br><span class="line">meanByRows = np.mean(nparray2, axis=<span class="number">1</span>) <span class="comment"># get the mean for each row. Returns 3 elements</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;Matrix mean: &#x27;</span>)</span><br><span class="line">print(mean)</span><br><span class="line">print(<span class="string">&#x27;Mean by columns: &#x27;</span>)</span><br><span class="line">print(meanByCols)</span><br><span class="line">print(<span class="string">&#x27;Mean by rows:&#x27;</span>)</span><br><span class="line">print(meanByRows)</span><br></pre></td></tr></table></figure> <strong>中心化矩阵的列</strong>： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">nparray2 = np.array([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]]) <span class="comment"># Define a 3 x 2 matrix. </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nparrayCentered = nparray2 - np.mean(nparray2, axis=<span class="number">0</span>) <span class="comment"># Remove the mean for each column</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;Original matrix&#x27;</span>)</span><br><span class="line">print(nparray2)</span><br><span class="line">print(<span class="string">&#x27;Centered by columns matrix&#x27;</span>)</span><br><span class="line">print(nparrayCentered)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;New mean by column&#x27;</span>)</span><br><span class="line">print(nparrayCentered.mean(axis=<span class="number">0</span>))</span><br></pre></td></tr></table></figure> 如果想对矩阵的行进行中心化，需要将矩阵先转置，中心化后，再转置回来。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">nparray2 = np.array([[<span class="number">1</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">5</span>]]) <span class="comment"># Define a 3 x 2 matrix. </span></span><br><span class="line"></span><br><span class="line">nparrayCentered = nparray2.T - np.mean(nparray2.T, axis=<span class="number">0</span>) <span class="comment"># Remove the mean for each row</span></span><br><span class="line">nparrayCentered = nparrayCentered.T <span class="comment"># Transpose back the result</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;Original matrix&#x27;</span>)</span><br><span class="line">print(nparray2)</span><br><span class="line">print(<span class="string">&#x27;Centered by columns matrix&#x27;</span>)</span><br><span class="line">print(nparrayCentered)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;New mean by rows&#x27;</span>)</span><br><span class="line">print(nparrayCentered.mean(axis=<span class="number">1</span>))</span><br></pre></td></tr></table></figure></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/02/28/Numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">https://lzmcosmos.github.io/2021/02/28/Numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">Numpy与线性代数</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/02/28/%E8%AF%8D%E5%90%91%E9%87%8F%E7%9A%84%E6%93%8D%E4%BD%9C/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">词向量的操作(运算)</div></div></a></div><div class="next-post pull-right"><a href="/2021/02/28/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">深度学习推荐系统模型搭建基础</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#numpy%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0linear-algebra"><span class="toc-number">1.</span> <span class="toc-text">Numpy与线性代数(Linear Algebra)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#numpy%E6%95%B0%E7%BB%84%E4%B8%8Epython%E5%88%97%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1 numpy数组与python列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#numpy%E6%95%B0%E7%BB%84%E4%B8%8Epython%E5%88%97%E8%A1%A8%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.2.</span> <span class="toc-text">2 numpy数组与python列表的运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5matrix"><span class="toc-number">1.3.</span> <span class="toc-text">3 矩阵(Matrix)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 矩阵的四则运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BD%AC%E7%BD%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 矩阵的转置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E8%A1%8C%E6%88%96%E6%8C%89%E5%88%97%E6%B1%82%E5%92%8C"><span class="toc-number">1.4.</span> <span class="toc-text">6 按行或按列求和</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

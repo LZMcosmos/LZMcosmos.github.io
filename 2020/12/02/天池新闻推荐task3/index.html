@@ -1,0 +1,1138 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>天池-新闻推荐之特征工程 | LZMcosmos</title><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="特征工程 原始数据的直接特征  文章的自身特征， category_id表示这文章的类型， created_at_ts表示文章建立的时间， 这个关系着文章的时效性， words_count是文章的字数， 一般字数太长我们不太喜欢点击, 也不排除有人就喜欢读长文。 文章的内容embedding特征， 这个召回的时候用过， 这里可以选择使用， 也可以选择不用， 也可以尝试其他类型的embedd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="天池-新闻推荐之特征工程">
+<meta property="og:url" content="https://lzmcosmos.github.io/2020/12/02/%E5%A4%A9%E6%B1%A0%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90task3/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="特征工程 原始数据的直接特征  文章的自身特征， category_id表示这文章的类型， created_at_ts表示文章建立的时间， 这个关系着文章的时效性， words_count是文章的字数， 一般字数太长我们不太喜欢点击, 也不排除有人就喜欢读长文。 文章的内容embedding特征， 这个召回的时候用过， 这里可以选择使用， 也可以选择不用， 也可以尝试其他类型的embedd">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-12-02T11:02:38.000Z">
+<meta property="article:modified_time" content="2021-03-19T05:34:23.761Z">
+<meta property="article:author" content="李子梅">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2020/12/02/%E5%A4%A9%E6%B1%A0%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90task3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-19 13:34:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">天池-新闻推荐之特征工程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-12-02T11:02:38.000Z" title="Created 2020-12-02 19:02:38">2020-12-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-19T05:34:23.761Z" title="Updated 2021-03-19 13:34:23">2021-03-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="特征工程">特征工程</h1>
+<h2 id="原始数据的直接特征">原始数据的直接特征</h2>
+<ul>
+<li><p>文章的自身特征， category_id表示这文章的类型， created_at_ts表示文章建立的时间， 这个关系着文章的时效性， words_count是文章的字数， 一般字数太长我们不太喜欢点击, 也不排除有人就喜欢读长文。</p></li>
+<li><p>文章的内容embedding特征， 这个召回的时候用过， 这里可以选择使用， 也可以选择不用， 也可以尝试其他类型的embedding特征， 比如W2V等。</p></li>
+<li><p>用户的设备特征信息</p></li>
+</ul>
+<blockquote>
+<p>上面这些直接可以用的特征， 待做完特征工程之后， 直接就可以根据article_id或者是user_id把这些特征加入进去。 但是我们需要先基于召回的结果，构造一些特征，然后制作标签，形成一个监督学习的数据集。</p>
+</blockquote>
+<h2 id="构造监督数据集的思路">构造监督数据集的思路</h2>
+<p>根据召回结果， 我们会得到一个{user_id: [可能点击的文章列表]}形式的字典。 那么我们就可以对于每个用户， 每篇可能点击的文章构造一个监督测试集， 比如对于用户user1， 假设得到的他的召回列表{user1: [item1, item2, item3]}， 我们就可以得到三行数据(user1, item1), (user1, item2), (user1, item3)的形式， 这就是监督测试集时候的前两列特征。</p>
+<h2 id="构造特征的思路">构造特征的思路</h2>
+<p>已知每个用户的点击文章是与其历史点击的文章信息是有很大关联的， 比如同一个主题、相似等等。 所以特征构造很重要的一系列特征是要结合用户的历史点击文章信息。我们已经得到了每个用户及点击候选文章的两列的一个数据集， 而我们的目的是要预测最后一次点击的文章， 比较自然的一个思路就是和其最后几次点击的文章产生关系， 这样既考虑了其历史点击文章信息， 又得离最后一次点击较近，因为新闻很大的一个特点就是注重<strong>时效性</strong>。 往往用户的最后一次点击会和其最后几次点击有很大的关联。 所以我们就可以<strong>对于每个候选文章， 做出与最后几次点击相关的特征如下</strong>：</p>
+<ol type="1">
+<li><p>候选item与最后几次点击的相似性特征(embedding内积） --- 这个直接关联用户历史行为</p></li>
+<li><p>候选item与最后几次点击的相似性特征的统计特征 --- 统计特征可以减少一些波动和异常</p></li>
+<li><p>候选item与最后几次点击文章的字数差的特征 --- 可以通过字数看用户偏好</p></li>
+<li><p>候选item与最后几次点击的文章建立的时间差特征 --- 时间差特征可以看出该用户对于文章的实时性的偏好</p></li>
+<li><p>如果使用了youtube召回的话， 我们还可以制作用户与候选item的相似特征</p></li>
+</ol>
+<h3 id="特征的构造">特征的构造</h3>
+<ol type="1">
+<li><p>首先基于日志数据集获得用户的最后一次点击操作和用户的历史点击。</p></li>
+<li><p>基于用户的历史行为制作特征， 这个会用到用户的历史点击表， 最后的召回列表， 文章的信息表和embedding向量。</p></li>
+<li><p>制作标签， 形成最后的监督学习数据集。</p></li>
+</ol>
+<h2 id="导入需要的包">导入需要的包</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">import</span> gc, os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> lightgbm <span class="keyword">as</span> lgb</span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> Word2Vec</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;ignore&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="df节省内存函数">df节省内存函数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 节省内存的一个函数</span></span><br><span class="line"><span class="comment"># 减少内存</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reduce_mem</span>(<span class="params">df</span>):</span></span><br><span class="line">    starttime = time.time()</span><br><span class="line">    numerics = [<span class="string">&#x27;int16&#x27;</span>, <span class="string">&#x27;int32&#x27;</span>, <span class="string">&#x27;int64&#x27;</span>, <span class="string">&#x27;float16&#x27;</span>, <span class="string">&#x27;float32&#x27;</span>, <span class="string">&#x27;float64&#x27;</span>]</span><br><span class="line">    start_mem = df.memory_usage().<span class="built_in">sum</span>() / <span class="number">1024</span>**<span class="number">2</span></span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> df.columns:</span><br><span class="line">        col_type = df[col].dtypes</span><br><span class="line">        <span class="keyword">if</span> col_type <span class="keyword">in</span> numerics:</span><br><span class="line">            c_min = df[col].<span class="built_in">min</span>()</span><br><span class="line">            c_max = df[col].<span class="built_in">max</span>()</span><br><span class="line">            <span class="keyword">if</span> pd.isnull(c_min) <span class="keyword">or</span> pd.isnull(c_max):</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">str</span>(col_type)[:<span class="number">3</span>] == <span class="string">&#x27;int&#x27;</span>:</span><br><span class="line">                <span class="keyword">if</span> c_min &gt; np.iinfo(np.int8).<span class="built_in">min</span> <span class="keyword">and</span> c_max &lt; np.iinfo(np.int8).<span class="built_in">max</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.int8)</span><br><span class="line">                <span class="keyword">elif</span> c_min &gt; np.iinfo(np.int16).<span class="built_in">min</span> <span class="keyword">and</span> c_max &lt; np.iinfo(np.int16).<span class="built_in">max</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.int16)</span><br><span class="line">                <span class="keyword">elif</span> c_min &gt; np.iinfo(np.int32).<span class="built_in">min</span> <span class="keyword">and</span> c_max &lt; np.iinfo(np.int32).<span class="built_in">max</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.int32)</span><br><span class="line">                <span class="keyword">elif</span> c_min &gt; np.iinfo(np.int64).<span class="built_in">min</span> <span class="keyword">and</span> c_max &lt; np.iinfo(np.int64).<span class="built_in">max</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.int64)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> c_min &gt; np.finfo(np.float16).<span class="built_in">min</span> <span class="keyword">and</span> c_max &lt; np.finfo(np.float16).<span class="built_in">max</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.float16)</span><br><span class="line">                <span class="keyword">elif</span> c_min &gt; np.finfo(np.float32).<span class="built_in">min</span> <span class="keyword">and</span> c_max &lt; np.finfo(np.float32).<span class="built_in">max</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.float32)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    df[col] = df[col].astype(np.float64)</span><br><span class="line">    end_mem = df.memory_usage().<span class="built_in">sum</span>() / <span class="number">1024</span>**<span class="number">2</span>                                    </span><br><span class="line">    <span class="keyword">return</span> df</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data_path = <span class="string">&#x27;./raw_data/&#x27;</span></span><br><span class="line">save_path = <span class="string">&#x27;./temp_results/&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="数据读取">数据读取</h2>
+<h3 id="训练和验证集的划分">训练和验证集的划分</h3>
+<p>划分训练和验证集的原因是为了在线下验证模型参数的好坏，为了完全模拟测试集，我们这里就在训练集中抽取部分用户的所有信息来作为验证集。提前做训练验证集划分的好处就是可以分解制作排序特征时的压力，一次性做整个数据集的排序特征可能时间会比较长。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># all_click_df指的是训练集</span></span><br><span class="line"><span class="comment"># sample_user_nums 采样作为验证集的用户数量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">trn_val_split</span>(<span class="params">all_click_df, sample_user_nums</span>):</span></span><br><span class="line">    all_click = all_click_df</span><br><span class="line">    all_user_ids = all_click.user_id.unique()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># replace=True表示可以重复抽样，反之不可以</span></span><br><span class="line">    sample_user_ids = np.random.choice(all_user_ids, size=sample_user_nums, replace=<span class="literal">False</span>) </span><br><span class="line">    </span><br><span class="line">    click_val = all_click[all_click[<span class="string">&#x27;user_id&#x27;</span>].isin(sample_user_ids)]</span><br><span class="line">    click_trn = all_click[~all_click[<span class="string">&#x27;user_id&#x27;</span>].isin(sample_user_ids)]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将验证集中的最后一次点击给抽取出来作为答案</span></span><br><span class="line">    click_val = click_val.sort_values([<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>])</span><br><span class="line">    val_ans = click_val.groupby(<span class="string">&#x27;user_id&#x27;</span>).tail(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    click_val = click_val.groupby(<span class="string">&#x27;user_id&#x27;</span>).apply(<span class="keyword">lambda</span> x: x[:-<span class="number">1</span>]).reset_index(drop=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 去除val_ans中某些用户只有一个点击数据的情况，如果该用户只有一个点击数据，又被分到ans中，</span></span><br><span class="line">    <span class="comment"># 那么训练集中就没有这个用户的点击数据，出现用户冷启动问题，给自己模型验证带来麻烦</span></span><br><span class="line">    val_ans = val_ans[val_ans.user_id.isin(click_val.user_id.unique())] <span class="comment"># 保证答案中出现的用户再验证集中还有</span></span><br><span class="line">    click_val = click_val[click_val.user_id.isin(val_ans.user_id.unique())]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> click_trn, click_val, val_ans</span><br></pre></td></tr></table></figure>
+<h2 id="获取历史点击和最后一次点击">获取历史点击和最后一次点击</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前数据的历史点击和最后一次点击</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_hist_and_last_click</span>(<span class="params">all_click</span>):</span></span><br><span class="line">    all_click = all_click.sort_values(by=[<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>])</span><br><span class="line">    click_last_df = all_click.groupby(<span class="string">&#x27;user_id&#x27;</span>).tail(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果用户只有一个点击，hist为空了，会导致训练的时候这个用户不可见，此时默认泄露一下</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hist_func</span>(<span class="params">user_df</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(user_df) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> user_df</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> user_df[:-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    click_hist_df = all_click.groupby(<span class="string">&#x27;user_id&#x27;</span>).apply(hist_func).reset_index(drop=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> click_hist_df, click_last_df</span><br></pre></td></tr></table></figure>
+<h2 id="读取训练验证及测试集">读取训练、验证及测试集</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_trn_val_tst_data</span>(<span class="params">data_path, offline=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> offline:</span><br><span class="line">        click_trn_data = pd.read_csv(data_path+<span class="string">&#x27;train_click_log.csv&#x27;</span>)  <span class="comment"># 训练集用户点击日志</span></span><br><span class="line">        click_trn_data = reduce_mem(click_trn_data)</span><br><span class="line">        click_trn, click_val, val_ans = trn_val_split(click_trn_data, sample_user_nums)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        click_trn = pd.read_csv(data_path+<span class="string">&#x27;train_click_log.csv&#x27;</span>)</span><br><span class="line">        click_trn = reduce_mem(click_trn)</span><br><span class="line">        click_val = <span class="literal">None</span></span><br><span class="line">        val_ans = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    click_tst = pd.read_csv(data_path+<span class="string">&#x27;testA_click_log.csv&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> click_trn, click_val, click_tst, val_ans</span><br></pre></td></tr></table></figure>
+<h2 id="读取召回列表">读取召回列表</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 返回多路召回列表或者单路召回</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_recall_list</span>(<span class="params">save_path, single_recall_model=<span class="literal">None</span>, multi_recall=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> multi_recall:</span><br><span class="line">        <span class="keyword">return</span> pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;final_recall_items_dict.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> single_recall_model == <span class="string">&#x27;i2i_itemcf&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;itemcf_recall_dict.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">elif</span> single_recall_model == <span class="string">&#x27;i2i_emb_itemcf&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;itemcf_emb_dict.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">elif</span> single_recall_model == <span class="string">&#x27;user_cf&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;youtubednn_usercf_dict.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">elif</span> single_recall_model == <span class="string">&#x27;youtubednn&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;youtube_u2i_dict.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="利用word2vec生成点击序列的embedding">利用Word2Vec生成点击序列的Embedding</h2>
+<h3 id="embedding">Embedding</h3>
+<p><a href="https://lzmcosmos.github.io/2020/11/18/nlp%E5%9F%BA%E7%A1%80/">参考我的博客</a></p>
+<h3 id="word2vec">Word2Vec</h3>
+<p>Word2Vec基于分布式假设，即一个词的上下文可以很好的表达出词的语义。通过无监督学习产生词向量的方式。</p>
+<p>word2vec中有两个非常经典的模型：skip-gram和CBOW。</p>
+<ol type="1">
+<li><p>skip-gram skip-gram通过中心词预测周围词。</p></li>
+<li><p>CBOW CBOW通过周围词预测中心词。如下图所示为窗口为2的示例。 <img src="/img/context-window.png" /></p></li>
+</ol>
+<blockquote>
+<p>skip-gram和CBOW: <img src="/img/skip-gram&amp;cbow.png" /></p>
+</blockquote>
+<h3 id="使用gensim训练word2vec">使用gensim训练word2vec</h3>
+<ul>
+<li><p>重要参数</p>
+<ul>
+<li><p>size: 表示词向量的维度。</p></li>
+<li><p>window：决定了目标词会与多远距离的上下文产生关系。</p></li>
+<li><p>sg: 如果是0，则是CBOW模型，是1则是Skip-Gram模型。</p></li>
+<li><p>workers: 表示训练时候的线程数量</p></li>
+<li><p>min_count: 设置最小的</p></li>
+<li><p>iter: 训练时遍历整个数据集的次数</p></li>
+</ul></li>
+<li><p>注意事项</p>
+<ul>
+<li><p>训练的时候输入的语料库一定要是字符组成的二维数组，如：[['北', '京', '你', '好'], ['上', '海', '你', '好']]</p></li>
+<li><p>使用模型的时候有一些默认值，可以通过在Jupyter里面通过Word2Vec??查看</p></li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Word2Vec详细原理博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/7160330.html">Word2Vec讲解</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">trian_item_word2vec</span>(<span class="params">click_df, embed_size=<span class="number">64</span>, save_name=<span class="string">&#x27;item_w2v_emb.pkl&#x27;</span>, split_char=<span class="string">&#x27; &#x27;</span></span>):</span></span><br><span class="line">    click_df = click_df.sort_values(<span class="string">&#x27;click_timestamp&#x27;</span>)</span><br><span class="line">    <span class="comment"># 只有转换成字符串才可以进行训练</span></span><br><span class="line">    click_df[<span class="string">&#x27;click_article_id&#x27;</span>] = click_df[<span class="string">&#x27;click_article_id&#x27;</span>].astype(<span class="built_in">str</span>)</span><br><span class="line">    <span class="comment"># 转换成句子的形式</span></span><br><span class="line">    docs = click_df.groupby([<span class="string">&#x27;user_id&#x27;</span>])[<span class="string">&#x27;click_article_id&#x27;</span>].apply(<span class="keyword">lambda</span> x: <span class="built_in">list</span>(x)).reset_index()</span><br><span class="line">    docs = docs[<span class="string">&#x27;click_article_id&#x27;</span>].values.tolist()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 为了方便查看训练的进度，这里设定一个log信息</span></span><br><span class="line">    logging.basicConfig(<span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s:%(levelname)s:%(message)s&#x27;</span>, level=logging.INFO)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 这里的参数对训练得到的向量影响也很大,默认负采样为5</span></span><br><span class="line">    w2v = Word2Vec(docs, size=<span class="number">16</span>, sg=<span class="number">1</span>, window=<span class="number">5</span>, seed=<span class="number">2020</span>, workers=<span class="number">24</span>, min_count=<span class="number">1</span>, <span class="built_in">iter</span>=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 保存成字典的形式</span></span><br><span class="line">    item_w2v_emb_dict = &#123;k: w2v[k] <span class="keyword">for</span> k <span class="keyword">in</span> click_df[<span class="string">&#x27;click_article_id&#x27;</span>]&#125;</span><br><span class="line">    pickle.dump(item_w2v_emb_dict, <span class="built_in">open</span>(save_path + <span class="string">&#x27;item_w2v_emb.pkl&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> item_w2v_emb_dict</span><br></pre></td></tr></table></figure>
+<h2 id="读取新闻的embedding">读取新闻的Embedding</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可以通过字典查询对应的item的Embedding</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_embedding</span>(<span class="params">save_path, all_click_df</span>):</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;item_content_emb.pkl&#x27;</span>):</span><br><span class="line">        item_content_emb_dict = pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;item_content_emb.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&#x27;item_content_emb.pkl 文件不存在...&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># w2v Embedding是需要提前训练好的</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;item_w2v_emb.pkl&#x27;</span>):</span><br><span class="line">        item_w2v_emb_dict = pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;item_w2v_emb.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        item_w2v_emb_dict = trian_item_word2vec(all_click_df)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;item_youtube_emb.pkl&#x27;</span>):</span><br><span class="line">        item_youtube_emb_dict = pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;item_youtube_emb.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&#x27;item_youtube_emb.pkl 文件不存在...&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;user_youtube_emb.pkl&#x27;</span>):</span><br><span class="line">        user_youtube_emb_dict = pickle.load(<span class="built_in">open</span>(save_path + <span class="string">&#x27;user_youtube_emb.pkl&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&#x27;user_youtube_emb.pkl 文件不存在...&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> item_content_emb_dict, item_w2v_emb_dict, item_youtube_emb_dict, user_youtube_emb_dict</span><br></pre></td></tr></table></figure>
+<h2 id="读取文章信息">读取文章信息</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_article_info_df</span>():</span></span><br><span class="line">    article_info_df = pd.read_csv(data_path + <span class="string">&#x27;articles.csv&#x27;</span>)</span><br><span class="line">    article_info_df = reduce_mem(article_info_df)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> article_info_df</span><br></pre></td></tr></table></figure>
+<h2 id="读取数据">读取数据</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里offline的online的区别就是验证集是否为空</span></span><br><span class="line">click_trn, click_val, click_tst, val_ans = get_trn_val_tst_data(data_path, offline=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>-- Mem. usage decreased to 23.34 Mb (69.4% reduction),time spend:0.00 min</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">click_trn_hist, click_trn_last = get_hist_and_last_click(click_trn)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> click_val <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    click_val_hist, click_val_last = click_val, val_ans</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    click_val_hist, click_val_last = <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">click_tst_hist = click_tst</span><br></pre></td></tr></table></figure>
+<h2 id="对训练数据做负采样">对训练数据做负采样</h2>
+<p>通过召回我们将数据转换成三元组的形式（user1, item1, label）的形式，观察发现正负样本差距极度不平衡，我们可以先对负样本进行下采样，下采样的目的一方面缓解了正负样本比例的问题，另一方面也减小了我们做排序特征的压力，我们在做负采样的时候又有哪些东西是需要注意的呢？</p>
+<ul>
+<li><p>只对负样本进行下采样(如果有比较好的正样本扩充的方法其实也是可以考虑的)</p></li>
+<li><p>负采样之后，保证所有的用户和文章仍然出现在采样之后的数据中</p></li>
+<li><p>下采样的比例可以根据实际情况人为的控制</p></li>
+<li><p>做完负采样之后，更新此时新的用户召回文章列表，因为后续做特征的时候可能用到相对位置的信息。</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将召回列表转换成df的形式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">recall_dict_2_df</span>(<span class="params">recall_list_dict</span>):</span></span><br><span class="line">    df_row_list = [] <span class="comment"># [user, item, score]</span></span><br><span class="line">    <span class="keyword">for</span> user, recall_list <span class="keyword">in</span> tqdm(recall_list_dict.items()):</span><br><span class="line">        <span class="keyword">for</span> item, score <span class="keyword">in</span> recall_list:</span><br><span class="line">            df_row_list.append([user, item, score])</span><br><span class="line">    </span><br><span class="line">    col_names = [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;sim_item&#x27;</span>, <span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">    recall_list_df = pd.DataFrame(df_row_list, columns=col_names)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> recall_list_df</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 负采样函数，这里可以控制负采样时的比例, 这里给了一个默认的值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">neg_sample_recall_data</span>(<span class="params">recall_items_df, sample_rate=<span class="number">0.001</span></span>):</span></span><br><span class="line">    pos_data = recall_items_df[recall_items_df[<span class="string">&#x27;label&#x27;</span>] == <span class="number">1</span>]</span><br><span class="line">    neg_data = recall_items_df[recall_items_df[<span class="string">&#x27;label&#x27;</span>] == <span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    print(<span class="string">&#x27;pos_data_num:&#x27;</span>, <span class="built_in">len</span>(pos_data), <span class="string">&#x27;neg_data_num:&#x27;</span>, <span class="built_in">len</span>(neg_data), <span class="string">&#x27;pos/neg:&#x27;</span>, <span class="built_in">len</span>(pos_data)/<span class="built_in">len</span>(neg_data))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 分组采样函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">neg_sample_func</span>(<span class="params">group_df</span>):</span></span><br><span class="line">        neg_num = <span class="built_in">len</span>(group_df)</span><br><span class="line">        sample_num = <span class="built_in">max</span>(<span class="built_in">int</span>(neg_num * sample_rate), <span class="number">1</span>) <span class="comment"># 保证最少有一个</span></span><br><span class="line">        sample_num = <span class="built_in">min</span>(sample_num, <span class="number">5</span>) <span class="comment"># 保证最多不超过5个，这里可以根据实际情况进行选择</span></span><br><span class="line">        <span class="keyword">return</span> group_df.sample(n=sample_num, replace=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对用户进行负采样，保证所有用户都在采样后的数据中</span></span><br><span class="line">    neg_data_user_sample = neg_data.groupby(<span class="string">&#x27;user_id&#x27;</span>, group_keys=<span class="literal">False</span>).apply(neg_sample_func)</span><br><span class="line">    <span class="comment"># 对文章进行负采样，保证所有文章都在采样后的数据中</span></span><br><span class="line">    neg_data_item_sample = neg_data.groupby(<span class="string">&#x27;sim_item&#x27;</span>, group_keys=<span class="literal">False</span>).apply(neg_sample_func)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将上述两种情况下的采样数据合并</span></span><br><span class="line">    neg_data_new = neg_data_user_sample.append(neg_data_item_sample)</span><br><span class="line">    <span class="comment"># 由于上述两个操作是分开的，可能将两个相同的数据给重复选择了，所以需要对合并后的数据进行去重</span></span><br><span class="line">    neg_data_new = neg_data_new.sort_values([<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;score&#x27;</span>]).drop_duplicates([<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;sim_item&#x27;</span>], keep=<span class="string">&#x27;last&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将正样本数据合并</span></span><br><span class="line">    data_new = pd.concat([pos_data, neg_data_new], ignore_index=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> data_new</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 召回数据打标签</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_rank_label_df</span>(<span class="params">recall_list_df, label_df, is_test=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="comment"># 测试集是没有标签了，为了后面代码同一一些，这里直接给一个负数替代</span></span><br><span class="line">    <span class="keyword">if</span> is_test:</span><br><span class="line">        recall_list_df[<span class="string">&#x27;label&#x27;</span>] = -<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> recall_list_df</span><br><span class="line">    </span><br><span class="line">    label_df = label_df.rename(columns=&#123;<span class="string">&#x27;click_article_id&#x27;</span>: <span class="string">&#x27;sim_item&#x27;</span>&#125;)</span><br><span class="line">    recall_list_df_ = recall_list_df.merge(label_df[[<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;sim_item&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>]], \</span><br><span class="line">                                               how=<span class="string">&#x27;left&#x27;</span>, on=[<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;sim_item&#x27;</span>])</span><br><span class="line">    recall_list_df_[<span class="string">&#x27;label&#x27;</span>] = recall_list_df_[<span class="string">&#x27;click_timestamp&#x27;</span>].apply(<span class="keyword">lambda</span> x: <span class="number">0.0</span> <span class="keyword">if</span> np.isnan(x) <span class="keyword">else</span> <span class="number">1.0</span>)</span><br><span class="line">    <span class="keyword">del</span> recall_list_df_[<span class="string">&#x27;click_timestamp&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> recall_list_df_</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user_recall_item_label_df</span>(<span class="params">click_trn_hist, click_val_hist, click_tst_hist,click_trn_last, click_val_last, recall_list_df</span>):</span></span><br><span class="line">    <span class="comment"># 获取训练数据的召回列表</span></span><br><span class="line">    trn_user_items_df = recall_list_df[recall_list_df[<span class="string">&#x27;user_id&#x27;</span>].isin(click_trn_hist[<span class="string">&#x27;user_id&#x27;</span>].unique())]</span><br><span class="line">    <span class="comment"># 训练数据打标签</span></span><br><span class="line">    trn_user_item_label_df = get_rank_label_df(trn_user_items_df, click_trn_last, is_test=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 训练数据负采样</span></span><br><span class="line">    trn_user_item_label_df = neg_sample_recall_data(trn_user_item_label_df)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> click_val <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        val_user_items_df = recall_list_df[recall_list_df[<span class="string">&#x27;user_id&#x27;</span>].isin(click_val_hist[<span class="string">&#x27;user_id&#x27;</span>].unique())]</span><br><span class="line">        val_user_item_label_df = get_rank_label_df(val_user_items_df, click_val_last, is_test=<span class="literal">False</span>)</span><br><span class="line">        val_user_item_label_df = neg_sample_recall_data(val_user_item_label_df)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        val_user_item_label_df = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试数据不需要进行负采样，直接对所有的召回商品进行打-1标签</span></span><br><span class="line">    tst_user_items_df = recall_list_df[recall_list_df[<span class="string">&#x27;user_id&#x27;</span>].isin(click_tst_hist[<span class="string">&#x27;user_id&#x27;</span>].unique())]</span><br><span class="line">    tst_user_item_label_df = get_rank_label_df(tst_user_items_df, <span class="literal">None</span>, is_test=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> trn_user_item_label_df, val_user_item_label_df, tst_user_item_label_df</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取召回列表</span></span><br><span class="line">recall_list_dict = get_recall_list(save_path, single_recall_model=<span class="string">&#x27;i2i_itemcf&#x27;</span>) <span class="comment"># 这里只选择了单路召回的结果，也可以选择多路召回结果</span></span><br><span class="line"><span class="comment"># 将召回数据转换成df</span></span><br><span class="line">recall_list_df = recall_dict_2_df(recall_list_dict)</span><br></pre></td></tr></table></figure>
+<pre><code>100%|██████████| 250000/250000 [00:00&lt;00:00, 289677.16it/s]</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 给训练验证数据打标签，并负采样（时间比较久）</span></span><br><span class="line">trn_user_item_label_df, val_user_item_label_df, tst_user_item_label_df = get_user_recall_item_label_df(click_trn_hist, </span><br><span class="line">                                                                                                                                                                        )</span><br></pre></td></tr></table></figure>
+<pre><code>pos_data_num: 3 neg_data_num: 1999997 pos/neg: 1.500002250003375e-06</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trn_user_item_label_df.label</span><br></pre></td></tr></table></figure>
+<pre><code>0         1.0
+1         1.0
+2         1.0
+3         0.0
+4         0.0
+         ... 
+224357    0.0
+224358    0.0
+224359    0.0
+224360    0.0
+224361    0.0
+Name: label, Length: 224362, dtype: float64</code></pre>
+<h2 id="将召回数据转换成字典">将召回数据转换成字典</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将最终的召回的df数据转换成字典的形式做排序特征</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_tuple_func</span>(<span class="params">group_df</span>):</span></span><br><span class="line">    row_data = []</span><br><span class="line">    <span class="keyword">for</span> name, row_df <span class="keyword">in</span> group_df.iterrows():</span><br><span class="line">        row_data.append((row_df[<span class="string">&#x27;sim_item&#x27;</span>], row_df[<span class="string">&#x27;score&#x27;</span>], row_df[<span class="string">&#x27;label&#x27;</span>]))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> row_data</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">trn_user_item_label_tuples = trn_user_item_label_df.groupby(<span class="string">&#x27;user_id&#x27;</span>).apply(make_tuple_func).reset_index()</span><br><span class="line">trn_user_item_label_tuples_dict = <span class="built_in">dict</span>(<span class="built_in">zip</span>(trn_user_item_label_tuples[<span class="string">&#x27;user_id&#x27;</span>], trn_user_item_label_tuples[<span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_label_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_label_tuples = val_user_item_label_df.groupby(<span class="string">&#x27;user_id&#x27;</span>).apply(make_tuple_func).reset_index()</span><br><span class="line">    val_user_item_label_tuples_dict = <span class="built_in">dict</span>(<span class="built_in">zip</span>(val_user_item_label_tuples[<span class="string">&#x27;user_id&#x27;</span>], val_user_item_label_tuples[<span class="number">0</span>]))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_label_tuples_dict = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">tst_user_item_label_tuples = tst_user_item_label_df.groupby(<span class="string">&#x27;user_id&#x27;</span>).apply(make_tuple_func).reset_index()</span><br><span class="line">tst_user_item_label_tuples_dict = <span class="built_in">dict</span>(<span class="built_in">zip</span>(tst_user_item_label_tuples[<span class="string">&#x27;user_id&#x27;</span>], tst_user_item_label_tuples[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+<h2 id="特征工程-1">特征工程</h2>
+<h3 id="制作与用户历史行为相关特征">制作与用户历史行为相关特征</h3>
+<p>对于每个用户召回的每个商品，做特征。具体步骤如下：</p>
+<ol type="1">
+<li><p>对于每个用户， 获取最后点击的N个商品的item_id</p></li>
+<li><p>对于该用户的每个召回商品， 计算与上面最后N次点击商品的相似度的和(最大， 最小，均值)， 时间差特征，相似性特征，字数差特征，与该用户的相似性特征</p></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下面基于data做历史相关的特征</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_feature</span>(<span class="params">users_id, recall_list, click_hist_df,  articles_info, articles_emb, user_emb=<span class="literal">None</span>, N=<span class="number">1</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    基于用户的历史行为做相关特征</span></span><br><span class="line"><span class="string">    :param users_id: 用户id</span></span><br><span class="line"><span class="string">    :param recall_list: 对于每个用户召回的候选文章列表</span></span><br><span class="line"><span class="string">    :param click_hist_df: 用户的历史点击信息</span></span><br><span class="line"><span class="string">    :param articles_info: 文章信息</span></span><br><span class="line"><span class="string">    :param articles_emb: 文章的embedding向量, 这个可以用item_content_emb, item_w2v_emb, item_youtube_emb</span></span><br><span class="line"><span class="string">    :param user_emb: 用户的embedding向量， 这个是user_youtube_emb, 如果没有也可以不用， 但要注意如果要用的话， articles_emb就要用item_youtube_emb的形式， 这样维度才一样</span></span><br><span class="line"><span class="string">    :param N: 最近的N次点击  由于testA日志里面很多用户只存在一次历史点击， 所以为了不产生空值，默认是1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 建立一个二维列表保存结果， 后面要转成DataFrame</span></span><br><span class="line">    all_user_feas = []</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> user_id <span class="keyword">in</span> tqdm(users_id):</span><br><span class="line">        <span class="comment"># 该用户的最后N次点击</span></span><br><span class="line">        hist_user_items = click_hist_df[click_hist_df[<span class="string">&#x27;user_id&#x27;</span>]==user_id][<span class="string">&#x27;click_article_id&#x27;</span>][-N:]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 遍历该用户的召回列表</span></span><br><span class="line">        <span class="keyword">for</span> rank, (article_id, score, label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(recall_list[user_id]):</span><br><span class="line">            <span class="comment"># 该文章建立时间, 字数</span></span><br><span class="line">            a_create_time = articles_info[articles_info[<span class="string">&#x27;article_id&#x27;</span>]==article_id][<span class="string">&#x27;created_at_ts&#x27;</span>].values[<span class="number">0</span>]</span><br><span class="line">            a_words_count = articles_info[articles_info[<span class="string">&#x27;article_id&#x27;</span>]==article_id][<span class="string">&#x27;words_count&#x27;</span>].values[<span class="number">0</span>]</span><br><span class="line">            single_user_fea = [user_id, article_id]</span><br><span class="line">            <span class="comment"># 计算与最后点击的商品的相似度的和， 最大值和最小值， 均值</span></span><br><span class="line">            sim_fea = []</span><br><span class="line">            time_fea = []</span><br><span class="line">            word_fea = []</span><br><span class="line">            <span class="comment"># 遍历用户的最后N次点击文章</span></span><br><span class="line">            <span class="keyword">for</span> hist_item <span class="keyword">in</span> hist_user_items:</span><br><span class="line">                b_create_time = articles_info[articles_info[<span class="string">&#x27;article_id&#x27;</span>]==hist_item][<span class="string">&#x27;created_at_ts&#x27;</span>].values[<span class="number">0</span>]</span><br><span class="line">                b_words_count = articles_info[articles_info[<span class="string">&#x27;article_id&#x27;</span>]==hist_item][<span class="string">&#x27;words_count&#x27;</span>].values[<span class="number">0</span>]</span><br><span class="line">                </span><br><span class="line">                sim_fea.append(np.dot(articles_emb[hist_item], articles_emb[article_id]))</span><br><span class="line">                time_fea.append(<span class="built_in">abs</span>(a_create_time-b_create_time))</span><br><span class="line">                word_fea.append(<span class="built_in">abs</span>(a_words_count-b_words_count))</span><br><span class="line">                </span><br><span class="line">            single_user_fea.extend(sim_fea)      <span class="comment"># 相似性特征</span></span><br><span class="line">            single_user_fea.extend(time_fea)    <span class="comment"># 时间差特征</span></span><br><span class="line">            single_user_fea.extend(word_fea)    <span class="comment"># 字数差特征</span></span><br><span class="line">            single_user_fea.extend([<span class="built_in">max</span>(sim_fea), <span class="built_in">min</span>(sim_fea), <span class="built_in">sum</span>(sim_fea), <span class="built_in">sum</span>(sim_fea) / <span class="built_in">len</span>(sim_fea)])  <span class="comment"># 相似性的统计特征</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> user_emb:  <span class="comment"># 如果用户向量有的话， 这里计算该召回文章与用户的相似性特征 </span></span><br><span class="line">                single_user_fea.append(np.dot(user_emb[user_id], articles_emb[article_id]))</span><br><span class="line">                </span><br><span class="line">            single_user_fea.extend([score, rank, label])    </span><br><span class="line">            <span class="comment"># 加入到总的表中</span></span><br><span class="line">            all_user_feas.append(single_user_fea)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 定义列名</span></span><br><span class="line">    id_cols = [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_article_id&#x27;</span>]</span><br><span class="line">    sim_cols = [<span class="string">&#x27;sim&#x27;</span> + <span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]</span><br><span class="line">    time_cols = [<span class="string">&#x27;time_diff&#x27;</span> + <span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]</span><br><span class="line">    word_cols = [<span class="string">&#x27;word_diff&#x27;</span> + <span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]</span><br><span class="line">    sat_cols = [<span class="string">&#x27;sim_max&#x27;</span>, <span class="string">&#x27;sim_min&#x27;</span>, <span class="string">&#x27;sim_sum&#x27;</span>, <span class="string">&#x27;sim_mean&#x27;</span>]</span><br><span class="line">    user_item_sim_cols = [<span class="string">&#x27;user_item_sim&#x27;</span>] <span class="keyword">if</span> user_emb <span class="keyword">else</span> []</span><br><span class="line">    user_score_rank_label = [<span class="string">&#x27;score&#x27;</span>, <span class="string">&#x27;rank&#x27;</span>, <span class="string">&#x27;label&#x27;</span>]</span><br><span class="line">    cols = id_cols + sim_cols + time_cols + word_cols + sat_cols + user_item_sim_cols + user_score_rank_label</span><br><span class="line">            </span><br><span class="line">    <span class="comment"># 转成DataFrame</span></span><br><span class="line">    df = pd.DataFrame( all_user_feas, columns=cols)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> df</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">article_info_df = get_article_info_df()</span><br><span class="line">all_click = click_trn.append(click_tst)</span><br><span class="line">item_content_emb_dict, item_w2v_emb_dict, item_youtube_emb_dict, user_youtube_emb_dict = get_embedding(save_path, all_click)</span><br></pre></td></tr></table></figure>
+<pre><code>-- Mem. usage decreased to  5.56 Mb (50.0% reduction),time spend:0.00 min
+
+
+2020-12-02 20:24:15,896:INFO:collecting all words and their counts
+2020-12-02 20:24:15,897:INFO:PROGRESS: at sentence #0, processed 0 words, keeping 0 word types
+2020-12-02 20:24:15,903:INFO:PROGRESS: at sentence #10000, processed 25727 words, keeping 3473 word types
+2020-12-02 20:24:15,910:INFO:PROGRESS: at sentence #20000, processed 53883 words, keeping 5811 word types
+2020-12-02 20:24:15,917:INFO:PROGRESS: at sentence #30000, processed 84881 words, keeping 7676 word types
+2020-12-02 20:24:15,925:INFO:PROGRESS: at sentence #40000, processed 118390 words, keeping 9297 word types
+2020-12-02 20:24:15,935:INFO:PROGRESS: at sentence #50000, processed 154179 words, keeping 10844 word types
+2020-12-02 20:24:15,944:INFO:PROGRESS: at sentence #60000, processed 192350 words, keeping 12357 word types
+2020-12-02 20:24:15,953:INFO:PROGRESS: at sentence #70000, processed 233685 words, keeping 13473 word types
+2020-12-02 20:24:15,965:INFO:PROGRESS: at sentence #80000, processed 281335 words, keeping 14939 word types
+2020-12-02 20:24:15,977:INFO:PROGRESS: at sentence #90000, processed 329973 words, keeping 16420 word types
+2020-12-02 20:24:15,988:INFO:PROGRESS: at sentence #100000, processed 379428 words, keeping 17904 word types
+2020-12-02 20:24:15,998:INFO:PROGRESS: at sentence #110000, processed 431464 words, keeping 18928 word types
+2020-12-02 20:24:16,010:INFO:PROGRESS: at sentence #120000, processed 489655 words, keeping 20157 word types
+2020-12-02 20:24:16,025:INFO:PROGRESS: at sentence #130000, processed 550375 words, keeping 21588 word types
+2020-12-02 20:24:16,038:INFO:PROGRESS: at sentence #140000, processed 613031 words, keeping 22923 word types
+2020-12-02 20:24:16,051:INFO:PROGRESS: at sentence #150000, processed 678645 words, keeping 24209 word types
+2020-12-02 20:24:16,066:INFO:PROGRESS: at sentence #160000, processed 749559 words, keeping 25743 word types
+2020-12-02 20:24:16,086:INFO:PROGRESS: at sentence #170000, processed 831064 words, keeping 27232 word types
+2020-12-02 20:24:16,104:INFO:PROGRESS: at sentence #180000, processed 914233 words, keeping 28612 word types
+2020-12-02 20:24:16,127:INFO:PROGRESS: at sentence #190000, processed 1004976 words, keeping 29699 word types
+2020-12-02 20:24:16,152:INFO:PROGRESS: at sentence #200000, processed 1112623 words, keeping 31116 word types
+2020-12-02 20:24:16,171:INFO:PROGRESS: at sentence #210000, processed 1200577 words, keeping 31798 word types
+2020-12-02 20:24:16,193:INFO:PROGRESS: at sentence #220000, processed 1285942 words, keeping 32381 word types
+2020-12-02 20:24:16,212:INFO:PROGRESS: at sentence #230000, processed 1380836 words, keeping 33131 word types
+2020-12-02 20:24:16,239:INFO:PROGRESS: at sentence #240000, processed 1498710 words, keeping 34213 word types
+2020-12-02 20:24:16,266:INFO:collected 35380 word types from a corpus of 1630633 raw words and 250000 sentences
+2020-12-02 20:24:16,266:INFO:Loading a fresh vocabulary
+2020-12-02 20:24:16,569:INFO:effective_min_count=1 retains 35380 unique words (100% of original 35380, drops 0)
+2020-12-02 20:24:16,569:INFO:effective_min_count=1 leaves 1630633 word corpus (100% of original 1630633, drops 0)
+2020-12-02 20:24:16,638:INFO:deleting the raw counts dictionary of 35380 items
+2020-12-02 20:24:16,639:INFO:sample=0.001 downsamples 73 most-common words
+2020-12-02 20:24:16,639:INFO:downsampling leaves estimated 1452855 word corpus (89.1% of prior 1630633)
+2020-12-02 20:24:16,695:INFO:estimated required memory for 35380 words and 16 dimensions: 22218640 bytes
+2020-12-02 20:24:16,695:INFO:resetting layer weights
+2020-12-02 20:24:16,889:INFO:training model with 24 workers on 35380 vocabulary and 16 features, using sg=1 hs=0 sample=0.001 negative=5 window=5
+2020-12-02 20:24:17,583:INFO:worker thread finished; awaiting finish of 23 more threads
+2020-12-02 20:24:17,587:INFO:worker thread finished; awaiting finish of 22 more threads
+2020-12-02 20:24:17,593:INFO:worker thread finished; awaiting finish of 21 more threads
+2020-12-02 20:24:17,595:INFO:worker thread finished; awaiting finish of 20 more threads
+2020-12-02 20:24:17,595:INFO:worker thread finished; awaiting finish of 19 more threads
+2020-12-02 20:24:17,615:INFO:worker thread finished; awaiting finish of 18 more threads
+2020-12-02 20:24:17,625:INFO:worker thread finished; awaiting finish of 17 more threads
+2020-12-02 20:24:17,627:INFO:worker thread finished; awaiting finish of 16 more threads
+2020-12-02 20:24:17,628:INFO:worker thread finished; awaiting finish of 15 more threads
+2020-12-02 20:24:17,629:INFO:worker thread finished; awaiting finish of 14 more threads
+2020-12-02 20:24:17,629:INFO:worker thread finished; awaiting finish of 13 more threads
+2020-12-02 20:24:17,633:INFO:worker thread finished; awaiting finish of 12 more threads
+2020-12-02 20:24:17,658:INFO:worker thread finished; awaiting finish of 11 more threads
+2020-12-02 20:24:17,666:INFO:worker thread finished; awaiting finish of 10 more threads
+2020-12-02 20:24:17,667:INFO:worker thread finished; awaiting finish of 9 more threads
+2020-12-02 20:24:17,667:INFO:worker thread finished; awaiting finish of 8 more threads
+2020-12-02 20:24:17,668:INFO:worker thread finished; awaiting finish of 7 more threads
+2020-12-02 20:24:17,668:INFO:worker thread finished; awaiting finish of 6 more threads
+2020-12-02 20:24:17,669:INFO:worker thread finished; awaiting finish of 5 more threads
+2020-12-02 20:24:17,673:INFO:worker thread finished; awaiting finish of 4 more threads
+2020-12-02 20:24:17,675:INFO:worker thread finished; awaiting finish of 3 more threads
+2020-12-02 20:24:17,677:INFO:worker thread finished; awaiting finish of 2 more threads
+2020-12-02 20:24:17,688:INFO:worker thread finished; awaiting finish of 1 more threads
+2020-12-02 20:24:17,692:INFO:worker thread finished; awaiting finish of 0 more threads
+2020-12-02 20:24:17,693:INFO:EPOCH - 1 : training on 1630633 raw words (1453218 effective words) took 0.8s, 1829115 effective words/s
+2020-12-02 20:24:17,693:INFO:training on a 1630633 raw words (1453218 effective words) took 0.8s, 1808166 effective words/s
+2020-12-02 20:24:17,694:WARNING:under 10 jobs per worker: consider setting a smaller `batch_words&#39; for smoother alpha decay</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取训练验证及测试数据中召回列文章相关特征</span></span><br><span class="line">trn_user_item_feats_df = create_feature(trn_user_item_label_tuples_dict.keys(), trn_user_item_label_tuples_dict, \</span><br><span class="line">                                            click_trn_hist, article_info_df, item_content_emb_dict)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_label_tuples_dict <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_feats_df = create_feature(val_user_item_label_tuples_dict.keys(), val_user_item_label_tuples_dict, \</span><br><span class="line">                                                click_val_hist, article_info_df, item_content_emb_dict)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">tst_user_item_feats_df = create_feature(tst_user_item_label_tuples_dict.keys(), tst_user_item_label_tuples_dict, \</span><br><span class="line">                                            click_tst_hist, article_info_df, item_content_emb_dict)</span><br></pre></td></tr></table></figure>
+<pre><code>100%|██████████| 200000/200000 [09:22&lt;00:00, 355.53it/s]
+100%|██████████| 50000/50000 [16:08&lt;00:00, 51.64it/s]</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存一份特征,避免重新跑</span></span><br><span class="line">trn_user_item_feats_df.to_csv(save_path + <span class="string">&#x27;trn_user_item_feats_df.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_feats_df.to_csv(save_path + <span class="string">&#x27;val_user_item_feats_df.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">tst_user_item_feats_df.to_csv(save_path + <span class="string">&#x27;tst_user_item_feats_df.csv&#x27;</span>, index=<span class="literal">False</span>)    </span><br></pre></td></tr></table></figure>
+<h2 id="用户和文章特征">用户和文章特征</h2>
+<h3 id="用户相关特征">用户相关特征</h3>
+<p>现在正式进行特征工程，既要拼接上已有的特征， 也会做更多的特征出来。已有的特征和可构造特征：</p>
+<ul>
+<li><p>文章自身的特征， 文章字数，文章创建时间， 文章的embedding （articles表中)</p></li>
+<li><p>用户点击环境特征， 那些设备的特征(这个在df中)</p></li>
+<li><p>对于用户和商品还可以构造的特征：</p>
+<ol type="1">
+<li>基于用户的点击文章次数和点击时间构造可以表现用户活跃度的特征</li>
+<li>基于文章被点击次数和时间构造可以反映文章热度的特征</li>
+<li>用户的时间统计特征： 根据其点击的历史文章列表的点击时间和文章的创建时间做统计特征，比如求均值， 这个可以反映用户对于文章时效的偏好</li>
+<li>用户的主题爱好特征， 对于用户点击的历史文章主题进行一个统计， 然后对于当前文章看看是否属于用户已经点击过的主题</li>
+<li>用户的字数爱好特征， 对于用户点击的历史文章的字数统计， 求一个均值</li>
+</ol></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">click_tst.head()</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+user_id
+</th>
+<th>
+click_article_id
+</th>
+<th>
+click_timestamp
+</th>
+<th>
+click_environment
+</th>
+<th>
+click_deviceGroup
+</th>
+<th>
+click_os
+</th>
+<th>
+click_country
+</th>
+<th>
+click_region
+</th>
+<th>
+click_referrer_type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+249999
+</td>
+<td>
+160974
+</td>
+<td>
+1506959142820
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+17
+</td>
+<td>
+1
+</td>
+<td>
+13
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+249999
+</td>
+<td>
+160417
+</td>
+<td>
+1506959172820
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+17
+</td>
+<td>
+1
+</td>
+<td>
+13
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+249998
+</td>
+<td>
+160974
+</td>
+<td>
+1506959056066
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+12
+</td>
+<td>
+1
+</td>
+<td>
+13
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+249998
+</td>
+<td>
+202557
+</td>
+<td>
+1506959086066
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+12
+</td>
+<td>
+1
+</td>
+<td>
+13
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+249997
+</td>
+<td>
+183665
+</td>
+<td>
+1506959088613
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+17
+</td>
+<td>
+1
+</td>
+<td>
+15
+</td>
+<td>
+5
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取文章特征</span></span><br><span class="line">articles =  pd.read_csv(data_path+<span class="string">&#x27;articles.csv&#x27;</span>)</span><br><span class="line">articles = reduce_mem(articles)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 日志数据，就是前面的所有数据</span></span><br><span class="line"><span class="keyword">if</span> click_val <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    all_data = click_trn.append(click_val)</span><br><span class="line">all_data = click_trn.append(click_tst)</span><br><span class="line">all_data = reduce_mem(all_data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拼上文章信息</span></span><br><span class="line">all_data = all_data.merge(articles, left_on=<span class="string">&#x27;click_article_id&#x27;</span>, right_on=<span class="string">&#x27;article_id&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>-- Mem. usage decreased to  5.56 Mb (50.0% reduction),time spend:0.00 min
+-- Mem. usage decreased to 46.65 Mb (62.5% reduction),time spend:0.00 min</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data.shape</span><br></pre></td></tr></table></figure>
+<pre><code>(1630633, 13)</code></pre>
+<h2 id="分析">分析</h2>
+<h3 id="通过分析点击时间和点击文章的次数区分用户活跃度">1. 通过分析点击时间和点击文章的次数，区分用户活跃度</h3>
+<p>如果某个用户点击文章之间的时间间隔比较小， 同时点击的文章次数很多的话， 那么我们认为这种用户一般就是活跃用户, 当然衡量用户活跃度的方式可能多种多样， 这里我们只提供其中一种，我们写一个函数， 得到可以衡量用户活跃度的特征，逻辑如下：</p>
+<ol type="1">
+<li><p>首先根据用户user_id分组， 对于每个用户，计算点击文章的次数， 两两点击文章时间间隔的均值</p></li>
+<li><p>把点击次数取倒数和时间间隔的均值统一归一化，然后两者相加合并，该值越小， 说明用户越活跃</p></li>
+<li><p>上面两两点击文章的时间间隔均值， 会出现如果用户只点击了一次的情况，这时候时间间隔均值那里会出现空值， 对于这种情况最后特征那里给个大数进行区分</p></li>
+</ol>
+<p>这个的衡量标准就是先把点击的次数取到数然后归一化， 然后点击的时间差归一化， 然后两者相加进行合并， 该值越小， 说明被点击的次数越多， 且间隔时间短。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">active_level</span>(<span class="params">all_data, cols</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    制作区分用户活跃度的特征</span></span><br><span class="line"><span class="string">    :param all_data: 数据集</span></span><br><span class="line"><span class="string">    :param cols: 用到的特征列</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    data = all_data[cols]</span><br><span class="line">    data.sort_values([<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>], inplace=<span class="literal">True</span>)</span><br><span class="line">    user_act = pd.DataFrame(data.groupby(<span class="string">&#x27;user_id&#x27;</span>, as_index=<span class="literal">False</span>)[[<span class="string">&#x27;click_article_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>]].\</span><br><span class="line">                            agg(&#123;<span class="string">&#x27;click_article_id&#x27;</span>:np.size, <span class="string">&#x27;click_timestamp&#x27;</span>: &#123;<span class="built_in">list</span>&#125;&#125;).values, columns=[<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_size&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算时间间隔的均值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">time_diff_mean</span>(<span class="params">l</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(l) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> np.mean([j-i <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">list</span>(<span class="built_in">zip</span>(l[:-<span class="number">1</span>], l[<span class="number">1</span>:]))])</span><br><span class="line">        </span><br><span class="line">    user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>] = user_act[<span class="string">&#x27;click_timestamp&#x27;</span>].apply(<span class="keyword">lambda</span> x: time_diff_mean(x))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 点击次数取倒数</span></span><br><span class="line">    user_act[<span class="string">&#x27;click_size&#x27;</span>] = <span class="number">1</span> / user_act[<span class="string">&#x27;click_size&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 两者归一化</span></span><br><span class="line">    user_act[<span class="string">&#x27;click_size&#x27;</span>] = (user_act[<span class="string">&#x27;click_size&#x27;</span>] - user_act[<span class="string">&#x27;click_size&#x27;</span>].<span class="built_in">min</span>()) / (user_act[<span class="string">&#x27;click_size&#x27;</span>].<span class="built_in">max</span>() - user_act[<span class="string">&#x27;click_size&#x27;</span>].<span class="built_in">min</span>())</span><br><span class="line">    user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>] = (user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>] - user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>].<span class="built_in">min</span>()) / (user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>].<span class="built_in">max</span>() - user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>].<span class="built_in">min</span>())     </span><br><span class="line">    user_act[<span class="string">&#x27;active_level&#x27;</span>] = user_act[<span class="string">&#x27;click_size&#x27;</span>] + user_act[<span class="string">&#x27;time_diff_mean&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    user_act[<span class="string">&#x27;user_id&#x27;</span>] = user_act[<span class="string">&#x27;user_id&#x27;</span>].astype(<span class="string">&#x27;int&#x27;</span>)</span><br><span class="line">    <span class="keyword">del</span> user_act[<span class="string">&#x27;click_timestamp&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> user_act</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user_act_fea = active_level(all_data, [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_article_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user_act_fea.head()</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+user_id
+</th>
+<th>
+click_size
+</th>
+<th>
+time_diff_mean
+</th>
+<th>
+active_level
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+0
+</td>
+<td>
+0.499466
+</td>
+<td>
+0.000048
+</td>
+<td>
+0.499515
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+1
+</td>
+<td>
+0.499466
+</td>
+<td>
+0.000048
+</td>
+<td>
+0.499515
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+2
+</td>
+<td>
+0.499466
+</td>
+<td>
+0.000048
+</td>
+<td>
+0.499515
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+3
+</td>
+<td>
+0.499466
+</td>
+<td>
+0.000048
+</td>
+<td>
+0.499515
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+4
+</td>
+<td>
+0.499466
+</td>
+<td>
+0.000048
+</td>
+<td>
+0.499515
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="通过分析点击时间和被点击文章的次数-衡量文章热度特征">2. 通过分析点击时间和被点击文章的次数， 衡量文章热度特征</h3>
+<p>和上面同样的思路， 如果一篇文章在很短的时间间隔之内被点击了很多次， 说明文章比较热门，实现的逻辑和上面的基本一致， 只不过这里是按照点击的文章进行分组： 1. 根据文章进行分组， 对于每篇文章的用户， 计算点击的时间间隔 2. 将用户的数量取倒数， 然后用户的数量和时间间隔归一化， 然后相加得到热度特征， 该值越小， 说明被点击的次数越大且时间间隔越短， 文章比较热 &gt; 这只是给出一种判断文章热度的一种方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hot_level</span>(<span class="params">all_data, cols</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    制作衡量文章热度的特征</span></span><br><span class="line"><span class="string">    :param all_data: 数据集</span></span><br><span class="line"><span class="string">    :param cols: 用到的特征列</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    data = all_data[cols]</span><br><span class="line">    data.sort_values([<span class="string">&#x27;click_article_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>], inplace=<span class="literal">True</span>)</span><br><span class="line">    article_hot = pd.DataFrame(data.groupby(<span class="string">&#x27;click_article_id&#x27;</span>, as_index=<span class="literal">False</span>)[[<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>]].\</span><br><span class="line">                               agg(&#123;<span class="string">&#x27;user_id&#x27;</span>:np.size, <span class="string">&#x27;click_timestamp&#x27;</span>: &#123;<span class="built_in">list</span>&#125;&#125;).values, columns=[<span class="string">&#x27;click_article_id&#x27;</span>, <span class="string">&#x27;user_num&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算被点击时间间隔的均值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">time_diff_mean</span>(<span class="params">l</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(l) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> np.mean([j-i <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">list</span>(<span class="built_in">zip</span>(l[:-<span class="number">1</span>], l[<span class="number">1</span>:]))])</span><br><span class="line">        </span><br><span class="line">    article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>] = article_hot[<span class="string">&#x27;click_timestamp&#x27;</span>].apply(<span class="keyword">lambda</span> x: time_diff_mean(x))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 点击次数取倒数</span></span><br><span class="line">    article_hot[<span class="string">&#x27;user_num&#x27;</span>] = <span class="number">1</span> / article_hot[<span class="string">&#x27;user_num&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 两者归一化</span></span><br><span class="line">    article_hot[<span class="string">&#x27;user_num&#x27;</span>] = (article_hot[<span class="string">&#x27;user_num&#x27;</span>] - article_hot[<span class="string">&#x27;user_num&#x27;</span>].<span class="built_in">min</span>()) / (article_hot[<span class="string">&#x27;user_num&#x27;</span>].<span class="built_in">max</span>() - article_hot[<span class="string">&#x27;user_num&#x27;</span>].<span class="built_in">min</span>())</span><br><span class="line">    article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>] = (article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>] - article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>].<span class="built_in">min</span>()) / (article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>].<span class="built_in">max</span>() - article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>].<span class="built_in">min</span>())     </span><br><span class="line">    article_hot[<span class="string">&#x27;hot_level&#x27;</span>] = article_hot[<span class="string">&#x27;user_num&#x27;</span>] + article_hot[<span class="string">&#x27;time_diff_mean&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    article_hot[<span class="string">&#x27;click_article_id&#x27;</span>] = article_hot[<span class="string">&#x27;click_article_id&#x27;</span>].astype(<span class="string">&#x27;int&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">del</span> article_hot[<span class="string">&#x27;click_timestamp&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> article_hot</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">article_hot_fea = hot_level(all_data, [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_article_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>])    </span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">article_hot_fea.head()</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+click_article_id
+</th>
+<th>
+user_num
+</th>
+<th>
+time_diff_mean
+</th>
+<th>
+hot_level
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+3
+</td>
+<td>
+1
+</td>
+<td>
+0.0
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+69
+</td>
+<td>
+1
+</td>
+<td>
+0.0
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+84
+</td>
+<td>
+1
+</td>
+<td>
+0.0
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+94
+</td>
+<td>
+1
+</td>
+<td>
+0.0
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+125
+</td>
+<td>
+1
+</td>
+<td>
+0.0
+</td>
+<td>
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="用户的各种习惯">用户的各种习惯</h2>
+<p>这个基于原来的日志表做一个类似于article的那种DataFrame， 存放用户特有的信息, 主要包括点击习惯， 爱好特征之类的。</p>
+<ol type="1">
+<li>用户的设备习惯， 这里取最常用的设备（众数）</li>
+<li>用户的时间习惯： 根据其点击过得历史文章的时间来做一个统计（这个感觉最好是把时间戳里的时间特征的h特征提出来，看看用户习惯一天的啥时候点击文章）， 但这里先用转换的时间吧， 求个均值</li>
+<li>用户的爱好特征， 对于用户点击的历史文章主题进行用户的爱好判别， 更偏向于哪几个主题， 这个最好是multi-hot进行编码， 先试试行不</li>
+<li>用户文章的字数差特征， 用户的爱好文章的字数习惯</li>
+</ol>
+<p>上述数据通过对用户进行分组然后进行统计即可.</p>
+<h3 id="用户的设备习惯">用户的设备习惯</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">device_fea</span>(<span class="params">all_data, cols</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    制作用户的设备特征</span></span><br><span class="line"><span class="string">    :param all_data: 数据集</span></span><br><span class="line"><span class="string">    :param cols: 用到的特征列</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    user_device_info = all_data[cols]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 用众数来表示每个用户的设备信息</span></span><br><span class="line">    user_device_info = user_device_info.groupby(<span class="string">&#x27;user_id&#x27;</span>).agg(<span class="keyword">lambda</span> x: x.value_counts().index[<span class="number">0</span>]).reset_index()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> user_device_info</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设备特征(这里时间会比较长)</span></span><br><span class="line">device_cols = [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_environment&#x27;</span>, <span class="string">&#x27;click_deviceGroup&#x27;</span>, <span class="string">&#x27;click_os&#x27;</span>, <span class="string">&#x27;click_country&#x27;</span>, <span class="string">&#x27;click_region&#x27;</span>, <span class="string">&#x27;click_referrer_type&#x27;</span>]</span><br><span class="line">user_device_info = device_fea(all_data, device_cols)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user_device_info.head()</span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+user_id
+</th>
+<th>
+click_environment
+</th>
+<th>
+click_deviceGroup
+</th>
+<th>
+click_os
+</th>
+<th>
+click_country
+</th>
+<th>
+click_region
+</th>
+<th>
+click_referrer_type
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>
+0
+</th>
+<td>
+0
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+17
+</td>
+<td>
+1
+</td>
+<td>
+25
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+1
+</th>
+<td>
+1
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+17
+</td>
+<td>
+1
+</td>
+<td>
+25
+</td>
+<td>
+6
+</td>
+</tr>
+<tr>
+<th>
+2
+</th>
+<td>
+2
+</td>
+<td>
+4
+</td>
+<td>
+3
+</td>
+<td>
+20
+</td>
+<td>
+1
+</td>
+<td>
+25
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+3
+</th>
+<td>
+3
+</td>
+<td>
+4
+</td>
+<td>
+3
+</td>
+<td>
+2
+</td>
+<td>
+1
+</td>
+<td>
+25
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<th>
+4
+</th>
+<td>
+4
+</td>
+<td>
+4
+</td>
+<td>
+1
+</td>
+<td>
+12
+</td>
+<td>
+1
+</td>
+<td>
+16
+</td>
+<td>
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="用户的时间习惯">用户的时间习惯</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">user_time_hob_fea</span>(<span class="params">all_data, cols</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    制作用户的时间习惯特征</span></span><br><span class="line"><span class="string">    :param all_data: 数据集</span></span><br><span class="line"><span class="string">    :param cols: 用到的特征列</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    user_time_hob_info = all_data[cols]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 先把时间戳进行归一化</span></span><br><span class="line">    mm = MinMaxScaler()</span><br><span class="line">    user_time_hob_info[<span class="string">&#x27;click_timestamp&#x27;</span>] = mm.fit_transform(user_time_hob_info[[<span class="string">&#x27;click_timestamp&#x27;</span>]])</span><br><span class="line">    user_time_hob_info[<span class="string">&#x27;created_at_ts&#x27;</span>] = mm.fit_transform(user_time_hob_info[[<span class="string">&#x27;created_at_ts&#x27;</span>]])</span><br><span class="line"></span><br><span class="line">    user_time_hob_info = user_time_hob_info.groupby(<span class="string">&#x27;user_id&#x27;</span>).agg(<span class="string">&#x27;mean&#x27;</span>).reset_index()</span><br><span class="line">    </span><br><span class="line">    user_time_hob_info.rename(columns=&#123;<span class="string">&#x27;click_timestamp&#x27;</span>: <span class="string">&#x27;user_time_hob1&#x27;</span>, <span class="string">&#x27;created_at_ts&#x27;</span>: <span class="string">&#x27;user_time_hob2&#x27;</span>&#125;, inplace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> user_time_hob_info</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user_time_hob_cols = [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;click_timestamp&#x27;</span>, <span class="string">&#x27;created_at_ts&#x27;</span>]</span><br><span class="line">user_time_hob_info = user_time_hob_fea(all_data, user_time_hob_cols)</span><br></pre></td></tr></table></figure>
+<h3 id="用户的主题爱好">用户的主题爱好</h3>
+<p>这里先把用户点击的文章属于的主题转成一个列表， 后面汇总的时候单独制作一个特征， 就是文章的主题如果属于这里面， 就是1， 否则就是0。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">user_cat_hob_fea</span>(<span class="params">all_data, cols</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    用户的主题爱好</span></span><br><span class="line"><span class="string">    :param all_data: 数据集</span></span><br><span class="line"><span class="string">    :param cols: 用到的特征列</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    user_category_hob_info = all_data[cols]</span><br><span class="line">    user_category_hob_info = user_category_hob_info.groupby(<span class="string">&#x27;user_id&#x27;</span>).agg(&#123;<span class="built_in">list</span>&#125;).reset_index()</span><br><span class="line">    </span><br><span class="line">    user_cat_hob_info = pd.DataFrame()</span><br><span class="line">    user_cat_hob_info[<span class="string">&#x27;user_id&#x27;</span>] = user_category_hob_info[<span class="string">&#x27;user_id&#x27;</span>]</span><br><span class="line">    user_cat_hob_info[<span class="string">&#x27;cate_list&#x27;</span>] = user_category_hob_info[<span class="string">&#x27;category_id&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> user_cat_hob_info</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user_category_hob_cols = [<span class="string">&#x27;user_id&#x27;</span>, <span class="string">&#x27;category_id&#x27;</span>]</span><br><span class="line">user_cat_hob_info = user_cat_hob_fea(all_data, user_category_hob_cols)</span><br></pre></td></tr></table></figure>
+<h3 id="用户的字数偏好特征">用户的字数偏好特征</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user_wcou_info = all_data.groupby(<span class="string">&#x27;user_id&#x27;</span>)[<span class="string">&#x27;words_count&#x27;</span>].agg(<span class="string">&#x27;mean&#x27;</span>).reset_index()</span><br><span class="line">user_wcou_info.rename(columns=&#123;<span class="string">&#x27;words_count&#x27;</span>: <span class="string">&#x27;words_hbo&#x27;</span>&#125;, inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="用户的信息特征合并保存">用户的信息特征合并保存</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 所有表进行合并</span></span><br><span class="line">user_info = pd.merge(user_act_fea, user_device_info, on=<span class="string">&#x27;user_id&#x27;</span>)</span><br><span class="line">user_info = user_info.merge(user_time_hob_info, on=<span class="string">&#x27;user_id&#x27;</span>)</span><br><span class="line">user_info = user_info.merge(user_cat_hob_info, on=<span class="string">&#x27;user_id&#x27;</span>)</span><br><span class="line">user_info = user_info.merge(user_wcou_info, on=<span class="string">&#x27;user_id&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这样用户特征以后就可以直接读取了</span></span><br><span class="line">user_info.to_csv(save_path + <span class="string">&#x27;user_info.csv&#x27;</span>, index=<span class="literal">False</span>)   </span><br></pre></td></tr></table></figure>
+<h3 id="用户特征直接读入">用户特征直接读入</h3>
+<p>如果前面关于用户的特征工程已经给做完了，后面可以直接读取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把用户信息直接读入进来</span></span><br><span class="line">user_info = pd.read_csv(save_path + <span class="string">&#x27;user_info.csv&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;trn_user_item_feats_df.csv&#x27;</span>):</span><br><span class="line">    trn_user_item_feats_df = pd.read_csv(save_path + <span class="string">&#x27;trn_user_item_feats_df.csv&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;tst_user_item_feats_df.csv&#x27;</span>):</span><br><span class="line">    tst_user_item_feats_df = pd.read_csv(save_path + <span class="string">&#x27;tst_user_item_feats_df.csv&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(save_path + <span class="string">&#x27;val_user_item_feats_df.csv&#x27;</span>):</span><br><span class="line">    val_user_item_feats_df = pd.read_csv(save_path + <span class="string">&#x27;val_user_item_feats_df.csv&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拼上用户特征</span></span><br><span class="line"><span class="comment"># 下面是线下验证的</span></span><br><span class="line">trn_user_item_feats_df = trn_user_item_feats_df.merge(user_info, on=<span class="string">&#x27;user_id&#x27;</span>, how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_feats_df = val_user_item_feats_df.merge(user_info, on=<span class="string">&#x27;user_id&#x27;</span>, how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">tst_user_item_feats_df = tst_user_item_feats_df.merge(user_info, on=<span class="string">&#x27;user_id&#x27;</span>,how=<span class="string">&#x27;left&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trn_user_item_feats_df.columns</span><br></pre></td></tr></table></figure>
+<pre><code>Index([&#39;user_id&#39;, &#39;click_article_id&#39;, &#39;sim0&#39;, &#39;time_diff0&#39;, &#39;word_diff0&#39;,
+       &#39;sim_max&#39;, &#39;sim_min&#39;, &#39;sim_sum&#39;, &#39;sim_mean&#39;, &#39;score&#39;, &#39;rank&#39;, &#39;label&#39;,
+       &#39;click_size&#39;, &#39;time_diff_mean&#39;, &#39;active_level&#39;, &#39;click_environment&#39;,
+       &#39;click_deviceGroup&#39;, &#39;click_os&#39;, &#39;click_country&#39;, &#39;click_region&#39;,
+       &#39;click_referrer_type&#39;, &#39;user_time_hob1&#39;, &#39;user_time_hob2&#39;, &#39;cate_list&#39;,
+       &#39;words_hbo&#39;],
+      dtype=&#39;object&#39;)</code></pre>
+<h2 id="文章的特征直接读入">文章的特征直接读入</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">articles =  pd.read_csv(data_path+<span class="string">&#x27;articles.csv&#x27;</span>)</span><br><span class="line">articles = reduce_mem(articles)</span><br></pre></td></tr></table></figure>
+<pre><code>-- Mem. usage decreased to  5.56 Mb (50.0% reduction),time spend:0.00 min</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拼上文章特征</span></span><br><span class="line">trn_user_item_feats_df = trn_user_item_feats_df.merge(articles, left_on=<span class="string">&#x27;click_article_id&#x27;</span>, right_on=<span class="string">&#x27;article_id&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_feats_df = val_user_item_feats_df.merge(articles, left_on=<span class="string">&#x27;click_article_id&#x27;</span>, right_on=<span class="string">&#x27;article_id&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">tst_user_item_feats_df = tst_user_item_feats_df.merge(articles, left_on=<span class="string">&#x27;click_article_id&#x27;</span>, right_on=<span class="string">&#x27;article_id&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="召回文章的主题是否在用户的爱好里面">召回文章的主题是否在用户的爱好里面</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">trn_user_item_feats_df[<span class="string">&#x27;is_cat_hab&#x27;</span>] = trn_user_item_feats_df.apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x.category_id <span class="keyword">in</span> <span class="built_in">set</span>(x.cate_list) <span class="keyword">else</span> <span class="number">0</span>, axis=<span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_feats_df[<span class="string">&#x27;is_cat_hab&#x27;</span>] = val_user_item_feats_df.apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x.category_id <span class="keyword">in</span> <span class="built_in">set</span>(x.cate_list) <span class="keyword">else</span> <span class="number">0</span>, axis=<span class="number">1</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br><span class="line">tst_user_item_feats_df[<span class="string">&#x27;is_cat_hab&#x27;</span>] = tst_user_item_feats_df.apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x.category_id <span class="keyword">in</span> <span class="built_in">set</span>(x.cate_list) <span class="keyword">else</span> <span class="number">0</span>, axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 线下验证</span></span><br><span class="line"><span class="keyword">del</span> trn_user_item_feats_df[<span class="string">&#x27;cate_list&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">del</span> val_user_item_feats_df[<span class="string">&#x27;cate_list&#x27;</span>]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">del</span> tst_user_item_feats_df[<span class="string">&#x27;cate_list&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> trn_user_item_feats_df[<span class="string">&#x27;article_id&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">del</span> val_user_item_feats_df[<span class="string">&#x27;article_id&#x27;</span>]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    val_user_item_feats_df = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">del</span> tst_user_item_feats_df[<span class="string">&#x27;article_id&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="保存特征">保存特征</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练验证特征</span></span><br><span class="line">trn_user_item_feats_df.to_csv(save_path + <span class="string">&#x27;trn_user_item_feats_df.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">if</span> val_user_item_feats_df <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">    val_user_item_feats_df.to_csv(save_path + <span class="string">&#x27;val_user_item_feats_df.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br><span class="line">tst_user_item_feats_df.to_csv(save_path + <span class="string">&#x27;tst_user_item_feats_df.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2>
+<p><strong>特征工程和数据清洗转换</strong>是比赛中至关重要的一块， 因为<strong>数据和特征</strong>决定了机器学习的<strong>上限</strong>，而算法和模型只是逼近这个上限而已，所以特征工程的好坏往往决定着最后的结果，特征工程可以一步增强数据的表达能力，通过构造新特征，我们可以挖掘出数据的更多信息，使得数据的表达能力进一步放大。 本内容，主要是先通过制作特征和标签把预测问题转成了监督学习问题，然后围绕着用户画像和文章画像进行一系列特征的制作， 此外，为了保证正负样本的数据均衡，采用的负采样技术等。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2020/12/02/%E5%A4%A9%E6%B1%A0%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90task3/">https://lzmcosmos.github.io/2020/12/02/%E5%A4%A9%E6%B1%A0%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90task3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/06/%E5%A4%A9%E6%B1%A0%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90task4/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">天池-新闻推荐之排序模型与模型融合</div></div></a></div><div class="next-post pull-right"><a href="/2020/12/01/Albert%E5%AE%9E%E6%88%98/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Albert实战</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">特征工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E7%9A%84%E7%9B%B4%E6%8E%A5%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.</span> <span class="toc-text">原始数据的直接特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E7%9B%91%E7%9D%A3%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="toc-number">1.2.</span> <span class="toc-text">构造监督数据集的思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E7%89%B9%E5%BE%81%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="toc-number">1.3.</span> <span class="toc-text">构造特征的思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E7%9A%84%E6%9E%84%E9%80%A0"><span class="toc-number">1.3.1.</span> <span class="toc-text">特征的构造</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E9%9C%80%E8%A6%81%E7%9A%84%E5%8C%85"><span class="toc-number">1.4.</span> <span class="toc-text">导入需要的包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#df%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0"><span class="toc-number">1.5.</span> <span class="toc-text">df节省内存函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="toc-number">1.6.</span> <span class="toc-text">数据读取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E5%92%8C%E9%AA%8C%E8%AF%81%E9%9B%86%E7%9A%84%E5%88%92%E5%88%86"><span class="toc-number">1.6.1.</span> <span class="toc-text">训练和验证集的划分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%8E%86%E5%8F%B2%E7%82%B9%E5%87%BB%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E6%AC%A1%E7%82%B9%E5%87%BB"><span class="toc-number">1.7.</span> <span class="toc-text">获取历史点击和最后一次点击</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E8%AE%AD%E7%BB%83%E9%AA%8C%E8%AF%81%E5%8F%8A%E6%B5%8B%E8%AF%95%E9%9B%86"><span class="toc-number">1.8.</span> <span class="toc-text">读取训练、验证及测试集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%8F%AC%E5%9B%9E%E5%88%97%E8%A1%A8"><span class="toc-number">1.9.</span> <span class="toc-text">读取召回列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8word2vec%E7%94%9F%E6%88%90%E7%82%B9%E5%87%BB%E5%BA%8F%E5%88%97%E7%9A%84embedding"><span class="toc-number">1.10.</span> <span class="toc-text">利用Word2Vec生成点击序列的Embedding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#embedding"><span class="toc-number">1.10.1.</span> <span class="toc-text">Embedding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#word2vec"><span class="toc-number">1.10.2.</span> <span class="toc-text">Word2Vec</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8gensim%E8%AE%AD%E7%BB%83word2vec"><span class="toc-number">1.10.3.</span> <span class="toc-text">使用gensim训练word2vec</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%96%B0%E9%97%BB%E7%9A%84embedding"><span class="toc-number">1.11.</span> <span class="toc-text">读取新闻的Embedding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%96%87%E7%AB%A0%E4%BF%A1%E6%81%AF"><span class="toc-number">1.12.</span> <span class="toc-text">读取文章信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.13.</span> <span class="toc-text">读取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%AE%AD%E7%BB%83%E6%95%B0%E6%8D%AE%E5%81%9A%E8%B4%9F%E9%87%87%E6%A0%B7"><span class="toc-number">1.14.</span> <span class="toc-text">对训练数据做负采样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86%E5%8F%AC%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E6%88%90%E5%AD%97%E5%85%B8"><span class="toc-number">1.15.</span> <span class="toc-text">将召回数据转换成字典</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-1"><span class="toc-number">1.16.</span> <span class="toc-text">特征工程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E4%B8%8E%E7%94%A8%E6%88%B7%E5%8E%86%E5%8F%B2%E8%A1%8C%E4%B8%BA%E7%9B%B8%E5%85%B3%E7%89%B9%E5%BE%81"><span class="toc-number">1.16.1.</span> <span class="toc-text">制作与用户历史行为相关特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%92%8C%E6%96%87%E7%AB%A0%E7%89%B9%E5%BE%81"><span class="toc-number">1.17.</span> <span class="toc-text">用户和文章特征</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9B%B8%E5%85%B3%E7%89%B9%E5%BE%81"><span class="toc-number">1.17.1.</span> <span class="toc-text">用户相关特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.18.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%88%86%E6%9E%90%E7%82%B9%E5%87%BB%E6%97%B6%E9%97%B4%E5%92%8C%E7%82%B9%E5%87%BB%E6%96%87%E7%AB%A0%E7%9A%84%E6%AC%A1%E6%95%B0%E5%8C%BA%E5%88%86%E7%94%A8%E6%88%B7%E6%B4%BB%E8%B7%83%E5%BA%A6"><span class="toc-number">1.18.1.</span> <span class="toc-text">1. 通过分析点击时间和点击文章的次数，区分用户活跃度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%88%86%E6%9E%90%E7%82%B9%E5%87%BB%E6%97%B6%E9%97%B4%E5%92%8C%E8%A2%AB%E7%82%B9%E5%87%BB%E6%96%87%E7%AB%A0%E7%9A%84%E6%AC%A1%E6%95%B0-%E8%A1%A1%E9%87%8F%E6%96%87%E7%AB%A0%E7%83%AD%E5%BA%A6%E7%89%B9%E5%BE%81"><span class="toc-number">1.18.2.</span> <span class="toc-text">2. 通过分析点击时间和被点击文章的次数， 衡量文章热度特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E5%90%84%E7%A7%8D%E4%B9%A0%E6%83%AF"><span class="toc-number">1.19.</span> <span class="toc-text">用户的各种习惯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E8%AE%BE%E5%A4%87%E4%B9%A0%E6%83%AF"><span class="toc-number">1.19.1.</span> <span class="toc-text">用户的设备习惯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E6%97%B6%E9%97%B4%E4%B9%A0%E6%83%AF"><span class="toc-number">1.19.2.</span> <span class="toc-text">用户的时间习惯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E4%B8%BB%E9%A2%98%E7%88%B1%E5%A5%BD"><span class="toc-number">1.19.3.</span> <span class="toc-text">用户的主题爱好</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E5%AD%97%E6%95%B0%E5%81%8F%E5%A5%BD%E7%89%B9%E5%BE%81"><span class="toc-number">1.19.4.</span> <span class="toc-text">用户的字数偏好特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E4%BF%A1%E6%81%AF%E7%89%B9%E5%BE%81%E5%90%88%E5%B9%B6%E4%BF%9D%E5%AD%98"><span class="toc-number">1.19.5.</span> <span class="toc-text">用户的信息特征合并保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%89%B9%E5%BE%81%E7%9B%B4%E6%8E%A5%E8%AF%BB%E5%85%A5"><span class="toc-number">1.19.6.</span> <span class="toc-text">用户特征直接读入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E7%9A%84%E7%89%B9%E5%BE%81%E7%9B%B4%E6%8E%A5%E8%AF%BB%E5%85%A5"><span class="toc-number">1.20.</span> <span class="toc-text">文章的特征直接读入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AC%E5%9B%9E%E6%96%87%E7%AB%A0%E7%9A%84%E4%B8%BB%E9%A2%98%E6%98%AF%E5%90%A6%E5%9C%A8%E7%94%A8%E6%88%B7%E7%9A%84%E7%88%B1%E5%A5%BD%E9%87%8C%E9%9D%A2"><span class="toc-number">1.21.</span> <span class="toc-text">召回文章的主题是否在用户的爱好里面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.22.</span> <span class="toc-text">保存特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.23.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

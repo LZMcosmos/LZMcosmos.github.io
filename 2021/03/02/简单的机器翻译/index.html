@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>简单的机器翻译 | LZMcosmos</title><meta name="keywords" content="简单的机器翻译"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="简单的机器翻译 1 任务描述 通过词向量和向量空间模型，将英文词翻译为法语词。 2 任务的数据 来自维基百科上的英文单词对应的词向量，以及法语单词对应的词向量。 但是全部的词及其词向量太大，所以只选择的部分数据。 2.1 数据的预处理 这部分是要生成单词和其词向量的字典。已经生成好的字典文件在这，直接利用en_embeddings.p和fr_embeddings.p文件即可。 获取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的机器翻译">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/03/02/%E7%AE%80%E5%8D%95%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="简单的机器翻译 1 任务描述 通过词向量和向量空间模型，将英文词翻译为法语词。 2 任务的数据 来自维基百科上的英文单词对应的词向量，以及法语单词对应的词向量。 但是全部的词及其词向量太大，所以只选择的部分数据。 2.1 数据的预处理 这部分是要生成单词和其词向量的字典。已经生成好的字典文件在这，直接利用en_embeddings.p和fr_embeddings.p文件即可。 获取">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-03-02T01:05:07.000Z">
+<meta property="article:modified_time" content="2021-03-02T14:34:32.972Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="简单的机器翻译">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/03/02/%E7%AE%80%E5%8D%95%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-02 22:34:32'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">简单的机器翻译</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-02T01:05:07.000Z" title="Created 2021-03-02 09:05:07">2021-03-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-02T14:34:32.972Z" title="Updated 2021-03-02 22:34:32">2021-03-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/NLP/">NLP</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简单的机器翻译">简单的机器翻译</h1>
+<h2 id="任务描述">1 任务描述</h2>
+<p>通过词向量和向量空间模型，将<strong>英文词</strong>翻译为<strong>法语词</strong>。</p>
+<h2 id="任务的数据">2 任务的数据</h2>
+<p>来自维基百科上的英文单词对应的词向量，以及法语单词对应的词向量。</p>
+<p>但是全部的词及其词向量太大，所以只选择的部分数据。</p>
+<h3 id="数据的预处理">2.1 数据的预处理</h3>
+<p>这部分是要<strong>生成单词和其词向量的字典</strong>。已经生成好的字典文件<a target="_blank" rel="noopener" href="https://github.com/LZMcosmos/NLP_AndrewNg/tree/master/Course%201%20-%20Classification%20and%20Vector%20Spaces/Labs/Week%204">在这</a>，直接利用<code>en_embeddings.p</code>和<code>fr_embeddings.p</code>文件即可。</p>
+<p>获取数据字典： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">en_embeddings_subset = pickle.load(<span class="built_in">open</span>(<span class="string">&quot;en_embeddings.p&quot;</span>, <span class="string">&quot;rb&quot;</span>))</span><br><span class="line">fr_embeddings_subset = pickle.load(<span class="built_in">open</span>(<span class="string">&quot;fr_embeddings.p&quot;</span>, <span class="string">&quot;rb&quot;</span>))</span><br></pre></td></tr></table></figure> ### 2.2 数据的格式</p>
+<p>上一步得到的数据为：</p>
+<ul>
+<li><p>en_embeddings_subset:键是英语词汇，值是300维的词向量。</p>
+<p><code>'the': array([ 0.08007812,  0.10498047,  0.04980469,  0.0534668 , -0.06738281, ....</code></p></li>
+<li><p>fr_embeddings_subset:键是法语词汇，值是300维的词向量。</p>
+<p><code>'la': array([-6.18250e-03, -9.43867e-04, -8.82648e-03,  3.24623e-02,...</code></p></li>
+</ul>
+<p>接着我们创建英文单词与法语单词的字典，即<code>英文单词:法语单词</code>。(用到的文件路径和上面的字典文件一样)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dict</span>(<span class="params">file_name</span>):</span></span><br><span class="line">	my_file = pd.read_csv(file_name, delimiter=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line"></span><br><span class="line">	etof = &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(my_file)):</span><br><span class="line">		en = my_file.iloc[i][<span class="number">0</span>]</span><br><span class="line">		fr = my_file.iloc[i][<span class="number">1</span>]</span><br><span class="line">		etof[en] = fr</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> etof</span><br><span class="line"></span><br><span class="line">en_fr_train = get_dict(<span class="string">&#x27;en_fr.train.txt&#x27;</span>)</span><br><span class="line">print(<span class="string">&#x27;The length of the English to French training dictionary is&#x27;</span>, <span class="built_in">len</span>(en_fr_train))</span><br><span class="line">en_fr_test = get_dict(<span class="string">&#x27;en_fr.test.txt&#x27;</span>)</span><br><span class="line">print(<span class="string">&#x27;The length of the English to French test dictionary is&#x27;</span>, <span class="built_in">len</span>(en_fr_train))</span><br></pre></td></tr></table></figure>
+<p>创建好的<code>英文单词:法语单词</code>词典如下所示： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#39;the&#39;: &#39;la&#39;,</span><br><span class="line">&#39;and&#39;: &#39;et&#39;,</span><br><span class="line">&#39;was&#39;: &#39;était&#39;,</span><br><span class="line">&#39;for&#39;: &#39;pour&#39;,</span><br></pre></td></tr></table></figure> ## 3 简单的机器翻译--利用线性变换进行单词翻译</p>
+<h3 id="生成输入和输出矩阵">3.1 生成输入和输出矩阵</h3>
+<p>这里将上面的数据生成矩阵形式，即利用<code>英文单词:法语单词</code>和<code>英文单词:词向量</code>以及<code>法语单词：词向量</code>生成<code>英文词向量:法语词向量</code>的矩阵。 <img src="/img/X_to_Y.jpg" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_matrices</span>(<span class="params">en_fr, french_vecs, english_vecs</span>):</span></span><br><span class="line">	    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Input:</span></span><br><span class="line"><span class="string">        en_fr: English to French dictionary</span></span><br><span class="line"><span class="string">        french_vecs: French words to their corresponding word embeddings.</span></span><br><span class="line"><span class="string">        english_vecs: English words to their corresponding word embeddings.</span></span><br><span class="line"><span class="string">    Output: </span></span><br><span class="line"><span class="string">        X: a matrix where the columns are the English embeddings.</span></span><br><span class="line"><span class="string">        Y: a matrix where the columns correspong to the French embeddings.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    X_l = <span class="built_in">list</span>()</span><br><span class="line">    Y_l = <span class="built_in">list</span>()</span><br><span class="line"></span><br><span class="line">    english_set = english_vecs.keys()</span><br><span class="line">    french_set = french_vecs.keys()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> en_word, fr_word <span class="keyword">in</span> en_fr.items():</span><br><span class="line">    	<span class="keyword">if</span> fr_word <span class="keyword">in</span> french_set <span class="keyword">and</span> en_word <span class="keyword">in</span> english_set:</span><br><span class="line">    		en_vec = english_vecs[en_word]</span><br><span class="line">    		fr_vec = french_vecs[fr_word]</span><br><span class="line"></span><br><span class="line">    		X_l.append(en_vec)</span><br><span class="line">    		Y_l.append(fr_vec)</span><br><span class="line"></span><br><span class="line">    X = np.vstack(X_l)</span><br><span class="line">    Y = np.vstack(Y_l)</span><br><span class="line">    <span class="keyword">return</span> X, Y</span><br><span class="line"></span><br><span class="line">X_train, Y_train = get_matrices(en_fr_train, fr_embeddings_subset, en_embeddings_subset)</span><br></pre></td></tr></table></figure>
+<h3 id="线性变换以及计算损失方程">3.2 线性变换以及计算损失方程</h3>
+<p>给定输入矩阵X(英语单词的词向量组成)和输出矩阵Y(法语单词的词向量组成)，生成变换矩阵<strong>R</strong>。算法核心可以描述为： <span class="math display">\[
+XR = Y
+\]</span></p>
+<p>将上述思想描述维最小化问题即为： <span class="math display">\[
+\arg \min _{\mathbf{R}}\| \mathbf{X R} - \mathbf{Y}\|_{F}\tag{1} 
+\]</span></p>
+<p>其中<span class="math inline">\(XR - Y\)</span>的2-范数： <span class="math display">\[
+\| \mathbf{XR} - \mathbf{Y}\|_
+{F}
+\]</span> 就是矩阵所有值各自平方然后求和再开根号。</p>
+<p>为了方便进行求导寻找最小值误差，通常计算的是 <span class="math display">\[
+\frac{1}{m} \|  \mathbf{X R} - \mathbf{Y} \|_
+{F}^{2}
+\]</span></p>
+<p>其中，<code>m</code>是样本的数量，除以m是因为我们更关注每个词向量的平均损失而不是整个训练集的总损失，让我们忽略掉训练集的大小。计算2-范数的平常是因为它比根号求导更简单。</p>
+<p>所以，最终的损失方程为：</p>
+<p><span class="math display">\[ 
+L(X, Y, R)=\frac{1}{m}\sum_{i=1}^{m} \sum_{j=1}^{n}\left( a_{i j} \right)^{2}
+\]</span> 其中，<span class="math inline">\(a_{i j}\)</span>是 <span class="math inline">\(\mathbf{XR}-\mathbf{Y}\)</span> 矩阵第i行第j列的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_loss</span>(<span class="params">X, Y, R</span>):</span></span><br><span class="line">	m = X.shape[<span class="number">0</span>]</span><br><span class="line">	diff = np.dot(X, R) - Y</span><br><span class="line">	diff_squared = diff**<span class="number">2</span></span><br><span class="line">	sum_diff_squared = np.<span class="built_in">sum</span>(diff_squared)</span><br><span class="line">	loss = sum_diff_squared/m</span><br><span class="line">	<span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<h3 id="计算损失方程的梯度">3.3 计算损失方程的梯度</h3>
+<p>关于变换矩阵R计算损失方程的梯度： <span class="math display">\[
+\frac{d}{dR}𝐿(𝑋,𝑌,𝑅)=\frac{d}{dR}\Big(\frac{1}{m}\| X R -Y\|_
+{F}^{2}\Big) = \frac{2}{m}X^{T} (X R - Y)
+\]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_gradient</span>(<span class="params">X, Y, R</span>):</span></span><br><span class="line">	m = X.shape[<span class="number">0</span>]</span><br><span class="line">	gradient = np.dot(X.T, np.dot(X, R)-Y)*(<span class="number">2</span>/m)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> gradient</span><br></pre></td></tr></table></figure>
+<h3 id="使用梯度下降法寻找最优线性变换矩阵r">3.4 使用梯度下降法寻找最优线性变换矩阵R</h3>
+<p>梯度下降法是用于寻找函数最优值的迭代算法。</p>
+<p>通常我们迭代一定的训练次数来终止而不是设置一个训练损失的界限。(我们最应该关注的是验证集损失的下降validation loss或者验证集准确度的上升，如果验证机准确度开始下降了的话说明已经过拟合了。)</p>
+<p>我们用上面计算得到的梯度<span class="math inline">\(g\)</span>，再设置一定的学习率(步长)<span class="math inline">\(\alpha\)</span>来更新变换方程： <span class="math display">\[
+R_{\text{new}}= R_{\text{old}}-\alpha g
+\]</span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span>(<span class="params">X, Y, train_steps=<span class="number">100</span>, learning_rate=<span class="number">0.003</span></span>):</span></span><br><span class="line">	np.random.seed(<span class="number">129</span>)</span><br><span class="line"></span><br><span class="line">	R = np.random.rand(X.shape[<span class="number">1</span>], X.shape[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(train_steps):</span><br><span class="line">		<span class="keyword">if</span> i%<span class="number">25</span> == <span class="number">0</span>:</span><br><span class="line">			print(<span class="string">&quot;loss at iteration &#123;&#125; is &#123;:.4f&#125;&quot;</span>.<span class="built_in">format</span>(i, compute_loss(X, Y, R)))</span><br><span class="line">		gradient = compute_gradient(X, Y, R)</span><br><span class="line"></span><br><span class="line">		R -= learning_rate*gradient</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> R</span><br></pre></td></tr></table></figure>
+<p>计算我们翻译用到的转换矩阵： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">R_train = update(X_train, Y_train, train_steps=<span class="number">400</span>, learning_rate=<span class="number">0.8</span>)</span><br></pre></td></tr></table></figure> ## 4 测试翻译结果</p>
+<p>给定测试案例<span class="math inline">\(e\)</span>，计算它翻译后的法语词向量：<span class="math inline">\(eR\)</span>，然后在法语词向量矩阵集合中寻找最相近的词向量，也就是找到了翻译后的法语词。</p>
+<p>那么直接在法语词向量矩阵中一行一行计算相似度求最小值的话是很慢的，为了寻找高效的解决办法，在这里利用KNN(k最近邻)算法，也就是在其周围最近的一个聚类里计算即可(不用全部都去计算)。</p>
+<p>首先，我们利用余弦相似度来描述词向量的相似度： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cosine_similarity</span>(<span class="params">A, B</span>):</span></span><br><span class="line">	cos = <span class="number">0</span></span><br><span class="line">	dot = np.dot(A, B)</span><br><span class="line">	norm_a = np.linalg.norm(A)</span><br><span class="line">	norm_b = np.linalg.norm(B)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> dot/(norm_a*norm_b)</span><br></pre></td></tr></table></figure> 接着我们来计算knn聚类后得到的近似： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knn</span>(<span class="params">v, candidates, k=<span class="number">1</span></span>):</span></span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Input:</span></span><br><span class="line"><span class="string">      - v, the vector you are going find the nearest neighbor for</span></span><br><span class="line"><span class="string">      - candidates: a set of vectors where we will find the neighbors</span></span><br><span class="line"><span class="string">      - k: top k nearest neighbors to find</span></span><br><span class="line"><span class="string">    Output:</span></span><br><span class="line"><span class="string">      - k_idx: the indices of the top k closest vectors in sorted form</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    similarity_l = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> candidates:</span><br><span class="line">    	cos_similarity = cosine_similarity(v, row)</span><br><span class="line">    	similarity_l.append(cos_similarity)</span><br><span class="line"></span><br><span class="line">    sorted_ids = np.argsort(similarity_l)</span><br><span class="line"></span><br><span class="line">    k_idx = sorted_ids[-k:] <span class="comment">##默认相似值从小到大，所以从后面大的开始</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> k_idx</span><br></pre></td></tr></table></figure> ### 测试准确度</p>
+<p>测试翻译的准确度。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_vocabulary</span>(<span class="params">X, Y, R</span>):</span></span><br><span class="line">	pred = np.dot(X, R)</span><br><span class="line">	num_correct = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(pred)):</span><br><span class="line">		pred_idx = knn(pred[i], Y) <span class="comment">## 默认k=1</span></span><br><span class="line">		<span class="keyword">if</span> pred_idx == i:</span><br><span class="line">			num_correct += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	accuracy = num_correct/<span class="built_in">len</span>(pred)</span><br><span class="line">	<span class="keyword">return</span> accuracy</span><br></pre></td></tr></table></figure> 计算翻译准确度： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X_val, Y_val = get_matrices(en_fr_test, fr_embeddings_subset, en_embeddings_subset)</span><br><span class="line">acc = test_vocabulary(X_val, Y_val, R_train)  <span class="comment"># 需要几分钟</span></span><br><span class="line">print(<span class="string">f&quot;accuracy on test set is <span class="subst">&#123;acc:<span class="number">.3</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/03/02/%E7%AE%80%E5%8D%95%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/">https://lzmcosmos.github.io/2021/03/02/%E7%AE%80%E5%8D%95%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%80%E5%8D%95%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/">简单的机器翻译</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/19/NLP%E4%B8%8E%E5%B8%B8%E8%A7%81%E5%9F%BA%E7%A1%80%E4%BB%BB%E5%8A%A1/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">NLP与常见基础任务、应用</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/01/PCA%E5%88%86%E6%9E%90%E7%AE%80%E4%BB%8B%E4%B8%8E%E4%BD%BF%E7%94%A8/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">PCA简介与实战</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91"><span class="toc-number">1.</span> <span class="toc-text">简单的机器翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">1 任务描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.</span> <span class="toc-text">2 任务的数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 数据的预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%E7%9F%A9%E9%98%B5"><span class="toc-number">1.2.2.</span> <span class="toc-text">3.1 生成输入和输出矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2%E4%BB%A5%E5%8F%8A%E8%AE%A1%E7%AE%97%E6%8D%9F%E5%A4%B1%E6%96%B9%E7%A8%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.2 线性变换以及计算损失方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%8D%9F%E5%A4%B1%E6%96%B9%E7%A8%8B%E7%9A%84%E6%A2%AF%E5%BA%A6"><span class="toc-number">1.2.4.</span> <span class="toc-text">3.3 计算损失方程的梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E5%AF%BB%E6%89%BE%E6%9C%80%E4%BC%98%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5r"><span class="toc-number">1.2.5.</span> <span class="toc-text">3.4 使用梯度下降法寻找最优线性变换矩阵R</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

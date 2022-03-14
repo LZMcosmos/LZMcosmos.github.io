@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>集成学习之Bagging | LZMcosmos</title><meta name="keywords" content="Bagging,投票法"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="集成学习之Bagging 0 关于集成学习要说的事 0.1 什么是集成学习？ 集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务。 集成学习的一般结构是：先产生一组“个体学习器”，再用某种策略将它们结合起来。个体学习器通常由一个现有的学习算法从训练数据产生，可以是决策树、BP神经网络等。  同质集成与异质集成：如果在集成的时候用到的个体学习器都是一样类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成学习之Bagging">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/04/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBagging/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="集成学习之Bagging 0 关于集成学习要说的事 0.1 什么是集成学习？ 集成学习(Ensemble Learning)通过构建并结合多个学习器来完成学习任务。 集成学习的一般结构是：先产生一组“个体学习器”，再用某种策略将它们结合起来。个体学习器通常由一个现有的学习算法从训练数据产生，可以是决策树、BP神经网络等。  同质集成与异质集成：如果在集成的时候用到的个体学习器都是一样类">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-04-13T02:47:16.000Z">
+<meta property="article:modified_time" content="2021-05-17T07:30:44.165Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="Bagging">
+<meta property="article:tag" content="投票法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/04/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBagging/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-17 15:30:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">集成学习之Bagging</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-13T02:47:16.000Z" title="Created 2021-04-13 10:47:16">2021-04-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-05-17T07:30:44.165Z" title="Updated 2021-05-17 15:30:44">2021-05-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="集成学习之bagging">集成学习之Bagging</h1>
+<h2 id="关于集成学习要说的事">0 关于集成学习要说的事</h2>
+<h3 id="什么是集成学习">0.1 什么是集成学习？</h3>
+<p><strong>集成学习</strong>(Ensemble Learning)通过构建并结合多个学习器来完成学习任务。</p>
+<p>集成学习的一般结构是：先产生一组“个体学习器”，再用某种策略将它们结合起来。<strong>个体学习器</strong>通常由一个现有的学习算法从训练数据产生，可以是决策树、BP神经网络等。</p>
+<blockquote>
+<p><strong>同质集成与异质集成</strong>：如果在集成的时候用到的个体学习器都是一样类型的，那么这样的集成是“同质”的；如果个体学习器存在不同的类型，那么这样的集成就是“异质”的。</p>
+</blockquote>
+<h3 id="集成学习怎么才能获得好的结果">0.2 集成学习怎么才能获得好的结果？</h3>
+<p>集成学习把多个学习器结合起来，如何能获得比最好的单一学习器更好的性能呢？</p>
+<p>考虑一个简单的例子：在二分类任务中，假定有三个分类器在三个测试样本上的表现如下图所示，根据投票法(少数服从多数)产生集成后的结果。图中对号代表分类正确，叉号代表分类错误。那么，分析可知不同分类器需要<strong>好而不同</strong>才能达到提升效果的作用，也就是需要各个分类器都有不错的分类效果同时它们还要有差异(多样性--否则集成就没有什么提升的作用了)。但其实个体学习器的“准确性”和“多样性”本身是存在冲突的，如何做到“好而不同”恰恰是集成学习研究的核心。 <img src="/img/ensembleLearning_good_different.png" /></p>
+<h3 id="集成学习方法的分类">0.3 集成学习方法的分类</h3>
+<p>目前，集成学习大致可以分为<strong>Bagging、Boosting、Stacking</strong>。</p>
+<p>先简单来看这三种类型的集成学习是什么样的，后面再分开仔细学习。</p>
+<ul>
+<li><strong>Bagging</strong></li>
+</ul>
+<p>Bagging是指每个基学习器进行有放回抽样得到子训练集，然后每个基学习器基于其训练集进行训练，最后综合所有基学习器的预测值得到最终的预测结果。（这里综合的方法常常是投票法，票数最多的类别作为最终的预测类别。）整个训练和测试过程如下图所示： <img src="/img/bagging_intro.jpg" /></p>
+<ul>
+<li><strong>Boosting</strong></li>
+</ul>
+<p>Boosting是指每个基学习器在前一个基学习器的基础上进行学习，最后综合所有基学习器的预测值产生最终的预测结果。（这里综合的方法常常是加权法。）整个训练和测试过程如下图所示： <img src="/img/boosting_intro.jpg" /></p>
+<ul>
+<li><strong>Stacking</strong></li>
+</ul>
+<p>Stacking是先用全部数据训练好各个基学习器，然后基学习器对每个训练样本的预测值作为新的训练样本的特征值(相当于x'，真实值作为这里x'的y---标签不变，然后这个新的训练样本在一个模型上进行训练得到的预测值为最终的预测结果。也就是说原来的投票法、加权法等等方式变成了利用一个模型来学习得出最后的结果。整个训练和测试过程如下图所示： <img src="/img/stacking_intro.jpg" /></p>
+<h2 id="什么是bagging">1 什么是Bagging？</h2>
+<p>上一部分给出了Bagging的简单描述，这里来更详细地了解它。</p>
+<p>首先，在一开始我们知道了集成学习需要“好而不同”的模型，在Bagging这种类型的集成学习方法中，通过<strong>自助采样(bootstrap)</strong>或者叫<strong>有放回抽样</strong>得到不同的子训练集，然后个体学习器基于不同的子训练集进行训练。这样的考虑是为了通过采样得到的子训练集的不同来增加各个个体学习器之间的差异性。</p>
+<p>自助采样或者有放回抽样的具体实现是，假设我们拥有训练集X，首选随机取出一个样本放入采样集合<span class="math inline">\(X_sub\)</span>中，再把这个样本放回训练集X，重复K次采样，最终获取到了一个大小为K的子训练集<span class="math inline">\(X_sub\)</span>。重复上面的抽样N次，就可以得到T个子训练集。这T个子训练集分别投喂到不同的个体学习器中训练，最后将它们结合得到最后的结果。如果问题属于<strong>回归</strong>问题，那么最后的结合是指将各个个体学习器的结果求平均值；如果问题属于<strong>分类</strong>问题，那么最后的结合是指对各个个体学习器的结果进行投票(少数服从多数)。 <img src="/img/bagging_classification.png" /></p>
+<h2 id="投票法">2 投票法</h2>
+<p>在Bagging的过程中最后用到了投票法进行最后结果的选择，如上一部分所示。对于回归模型来说，投票法最终的预测结果是多个其他回归模型预测结果的平均值。对于分类模型，<strong>硬投票法</strong>的预测结果是多个模型预测结果中出现次数最多的类别，<strong>软投票</strong>对各类预测结果的概率进行求和，最终选取概率之和最大的类标签。</p>
+<blockquote>
+<p>关于硬投票和软投票，它们可能对同一任务得到不同的结果。因为相对于硬投票来说，软投票考虑到了预测概率这一额外的信息，因此可以得出比硬投票更加准确的预测结果。</p>
+</blockquote>
+<h2 id="基于sklearn的bagging案例分析">3 基于sklearn的Bagging案例分析</h2>
+<p>在sklearn中基于Bagging方法的有<code>BaggingRegressor</code>和<code>BaggingClassifier</code>。下面是使用sklearn来实现基于决策树进行分类的Bagging，也就是说上面所述的个体学习器为决策树。</p>
+<ol type="1">
+<li><p>首先创建含有1000个样本的随机分类数据集，每个样本应有20维的特征。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"></span><br><span class="line">X, y = make_classification(n_samples=<span class="number">1000</span>, n_features=<span class="number">20</span>, n_informative=<span class="number">15</span>, n_redundant=<span class="number">5</span>, random_state=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">print(X, y)</span><br></pre></td></tr></table></figure> 输出：<code>(1000, 20) (1000,)</code></p></li>
+<li><p>使用重复的分层k-fold交叉验证来评估<code>BaggingClassifier()</code>，一共重复三次，每次有10个fold。</p></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> mean</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> std</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RepeatStratifiedKFold</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> BaggingClassifier</span><br><span class="line"></span><br><span class="line">model = BaggingClassifier()</span><br><span class="line"></span><br><span class="line">cv = RepeatStratifiedKFold(n_splits=<span class="number">10</span>, n_repeats=<span class="number">3</span>, random_state=<span class="number">1</span>)</span><br><span class="line">n_scores = cross_val_score(model, X, y, scoring=<span class="string">&#x27;accuracy&#x27;</span>, cv=cv, n_jobs=-<span class="number">1</span>, error_score=<span class="string">&#x27;raise&#x27;</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;Accuracy is %.3f , the standard deviation of accuracy is %.3f&#x27;</span> % (mean(n_scores), std(n_scores)))</span><br></pre></td></tr></table></figure>
+<p>输出：<code>Accuracy is 0.859 , the standard deviation of accuracy is 0.032</code></p>
+<p>其中，在<code>cross_val_score</code>函数中，<code>scoring</code>代表调用方法(包括accuracy和mean_squared_error等等)，<code>cv</code>代表交叉验证参数，<code>n_jobs</code>用于设置同时工作的cpu个数（-1代表全部），<code>error_score</code>表示 如果在估计器拟合中发生错误，要分配给该分数的值（一般不需要指定，默认为raise，它表示在模型拟合过程如果产生误差，在raise情况下，误差分数将会提高）。</p>
+<h2 id="参考">参考</h2>
+<blockquote>
+<p>西瓜书</p>
+</blockquote>
+<blockquote>
+<p>阿泽知乎<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/86263786">传动门</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42211626/article/details/100064842">交叉验证以及scikit-learn中的cross_val_score详解</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/04/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBagging/">https://lzmcosmos.github.io/2021/04/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBagging/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Bagging/">Bagging</a><a class="post-meta__tags" href="/tags/%E6%8A%95%E7%A5%A8%E6%B3%95/">投票法</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/19/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8BBoosting/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">集成学习之Boosting</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/07/Glyce/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Glyce:汉字字形词向量</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B9%8Bbagging"><span class="toc-number">1.</span> <span class="toc-text">集成学习之Bagging</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E8%A6%81%E8%AF%B4%E7%9A%84%E4%BA%8B"><span class="toc-number">1.1.</span> <span class="toc-text">0 关于集成学习要说的事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.1.1.</span> <span class="toc-text">0.1 什么是集成学习？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E6%80%8E%E4%B9%88%E6%89%8D%E8%83%BD%E8%8E%B7%E5%BE%97%E5%A5%BD%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-number">1.1.2.</span> <span class="toc-text">0.2 集成学习怎么才能获得好的结果？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.3.</span> <span class="toc-text">0.3 集成学习方法的分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFbagging"><span class="toc-number">1.2.</span> <span class="toc-text">1 什么是Bagging？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%95%E7%A5%A8%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">2 投票法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8Esklearn%E7%9A%84bagging%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.4.</span> <span class="toc-text">3 基于sklearn的Bagging案例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.5.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

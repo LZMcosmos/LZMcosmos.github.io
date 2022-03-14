@@ -1,0 +1,428 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XGBoost与LightGBM | LZMcosmos</title><meta name="keywords" content="XGBoost,LightGBM"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="XGBoost 1 XGBoost 1.1 什么是XGBoost? XGBoost：eXtreme Gradient Boosting，从名字上我们知道它是在梯度提升Gradient Boosting框架下的集成学习算法。 XGBoost是之前博客所讲的GBDT(传送门)的高效实现。XGBoost中的基学习器可以是CART决策树，也可以是线性分类器。我们说XGBoost是GBDT的高效实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XGBoost与LightGBM">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/04/26/XGBoost/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="XGBoost 1 XGBoost 1.1 什么是XGBoost? XGBoost：eXtreme Gradient Boosting，从名字上我们知道它是在梯度提升Gradient Boosting框架下的集成学习算法。 XGBoost是之前博客所讲的GBDT(传送门)的高效实现。XGBoost中的基学习器可以是CART决策树，也可以是线性分类器。我们说XGBoost是GBDT的高效实现">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-04-26T01:07:38.000Z">
+<meta property="article:modified_time" content="2021-05-17T07:19:07.227Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="XGBoost">
+<meta property="article:tag" content="LightGBM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/04/26/XGBoost/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-17 15:19:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">XGBoost与LightGBM</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-26T01:07:38.000Z" title="Created 2021-04-26 09:07:38">2021-04-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-05-17T07:19:07.227Z" title="Updated 2021-05-17 15:19:07">2021-05-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="xgboost">XGBoost</h1>
+<h2 id="xgboost-1">1 XGBoost</h2>
+<h3 id="什么是xgboost">1.1 什么是XGBoost?</h3>
+<p>XGBoost：eXtreme Gradient Boosting，从名字上我们知道它是在梯度提升Gradient Boosting框架下的集成学习算法。</p>
+<p>XGBoost是之前博客所讲的GBDT(<a href="https://lzmcosmos.github.io/2021/04/22/GBDT/">传送门</a>)的<strong>高效实现</strong>。XGBoost中的基学习器可以是CART决策树，也可以是线性分类器。我们说XGBoost是GBDT的高效实现，那么XGBoost和GBDT的区别是？</p>
+<p><strong>XGBoost和GBDT的区别</strong>：</p>
+<ul>
+<li><p>XGBoost给损失函数增加了<strong>正则化项</strong>(L1正则项或者L2正则项——视学习目标的不同而取不同的正则化项)。</p></li>
+<li><p>有些损失函数是很难计算出导数的，考虑到这种情况XGBoost使用损失函数的二阶泰勒展开来近似损失函数。</p></li>
+<li><p>GBDT中决策树在节点分裂时<strong>遍历所有特征的所有可能划分</strong>，然后再选择最优分裂点。XGBoost在节点分裂时使用<strong>分位点及分位数</strong>近似地计算，有效降低计算量。</p></li>
+</ul>
+<h3 id="xgboost的原理与推导">1.2 XGBoost的原理与推导</h3>
+<p>假设数据集为：<span class="math inline">\(\mathcal{D}=\left\{\left(\mathbf{x}_{i}, y_{i}\right)\right\}\left(|\mathcal{D}|=n, \mathbf{x}_{i} \in \mathbb{R}^{m}, y_{i} \in \mathbb{R}\right)\)</span>。</p>
+<p><strong>(1) 明确目标函数(优化目标)</strong></p>
+<p>假设有K棵树，则第i个样本的输出为<span class="math inline">\(\hat{y}_{i}=\phi\left(\mathrm{x}_{i}\right)=\sum_{k=1}^{K} f_{k}\left(\mathrm{x}_{i}\right), \quad f_{k} \in \mathcal{F}\)</span>，其中，<span class="math inline">\(\mathcal{F}=\left\{f(\mathbf{x})=w_{q(\mathbf{x})}\right\}\left(q: \mathbb{R}^{m} \rightarrow T, w \in \mathbb{R}^{T}\right)\)</span>。</p>
+<p>优化的目标函数为： <img src="/img/xgboost_obj.svg" /></p>
+<p>明确了优化目标之后，我们要做的就是找到一组决策树使得目标函数最小，也就是使得样本的损失与模型复杂度之和最小。</p>
+<p>已知XGBoost算法是基于“加法模型+前向分布算法”(详见<a href="https://lzmcosmos.github.io/2021/04/22/GBDT/">传送门</a>)，所以在求解一组决策树使得目标函数最小时采用了<strong>追加法</strong>进行模型的训练：</p>
+<p>在已经训练好<span class="math inline">\(T_1 ~ T_{t-1}\)</span>棵树后固定，第t棵树<span class="math inline">\(T_t\)</span>可以表示为: <img src="/img/xgboost_tree.svg" /></p>
+<p>那么对第t棵树进行训练时的目标函数为： <img src="/img/xgboost_t_obj.svg" /></p>
+<p><strong>(2) 目标函数的简化与展开</strong></p>
+<p>上一部分我们知道了训练时需要关注的是第t棵树加入后的目标函数： <img src="/img/xgboost_t_obj.svg" /></p>
+<ul>
+<li><strong>简化</strong></li>
+</ul>
+<p>如果我们将上面的目标函数中所包含的损失函数进行一个近似，那么面对复杂的损失函数的时候便可以比较容易计算。这个时候，XGBoost利用了损失函数的泰勒二阶展开进行近似： <img src="/img/xgboost_tayler_approximation.svg" /></p>
+<blockquote>
+<p>函数的泰勒N阶展开是： <span class="math display">\[
+f(x)=\frac{f\left(x_{0}\right)}{0 !}+\frac{f^{\prime}\left(x_{0}\right)}{1 !}\left(x-x_{0}\right)+\frac{f^{\prime \prime}\left(x_{0}\right)}{2 !}\left(x-x_{0}\right)^{2}+\ldots+\frac{f^{(n)}\left(x_{0}\right)}{n !}\left(x-x_{0}\right)^{n}+......
+\]</span> 对函数进行泰勒展开是对函数的某点进行多项式拟合。</p>
+</blockquote>
+<p>又由于前面t-1棵树已经固定，那么 <img src="/img/xgboost_t_obj_simple.svg" /></p>
+<ul>
+<li><strong>展开</strong></li>
+</ul>
+<p>在这里我们将目标函数中的模型复杂度的惩罚项<span class="math inline">\(\omega(f_t)\)</span>进行展开。</p>
+<p>假设我们待训练的第t棵树有T个叶子节点，所有的叶子节点的输出(向量)用<span class="math inline">\([w_1, w_2, \cdots, w_T]\)</span>表示。因为我们的样本通过决策书的各个节点的判断后会抵达不同的叶子节点，那么样本和叶子节点的映射关系设为 <span class="math inline">\(q(x):R^d -&gt; {1, 2, \cdots, T}\)</span>，<span class="math inline">\(q(x)\)</span>即代表叶子节点上的样本集合。那么对于第t棵树的输出向量表示为：<span class="math inline">\(w_{q(x)}\)</span>，即<span class="math inline">\(f(x) = w_{q(x)}\)</span>。最后，模型复杂项为： <img src="/img/xgboost_omega.svg" /></p>
+<p>该模型复杂项中前面是对叶子节点的数量进行了限制，防止决策树生成地特别大；后面是对决策树的叶子节点对应的权重(输出)<span class="math inline">\(w_j\)</span>进行了L2正则化。其中，<span class="math inline">\(\gamma\)</span>和<span class="math inline">\(lambda\)</span>代表惩罚力度。</p>
+<p>最终，Xgboost的目标函数为： <img src="/img/xgboost_final_obj.svg" /></p>
+<p><strong>(3) 目标函数的优化</strong></p>
+<p>这里，优化目标函数就是求目标函数的最小值，也就是： <img src="/img/xgboost_argmin_obj.svg" /></p>
+<h3 id="xgboost的决策树中的节点分裂">1.3 XGBoost的决策树中的节点分裂</h3>
+<p>在上面的部分，我们直接利用了每棵生成好的决策树，但是决策树是如何生成的呢？</p>
+<p>决策树是通过一个个的节点的分裂的来的。节点的分裂考虑分裂的时候能使得损失函数减小最大(减小最快)。假设<strong>Gain</strong>为分裂后的损失函数值减去分裂前损失函数值，那么也就是分裂后左子树的最小损失值(最小目标值)加上分裂后右子树的最小损失值 减去(-) 不分裂前的最小损失值： <img src="/img/xgboost_gain_split.svg" /></p>
+<p>那么节点分裂时如何找到能够使得Gain最大的特征及其特征值呢？</p>
+<p>XGBoost采用<strong>近似算法</strong>：对于某个特征k，算法首先根据特征分布的分位数找到特征切割点的候选集合<span class="math inline">\(S_k = S_{k_1}, S_{k_2, \cdots, S_{k_l}}\)</span>（也就是对特征的值根据分位数采样得到分割点的候选集合--分位数就是百分数，可以自己搜索了解），然后遍历各个切分后的样本，选择使得Gain最大的值进行分裂。</p>
+<blockquote>
+<p>在GBDT中，决策树(CART)使用<strong>精确贪心算法</strong>进行叶子节点的分裂，选择的是<strong>当前</strong>最优的分裂策略。计算过程参考： <img src="/img/xgboost_greedy_split.png" /></p>
+</blockquote>
+<h2 id="xgboost的实践与使用">2 XGBoost的实践与使用</h2>
+<h3 id="xgboost机器学习库">2.1 XGBoost机器学习库</h3>
+<p><strong>安装XGBoost：</strong></p>
+<p><code>pip3 install xgboost</code></p>
+<p><code>pip install xgboost</code></p>
+<p><strong>数据接口：</strong></p>
+<p>五种数据格式如下：(演示代码) <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="comment"># 1.LibSVM文本格式文件</span></span><br><span class="line">dtrain = xgb.DMatrix(<span class="string">&#x27;train.svm.txt&#x27;</span>)</span><br><span class="line">dtest = xgb.DMatrix(<span class="string">&#x27;test.svm.buffer&#x27;</span>)</span><br><span class="line"><span class="comment"># 2.CSV文件(不能含类别文本变量，如果存在文本变量请做特征处理如one-hot)</span></span><br><span class="line">dtrain = xgb.DMatrix(<span class="string">&#x27;train.csv?format=csv&amp;label_column=0&#x27;</span>)</span><br><span class="line">dtest = xgb.DMatrix(<span class="string">&#x27;test.csv?format=csv&amp;label_column=0&#x27;</span>)</span><br><span class="line"><span class="comment"># 3.NumPy数组</span></span><br><span class="line">data = np.random.rand(<span class="number">5</span>, <span class="number">10</span>)  <span class="comment"># 5 entities, each contains 10 features</span></span><br><span class="line">label = np.random.randint(<span class="number">2</span>, size=<span class="number">5</span>)  <span class="comment"># binary target</span></span><br><span class="line">dtrain = xgb.DMatrix(data, label=label)</span><br><span class="line"><span class="comment"># 4.scipy.sparse数组</span></span><br><span class="line">csr = scipy.sparse.csr_matrix((dat, (row, col)))</span><br><span class="line">dtrain = xgb.DMatrix(csr)</span><br><span class="line"><span class="comment"># 5.pandas数据框dataframe</span></span><br><span class="line">data = pandas.DataFrame(np.arange(<span class="number">12</span>).reshape((<span class="number">4</span>,<span class="number">3</span>)), columns=[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>])</span><br><span class="line">label = pandas.DataFrame(np.random.randint(<span class="number">2</span>, size=<span class="number">4</span>))</span><br><span class="line">dtrain = xgb.DMatrix(data, label=label)</span><br></pre></td></tr></table></figure> &gt; 先保存到XGBoost二进制文件中将使加载速度更快，然后再加载进来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.保存DMatrix到XGBoost二进制文件中</span></span><br><span class="line">dtrain = xgb.DMatrix(<span class="string">&#x27;train.svm.txt&#x27;</span>)</span><br><span class="line">dtrain.save_binary(<span class="string">&#x27;train.buffer&#x27;</span>)</span><br><span class="line"><span class="comment"># 2. 缺少的值可以用DMatrix构造函数中的默认值替换：</span></span><br><span class="line">dtrain = xgb.DMatrix(data, label=label, missing=-<span class="number">999.0</span>)</span><br><span class="line"><span class="comment"># 3.可以在需要时设置权重：</span></span><br><span class="line">w = np.random.rand(<span class="number">5</span>, <span class="number">1</span>)</span><br><span class="line">dtrain = xgb.DMatrix(data, label=label, missing=-<span class="number">999.0</span>, weight=w)</span><br></pre></td></tr></table></figure>
+<p><strong>参数的设置方式：</strong></p>
+<p>下面代码用于展示xgboost中的参数设置：(可运行) <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split  <span class="comment"># 切分训练集与测试集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder   <span class="comment"># 标签化分类变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载并处理数据</span></span><br><span class="line">df_wine = pd.read_csv(<span class="string">&#x27;https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data&#x27;</span>,header=<span class="literal">None</span>)</span><br><span class="line">df_wine.columns = [<span class="string">&#x27;Class label&#x27;</span>, <span class="string">&#x27;Alcohol&#x27;</span>,<span class="string">&#x27;Malic acid&#x27;</span>, <span class="string">&#x27;Ash&#x27;</span>,<span class="string">&#x27;Alcalinity of ash&#x27;</span>,<span class="string">&#x27;Magnesium&#x27;</span>, <span class="string">&#x27;Total phenols&#x27;</span>,</span><br><span class="line">                   <span class="string">&#x27;Flavanoids&#x27;</span>, <span class="string">&#x27;Nonflavanoid phenols&#x27;</span>,<span class="string">&#x27;Proanthocyanins&#x27;</span>,<span class="string">&#x27;Color intensity&#x27;</span>, <span class="string">&#x27;Hue&#x27;</span>,<span class="string">&#x27;OD280/OD315 of diluted wines&#x27;</span>,<span class="string">&#x27;Proline&#x27;</span>] </span><br><span class="line">df_wine = df_wine[df_wine[<span class="string">&#x27;Class label&#x27;</span>] != <span class="number">1</span>]  <span class="comment"># drop 1 class      </span></span><br><span class="line">y = df_wine[<span class="string">&#x27;Class label&#x27;</span>].values</span><br><span class="line">X = df_wine[[<span class="string">&#x27;Alcohol&#x27;</span>,<span class="string">&#x27;OD280/OD315 of diluted wines&#x27;</span>]].values</span><br><span class="line"></span><br><span class="line">le = LabelEncoder()</span><br><span class="line">y = le.fit_transform(y)</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.2</span>,random_state=<span class="number">1</span>,stratify=y)</span><br><span class="line">dtrain = xgb.DMatrix(X_train, label=y_train)</span><br><span class="line">dtest = xgb.DMatrix(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.设置Booster 参数</span></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">&#x27;booster&#x27;</span>: <span class="string">&#x27;gbtree&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;objective&#x27;</span>: <span class="string">&#x27;multi:softmax&#x27;</span>,  <span class="comment"># 多分类的问题</span></span><br><span class="line">    <span class="string">&#x27;num_class&#x27;</span>: <span class="number">10</span>,               <span class="comment"># 类别数，与 multisoftmax 并用</span></span><br><span class="line">    <span class="string">&#x27;gamma&#x27;</span>: <span class="number">0.1</span>,                  <span class="comment"># 用于控制是否后剪枝的参数,越大越保守，一般0.1、0.2这样子。</span></span><br><span class="line">    <span class="string">&#x27;max_depth&#x27;</span>: <span class="number">12</span>,               <span class="comment"># 构建树的深度，越大越容易过拟合</span></span><br><span class="line">    <span class="string">&#x27;lambda&#x27;</span>: <span class="number">2</span>,                   <span class="comment"># 控制模型复杂度的权重值的L2正则化项参数，参数越大，模型越不容易过拟合。</span></span><br><span class="line">    <span class="string">&#x27;subsample&#x27;</span>: <span class="number">0.7</span>,              <span class="comment"># 随机采样训练样本</span></span><br><span class="line">    <span class="string">&#x27;colsample_bytree&#x27;</span>: <span class="number">0.7</span>,       <span class="comment"># 生成树时进行的列采样</span></span><br><span class="line">    <span class="string">&#x27;min_child_weight&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="string">&#x27;silent&#x27;</span>: <span class="number">1</span>,                   <span class="comment"># 设置成1则没有运行信息输出，最好是设置为0.</span></span><br><span class="line">    <span class="string">&#x27;eta&#x27;</span>: <span class="number">0.007</span>,                  <span class="comment"># 如同学习率</span></span><br><span class="line">    <span class="string">&#x27;seed&#x27;</span>: <span class="number">1000</span>,</span><br><span class="line">    <span class="string">&#x27;nthread&#x27;</span>: <span class="number">4</span>,                  <span class="comment"># cpu 线程数</span></span><br><span class="line">    <span class="string">&#x27;eval_metric&#x27;</span>:<span class="string">&#x27;mlogloss&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">plst = <span class="built_in">list</span>(params.items())</span><br></pre></td></tr></table></figure> <strong>训练：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 2.训练</span></span><br><span class="line">num_round = <span class="number">20</span></span><br><span class="line">bst = xgb.train( plst, dtrain, num_round)</span><br></pre></td></tr></table></figure>
+<p><strong>保存模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3.保存模型</span></span><br><span class="line">bst.save_model(<span class="string">&#x27;0001.model&#x27;</span>)</span><br><span class="line"><span class="comment"># dump model</span></span><br><span class="line">bst.dump_model(<span class="string">&#x27;dump.raw.txt&#x27;</span>)</span><br><span class="line"><span class="comment"># dump model with feature map</span></span><br><span class="line"><span class="comment">#bst.dump_model(&#x27;dump.raw.txt&#x27;, &#x27;featmap.txt&#x27;)</span></span><br></pre></td></tr></table></figure>
+<p><strong>加载保存的模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4.加载保存的模型：</span></span><br><span class="line">bst = xgb.Booster(&#123;<span class="string">&#x27;nthread&#x27;</span>: <span class="number">4</span>&#125;)  <span class="comment"># init model</span></span><br><span class="line">bst.load_model(<span class="string">&#x27;0001.model&#x27;</span>)  <span class="comment"># load data</span></span><br></pre></td></tr></table></figure>
+<p><strong>预测：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 6.预测</span></span><br><span class="line">ypred = bst.predict(dtest)</span><br></pre></td></tr></table></figure>
+<p><strong>绘制重要性特征图：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># jupyter中显示图片</span></span><br><span class="line">%matplotlib inline  </span><br><span class="line"><span class="comment"># 绘制特征重要性</span></span><br><span class="line">xgb.plot_importance(bst)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/xgboost_tool_graph.png" /></p>
+<h3 id="xgboost算法案例">2.2 Xgboost算法案例</h3>
+<ul>
+<li><strong>分类案例</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">from</span> xgboost <span class="keyword">import</span> plot_importance</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score   <span class="comment"># 准确率</span></span><br><span class="line"><span class="comment"># 加载样本数据集</span></span><br><span class="line">iris = load_iris()</span><br><span class="line">X,y = iris.data,iris.target</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">1234565</span>) <span class="comment"># 数据集分割</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 算法参数</span></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">&#x27;booster&#x27;</span>: <span class="string">&#x27;gbtree&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;objective&#x27;</span>: <span class="string">&#x27;multi:softmax&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;num_class&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="string">&#x27;gamma&#x27;</span>: <span class="number">0.1</span>,</span><br><span class="line">    <span class="string">&#x27;max_depth&#x27;</span>: <span class="number">6</span>,</span><br><span class="line">    <span class="string">&#x27;lambda&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;subsample&#x27;</span>: <span class="number">0.7</span>,</span><br><span class="line">    <span class="string">&#x27;colsample_bytree&#x27;</span>: <span class="number">0.75</span>,</span><br><span class="line">    <span class="string">&#x27;min_child_weight&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="string">&#x27;silent&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;eta&#x27;</span>: <span class="number">0.1</span>,</span><br><span class="line">    <span class="string">&#x27;seed&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">&#x27;nthread&#x27;</span>: <span class="number">4</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">plst = params.items()</span><br><span class="line"></span><br><span class="line">dtrain = xgb.DMatrix(X_train, y_train) <span class="comment"># 生成数据集格式</span></span><br><span class="line">num_rounds = <span class="number">500</span></span><br><span class="line">model = xgb.train(plst, dtrain, num_rounds) <span class="comment"># xgboost模型训练</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对测试集进行预测</span></span><br><span class="line">dtest = xgb.DMatrix(X_test)</span><br><span class="line">y_pred = model.predict(dtest)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算准确率</span></span><br><span class="line">accuracy = accuracy_score(y_test,y_pred)</span><br><span class="line">print(<span class="string">&quot;accuarcy: %.2f%%&quot;</span> % (accuracy*<span class="number">100.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示重要特征</span></span><br><span class="line">plot_importance(model)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>输出：<code>accuarcy: 96.67%</code> <img src="/img/xgboost_tool_graph1.png" /></p>
+<ul>
+<li><strong>回归案例</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">from</span> xgboost <span class="keyword">import</span> plot_importance</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line">boston = load_boston()</span><br><span class="line">X,y = boston.data,boston.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># XGBoost训练过程</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">&#x27;booster&#x27;</span>: <span class="string">&#x27;gbtree&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;objective&#x27;</span>: <span class="string">&#x27;reg:squarederror&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;gamma&#x27;</span>: <span class="number">0.1</span>,</span><br><span class="line">    <span class="string">&#x27;max_depth&#x27;</span>: <span class="number">5</span>,</span><br><span class="line">    <span class="string">&#x27;lambda&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="string">&#x27;subsample&#x27;</span>: <span class="number">0.7</span>,</span><br><span class="line">    <span class="string">&#x27;colsample_bytree&#x27;</span>: <span class="number">0.7</span>,</span><br><span class="line">    <span class="string">&#x27;min_child_weight&#x27;</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="string">&#x27;silent&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">&#x27;eta&#x27;</span>: <span class="number">0.1</span>,</span><br><span class="line">    <span class="string">&#x27;seed&#x27;</span>: <span class="number">1000</span>,</span><br><span class="line">    <span class="string">&#x27;nthread&#x27;</span>: <span class="number">4</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dtrain = xgb.DMatrix(X_train, y_train)</span><br><span class="line">num_rounds = <span class="number">300</span></span><br><span class="line">plst = params.items()</span><br><span class="line">model = xgb.train(plst, dtrain, num_rounds)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对测试集进行预测</span></span><br><span class="line">dtest = xgb.DMatrix(X_test)</span><br><span class="line">ans = model.predict(dtest)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示重要特征</span></span><br><span class="line">plot_importance(model)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/img/xgboost_tool_graph2.png" /></p>
+<h3 id="结合sklearn网格搜索的xgboost调参">2.3 结合sklearn网格搜索的XGBoost调参</h3>
+<p>数据很多的时候时间会比较久。(还是手动调参...)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score</span><br><span class="line"></span><br><span class="line">iris = load_iris()</span><br><span class="line">X,y = iris.data,iris.target</span><br><span class="line">col = iris.target_names </span><br><span class="line">train_x, valid_x, train_y, valid_y = train_test_split(X, y, test_size=<span class="number">0.3</span>, random_state=<span class="number">1</span>)   <span class="comment"># 分训练集和验证集</span></span><br><span class="line">parameters = &#123;</span><br><span class="line">              <span class="string">&#x27;max_depth&#x27;</span>: [<span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>],</span><br><span class="line">              <span class="string">&#x27;learning_rate&#x27;</span>: [<span class="number">0.01</span>, <span class="number">0.02</span>, <span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.15</span>],</span><br><span class="line">              <span class="string">&#x27;n_estimators&#x27;</span>: [<span class="number">500</span>, <span class="number">1000</span>, <span class="number">2000</span>, <span class="number">3000</span>, <span class="number">5000</span>],</span><br><span class="line">              <span class="string">&#x27;min_child_weight&#x27;</span>: [<span class="number">0</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">20</span>],</span><br><span class="line">              <span class="string">&#x27;max_delta_step&#x27;</span>: [<span class="number">0</span>, <span class="number">0.2</span>, <span class="number">0.6</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">              <span class="string">&#x27;subsample&#x27;</span>: [<span class="number">0.6</span>, <span class="number">0.7</span>, <span class="number">0.8</span>, <span class="number">0.85</span>, <span class="number">0.95</span>],</span><br><span class="line">              <span class="string">&#x27;colsample_bytree&#x27;</span>: [<span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.7</span>, <span class="number">0.8</span>, <span class="number">0.9</span>],</span><br><span class="line">              <span class="string">&#x27;reg_alpha&#x27;</span>: [<span class="number">0</span>, <span class="number">0.25</span>, <span class="number">0.5</span>, <span class="number">0.75</span>, <span class="number">1</span>],</span><br><span class="line">              <span class="string">&#x27;reg_lambda&#x27;</span>: [<span class="number">0.2</span>, <span class="number">0.4</span>, <span class="number">0.6</span>, <span class="number">0.8</span>, <span class="number">1</span>],</span><br><span class="line">              <span class="string">&#x27;scale_pos_weight&#x27;</span>: [<span class="number">0.2</span>, <span class="number">0.4</span>, <span class="number">0.6</span>, <span class="number">0.8</span>, <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">xlf = xgb.XGBClassifier(max_depth=<span class="number">10</span>,</span><br><span class="line">            learning_rate=<span class="number">0.01</span>,</span><br><span class="line">            n_estimators=<span class="number">2000</span>,</span><br><span class="line">            silent=<span class="literal">True</span>,</span><br><span class="line">            objective=<span class="string">&#x27;multi:softmax&#x27;</span>,</span><br><span class="line">            num_class=<span class="number">3</span>,          </span><br><span class="line">            nthread=-<span class="number">1</span>,</span><br><span class="line">            gamma=<span class="number">0</span>,</span><br><span class="line">            min_child_weight=<span class="number">1</span>,</span><br><span class="line">            max_delta_step=<span class="number">0</span>,</span><br><span class="line">            subsample=<span class="number">0.85</span>,</span><br><span class="line">            colsample_bytree=<span class="number">0.7</span>,</span><br><span class="line">            colsample_bylevel=<span class="number">1</span>,</span><br><span class="line">            reg_alpha=<span class="number">0</span>,</span><br><span class="line">            reg_lambda=<span class="number">1</span>,</span><br><span class="line">            scale_pos_weight=<span class="number">1</span>,</span><br><span class="line">            seed=<span class="number">0</span>,</span><br><span class="line">            missing=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">gs = GridSearchCV(xlf, param_grid=parameters, scoring=<span class="string">&#x27;accuracy&#x27;</span>, cv=<span class="number">3</span>)</span><br><span class="line">gs.fit(train_x, train_y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Best score: %0.3f&quot;</span> % gs.best_score_)</span><br><span class="line">print(<span class="string">&quot;Best parameters set: %s&quot;</span> % gs.best_params_ )</span><br></pre></td></tr></table></figure>
+<p>输出： <code>Best score: 0.933 Best parameters set: &#123;'max_depth': 5&#125;</code></p>
+<h3 id="xgboost的参数总结">2.4 XGBoost的参数总结</h3>
+<p><code>xgb.train</code>中的参数：</p>
+<ul>
+<li><p><code>booster</code>:使用哪种基学习器，默认为<code>gbtree</code>(代表<strong>Tree Booster</strong>)，可选<code>gblinear</code>(代表<strong>Linear Booster</strong>)或<code>dart</code>。</p>
+<p><strong>1 Tree Booster对应的参数：</strong></p>
+<ol type="1">
+<li><p>eta(learning_rate):学习率，在更新中使用步长eta收缩，防止过度拟合。默认= 0.3，范围：[0,1]；典型值一般设置为：0.01-0.2。</p></li>
+<li><p>gamma(min_split_loss):分裂节点时，损失函数减小值只有大于等于gamma节点才分裂，gamma值越大，算法越保守，越不容易过拟合，但性能就不一定能保证，需要平衡。默认=0，范围：[0，∞]。</p></li>
+<li><p>max_depth：默认= 6，一棵树的最大深度。增加此值将使模型更复杂，并且更可能过度拟合。范围：[0，∞]。</p></li>
+<li><p>min_child_weight：如果新分裂的节点的样本权重之和小于min_child_weight则停止分裂。这个可以用来减少过拟合，但是也不能太高，会导致欠拟合。默认值= 1，范围：[0，∞]。</p></li>
+<li><p>max_delta_step：允许每个叶子输出的最大增量步长。如果将该值设置为0，则表示没有约束。如果将其设置为正值，则可以帮助使更新步骤更加保守。通常不需要此参数，但是当类极度不平衡时，它可能有助于逻辑回归。将其设置为1-10的值可能有助于控制更新。默认= 0，范围：[0，∞]</p></li>
+<li><p>subsample：构建每棵树时对样本的采样率。例如，如果设置成0.5，XGBoost会随机选择一半的样本作为训练集。默认值= 1，范围：（0,1]。</p></li>
+<li><p>sampling_method：用于对训练实例进行采样的方法。默认= uniform。</p>
+<ul>
+<li><p>uniform:每个训练实例的选择概率均等。通常将subsample大于等于0.5 时，采用uniform有良好的效果。</p></li>
+<li><p>gradient_based：每个训练实例的选择概率与规则化的梯度绝对值成正比，具体来说就是<span class="math inline">\(\sqrt{g^2+\lambda h^2}\)</span>。subsample可以设置为低至0.1，而不会损失模型精度。</p></li>
+</ul></li>
+<li><p>colsample_bytree：列采样率，也就是特征采样率。默认= 1，范围为（0，1]。</p></li>
+<li><p>lambda（reg_lambda）：默认=1，L2正则化权重项。增加此值将使模型更加保守。</p></li>
+<li><p>alpha（reg_alpha）：默认= 0，权重的L1正则化项。增加此值将使模型更加保守。</p></li>
+<li><p>tree_method：XGBoost中使用的树构建算法。默认=auto。</p>
+<ul>
+<li><p>exact：精确的贪婪算法。枚举所有拆分的候选点。</p></li>
+<li><p>approx：使用分位数和梯度直方图的近似贪婪算法。</p></li>
+<li><p>hist：更快的直方图优化的近似贪婪算法。（LightGBM也是使用直方图算法）</p></li>
+<li><p>gpu_hist：GPU hist算法的实现。</p></li>
+</ul></li>
+<li><p>scale_pos_weight:控制正负权重的平衡，这对于不平衡的类别很有用。Kaggle竞赛一般设置sum(negative instances) / sum(positive instances)，在类别高度不平衡的情况下，将参数设置大于0，可以加快收敛。</p></li>
+<li><p>num_parallel_tree：默认=1，每次迭代期间构造的并行树的数量。此选项用于支持增强型随机森林。</p></li>
+<li><p>monotone_constraints：可变单调性的约束，在某些情况下，如果有非常强烈的先验信念认为真实的关系具有一定的质量，则可以使用约束条件来提高模型的预测性能。（例如params_constrained['monotone_constraints'] = "(1,-1)"，(1,-1)我们告诉XGBoost对第一个预测变量施加增加的约束，对第二个预测变量施加减小的约束。）</p></li>
+</ol>
+<p><strong>2 Linear Booster对应的参数：</strong></p>
+<ol type="1">
+<li><p>ambda（reg_lambda）：默认= 0，L2正则化权重项。增加此值将使模型更加保守。</p></li>
+<li><p>alpha（reg_alpha）：默认= 0，权重的L1正则化项。增加此值将使模型更加保守。</p></li>
+<li><p>updater：默认= shotgun。</p>
+<ul>
+<li><p>shotgun：基于shotgun算法的平行坐标下降算法。使用“ hogwild”并行性，因此每次运行都产生不确定的解决方案。</p></li>
+<li><p>coord_descent：普通坐标下降算法。同样是多线程的，但仍会产生确定性的解决方案。</p></li>
+</ul></li>
+<li><p>feature_selector：特征选择和排序方法，默认= cyclic。</p>
+<ul>
+<li><p>cyclic：通过每次循环一个特征来实现的。</p></li>
+<li><p>shuffle：类似于cyclic，但是在每次更新之前都有随机的特征变换。</p></li>
+<li><p>random：一个随机(有放回)特征选择器。</p></li>
+<li><p>greedy：选择梯度最大的特征。（贪婪选择）</p></li>
+<li><p>thrifty：近似贪婪特征选择（近似于greedy）</p></li>
+</ul></li>
+<li><p>top_k：要选择的最重要的特征数(在greedy和thrifty内)</p></li>
+</ol></li>
+<li><p><code>nthread</code>：用于设置运行XGBoost的并行线程数，默认为最大可用线程数。</p></li>
+<li><p><code>verbosity</code>：打印消息的详细程度。有效值为0（静默），1（警告），2（信息），3（调试）。</p></li>
+<li><p><code>objective</code>：目标函数。默认为<code>reg:squarederror</code>，含义是<code>回归：最小平方误差</code>。</p>
+<ol type="1">
+<li>reg:squarederror,最小平方误差。</li>
+<li>reg:squaredlogerror,对数平方损失，即<span class="math inline">\(\frac{1}{2}[long(pred+1)-log(label+1)]^2\)</span>。</li>
+<li>reg:logistic,逻辑回归</li>
+<li>reg:pseudohubererror,使用伪Huber损失进行回归。</li>
+<li>binary:logistic,二元分类的逻辑回归，输出概率。</li>
+<li>binary:logitraw：用于二进制分类的逻辑回归，逻辑转换之前的输出得分。</li>
+<li>binary:hinge：二进制分类的铰链损失。这使预测为0或1，而不是产生概率。（SVM就是铰链损失函数）</li>
+<li>count:poisson –计数数据的泊松回归，泊松分布的输出平均值。</li>
+<li>survival:cox：针对正确的生存时间数据进行Cox回归（负值被视为正确的生存时间）。</li>
+<li>survival:aft：用于检查生存时间数据的加速故障时间模型。</li>
+<li>aft_loss_distribution：survival:aft和aft-nloglik度量标准使用的概率密度函数。</li>
+<li>multi:softmax：设置XGBoost以使用softmax目标进行多类分类，还需要设置num_class（类数）</li>
+<li>multi:softprob：与softmax相同，但输出向量，可以进一步重整为矩阵。结果包含属于每个类别的每个数据点的预测概率。</li>
+<li>rank:pairwise：使用LambdaMART进行成对排名，从而使成对损失最小化。</li>
+<li>rank:ndcg：使用LambdaMART进行列表式排名，使标准化折让累积收益（NDCG）最大化。</li>
+<li>rank:map：使用LambdaMART进行列表平均排名，使平均平均精度（MAP）最大化。</li>
+<li>reg:gamma：使用对数链接进行伽马回归。输出是伽马分布的平均值。</li>
+<li>reg:tweedie：使用对数链接进行Tweedie回归。</li>
+<li>自定义损失函数和评价指标：<a target="_blank" rel="noopener" href="https://xgboost.readthedocs.io/en/latest/tutorials/custom_metric_obj.html">参考链接</a></li>
+</ol></li>
+<li><p><code>eval_metric</code>：验证数据的评估指标，将根据目标分配默认指标（回归均方根，分类误差，排名的平均平均精度），用户可以添加多个评估指标。</p>
+<ol type="1">
+<li>rmse，均方根误差；</li>
+<li>rmsle：均方根对数误差；</li>
+<li>mae：平均绝对误差；</li>
+<li>mphe：平均伪Huber错误；</li>
+<li>logloss：负对数似然；</li>
+<li>error：二进制分类错误率；</li>
+<li>merror：多类分类错误率；</li>
+<li>mlogloss：多类logloss；</li>
+<li>auc：曲线下面积；</li>
+<li>aucpr：PR曲线下的面积；</li>
+<li>ndcg：归一化累计折扣；</li>
+<li>map：平均精度；</li>
+</ol></li>
+<li><p><code>seed</code>：随机数种子，默认为0。</p></li>
+</ul>
+<h2 id="lightgbm">LightGBM</h2>
+<p>LightGBM也是像XGBoost一样，是一类集成算法，他跟XGBoost总体来说是一样的，算法本质上与Xgboost没有出入，只是在XGBoost的基础上进行了优化，比如在节点分裂时利用直方图算法。</p>
+<ul>
+<li><p>优化速度和内存使用</p>
+<p>降低了计算每个分割增益的成本；使用直方图减法进一步提高速度；减少内存使用；减少并行学习的计算成本。</p></li>
+<li><p>稀疏优化</p>
+<p>用离散的bin替换连续的值。如果bins的数量较小，则可以使用较小的数据类型（例如uint8_t）来存储训练数据。</p>
+<p>无需存储其他信息即可对特征数值进行预排序。</p></li>
+<li><p>精度优化</p>
+<p>使用叶子数为导向的决策树建立算法而不是树的深度导向；分类特征的编码方式的优化；通信网络的优化；并行学习的优化；GPU支持</p></li>
+</ul>
+<p>LightGBM的优点：</p>
+<p>　　1）更快的训练效率</p>
+<p>　　2）低内存使用</p>
+<p>　　3）更高的准确率</p>
+<p>　　4）支持并行化学习</p>
+<p>　　5）可以处理大规模数据</p>
+<h2 id="参考">参考</h2>
+<blockquote>
+<p>Datawhale集成学习 <a target="_blank" rel="noopener" href="https://github.com/datawhalechina/team-learning-data-mining/tree/master/EnsembleLearning">传送门</a></p>
+</blockquote>
+<blockquote>
+<p>机器学习集成学习之XGBoost（基于python实现）<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/143009353">传送门</a></p>
+</blockquote>
+<blockquote>
+<p>GBDT、xgboost原理介绍 <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016894970?utm_source=sf-similar-article">传送门</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/04/26/XGBoost/">https://lzmcosmos.github.io/2021/04/26/XGBoost/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/XGBoost/">XGBoost</a><a class="post-meta__tags" href="/tags/LightGBM/">LightGBM</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/27/vscodeAndLeetcode/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">VSCode上面进行Leetcode编程</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/22/GBDT/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">GBDT</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#xgboost"><span class="toc-number">1.</span> <span class="toc-text">XGBoost</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#xgboost-1"><span class="toc-number">1.1.</span> <span class="toc-text">1 XGBoost</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFxgboost"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 什么是XGBoost?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost%E7%9A%84%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%A8%E5%AF%BC"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 XGBoost的原理与推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost%E7%9A%84%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9%E5%88%86%E8%A3%82"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 XGBoost的决策树中的节点分裂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xgboost%E7%9A%84%E5%AE%9E%E8%B7%B5%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">2 XGBoost的实践与使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 XGBoost机器学习库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost%E7%AE%97%E6%B3%95%E6%A1%88%E4%BE%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Xgboost算法案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E5%90%88sklearn%E7%BD%91%E6%A0%BC%E6%90%9C%E7%B4%A2%E7%9A%84xgboost%E8%B0%83%E5%8F%82"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 结合sklearn网格搜索的XGBoost调参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xgboost%E7%9A%84%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 XGBoost的参数总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lightgbm"><span class="toc-number">1.3.</span> <span class="toc-text">LightGBM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.4.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

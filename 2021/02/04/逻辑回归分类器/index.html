@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zn-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>逻辑回归分类器 | LZMcosmos</title><meta name="keywords" content="逻辑回归分类器"><meta name="author" content="李子梅"><meta name="copyright" content="李子梅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="二分类--逻辑回归分类器 1 逻辑回归简介  部分参考《Speech and Language Processing》。附上最新版链接电子版传送门   部分参考《统计学习方法》  逻辑回归是社会和自然科学最重要的分析方法之一。在自然语言处理中，逻辑回归是监督学习中分类方法的baseline，它和神经网络拥有十分亲近的关系，其实神经网络可以被看成是一系列的逻辑回归分类器堆叠起来的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逻辑回归分类器">
+<meta property="og:url" content="https://lzmcosmos.github.io/2021/02/04/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8/index.html">
+<meta property="og:site_name" content="LZMcosmos">
+<meta property="og:description" content="二分类--逻辑回归分类器 1 逻辑回归简介  部分参考《Speech and Language Processing》。附上最新版链接电子版传送门   部分参考《统计学习方法》  逻辑回归是社会和自然科学最重要的分析方法之一。在自然语言处理中，逻辑回归是监督学习中分类方法的baseline，它和神经网络拥有十分亲近的关系，其实神经网络可以被看成是一系列的逻辑回归分类器堆叠起来的。">
+<meta property="og:locale" content="zn_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-02-04T09:02:37.000Z">
+<meta property="article:modified_time" content="2021-05-17T07:15:59.291Z">
+<meta property="article:author" content="李子梅">
+<meta property="article:tag" content="逻辑回归分类器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/cosmos.jpg"><link rel="canonical" href="https://lzmcosmos.github.io/2021/02/04/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-17 15:15:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/cosmos.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">LZMcosmos</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">逻辑回归分类器</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-02-04T09:02:37.000Z" title="Created 2021-02-04 17:02:37">2021-02-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-05-17T07:15:59.291Z" title="Updated 2021-05-17 15:15:59">2021-05-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/NLP/">NLP</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="二分类--逻辑回归分类器">二分类--逻辑回归分类器</h1>
+<h2 id="逻辑回归简介">1 逻辑回归简介</h2>
+<blockquote>
+<p>部分参考《Speech and Language Processing》。附上最新版链接<a target="_blank" rel="noopener" href="https://web.stanford.edu/~jurafsky/slp3/">电子版传送门</a></p>
+</blockquote>
+<blockquote>
+<p>部分参考《统计学习方法》</p>
+</blockquote>
+<p>逻辑回归是社会和自然科学最重要的分析方法之一。在自然语言处理中，逻辑回归是<strong>监督学习</strong>中<strong>分类方法的baseline</strong>，它和神经网络拥有十分亲近的关系，其实神经网络可以被看成是一系列的逻辑回归分类器堆叠起来的。</p>
+<p>逻辑回归可以用于二分类(例如"positive"和"negative")，同样也可以用于多分类(多项式逻辑回归)。</p>
+<p>深入了解逻辑回归之前，需要先明白的一些概念。</p>
+<p><strong>1 生成式和判别式分类器</strong></p>
+<p>关于<strong>生成式分类器</strong>(generative classifier)和<strong>判别式分类器</strong>(discriminative classifier)：这是两种截然不同的机器学习模型框架。</p>
+<p>举个例子：假设我们尝试分类<code>猫</code>和<code>狗</code>的图片。<strong>生成式模型</strong>的目标将会是理解狗长什么样子、猫长什么样子，你可以让模型"生成出"或者说成是画出一个狗。给定一张测试图片，系统会问是猫的模型更合适还是狗的模型更合适，然后选择更合适的那个作为它的标签。</p>
+<p><strong>判别式模型</strong>仅仅尝试学习区分类别(或许没有对其中的内容进行更多的学习)。所以可能训练集中所有的狗都有项圈，猫猫没有项圈，那么如果这个特征能很好地区别出不同的类别，模型就满意了。所以，如果你问模型它知道猫的什么内容的话，它会说猫没有项圈。</p>
+<p>更正式地来说，无论什么样的机器学习模型都是为了能够对给定的输入预测相应的输出，一般形式为决策函数： <span class="math display">\[
+Y = f(X)
+\]</span> 或者条件分布概率： <span class="math display">\[
+P(Y|X)
+\]</span></p>
+<p><strong>生成式模型</strong>首先从数据中学习联合概率分布 <span class="math inline">\(P(X,Y)\)</span> ，然后再求出条件概率分布 <span class="math inline">\(P(Y|X)\)</span> 作为预测模型： <span class="math display">\[
+P(Y|X) = \frac{P(X,Y)}{P(X)}
+\]</span> 之所以称为生成方法是因为模型表示了给定输入<span class="math inline">\(X\)</span>产生输出<span class="math inline">\(Y\)</span>的生成关系。典型的生成模型包括：朴素贝叶斯和隐马尔科夫模型等等。</p>
+<p><strong>判别式模型</strong>由数据直接学习决策函数<span class="math inline">\(f(X)\)</span>或者条件概率分布<span class="math inline">\(P(Y|X)\)</span>作为预测的模型。判别式模型关心的是对于给定的输入<span class="math inline">\(X\)</span>，应该预测什么样的输出<span class="math inline">\(Y\)</span>。典型的判别式模型包含：逻辑回归、k近邻、感知机、最大熵模型、支持向量机、条件随机场等等。</p>
+<p><strong>2 机器学习模型中的概率模型</strong></p>
+<p>首先，监督学习的模型可以是概率模型或者非概率模型，分别由条件概率分布 <span class="math inline">\(P(Y|X)\)</span>、决策函数 <span class="math inline">\(Y = f(X)\)</span> 表示。</p>
+<p>假设训练集包含<code>m</code>条数据对 <span class="math inline">\((x_{(i)},y_{(i)})\)</span>，其中(i)代表训练集中单独的某条数据，那么概率模型包含下面几个组成成分：</p>
+<ol type="1">
+<li>输入的<strong>特征表示</strong>。对每条输入数据 <span class="math inline">\(x_{(i)}\)</span>，它的特征表示将会是一个特征向量 <span class="math inline">\([s_1, x_2, \cdots, x_n]\)</span>。</li>
+<li><strong>分类方程</strong>，分类方程(或者称为预测方程)通过 <span class="math inline">\(p(y|x)\)</span> 计算预测值 <span class="math inline">\(\hat{y}\)</span> (也就是预测的类别)。分类方程有<strong>sigmoid</strong>和<strong>softmax</strong>等等。</li>
+<li><strong>目标方程</strong>，目标方程用于学习，通常包含在<strong>训练样本上最小化误差</strong>。目标方程包含交叉熵损失函数。</li>
+<li><strong>优化目标方程的算法</strong>。优化目标方程(损失函数)的算法包含<strong>随机梯度下降</strong>等等。</li>
+</ol>
+<p>逻辑回归模型属于概率模型。<strong>逻辑回归</strong>模型有两个阶段：</p>
+<p><strong>训练阶段</strong>：利用随机梯度下降算法优化交叉熵损失来训练权重(w)和bias。</p>
+<p><strong>测试</strong>：给定一个测试用例 <span class="math inline">\(x\)</span> ，计算 <span class="math inline">\(p(x|y)\)</span>，然后返回 <span class="math inline">\(y=1\)</span> 和 <span class="math inline">\(y=0\)</span>中更高概率的标签。</p>
+<h2 id="逻辑回归的分类函数sigmoid">2 逻辑回归的分类函数：sigmoid</h2>
+<p>二分类逻辑回归的目标是训练一个可以对新的输入做出分类决策的分类器。<code>sigmoid</code>函数可以做出这种决策。</p>
+<p>对于一个输入数据<span class="math inline">\(x\)</span>，我们可以将它表示为特征向量 <span class="math inline">\([x_1, x_2, x_3, \cdots, x_n]\)</span>，分类器的输出 <span class="math inline">\(y\)</span> 可能是1或者是0。对于情感识别的任务，特征由词频表示，<span class="math inline">\(P(y=1|x)\)</span>是输入数据<span class="math inline">\(x\)</span>为<code>positive</code>的概率，<span class="math inline">\(P(y=0|x)\)</span>是输入数据<span class="math inline">\(x\)</span>为<code>negative</code>的概率。</p>
+<p>逻辑回归通过<strong>从训练集中学习权重和偏差</strong>来处理上述任务。每个权重 <span class="math inline">\(w_i\)</span>是一个实数值，它和输入数据的特征向量中的某维特征 <span class="math inline">\(x_i\)</span> 相关，权重 <span class="math inline">\(w_i\)</span> 代表了它对应的输入特征对分类决策的重要性，可能为正或者为负。所以，在情感识别任务中我们可能希望<code>awesome</code>一词拥有比较大的正值权重，<code>abysmal</code>一词有比较小的负值权重。偏差项(bias term)也是一个实数项，被加入到乘上权重的输入里。</p>
+<p>在训练的过程中学习了权重后，为了在测试的时候做决策，分类器首先对输入数据的特征向量中的每个特征乘上它对应的权重 <span class="math inline">\(w_i\)</span>，然后把所有的乘积项加起来，再加上偏差项 <span class="math inline">\(b\)</span>，最后得到一个实数 <span class="math inline">\(z\)</span> ( <span class="math inline">\(z\)</span> 表示了它是某个类别的加权后的证据和)： <img src="/img/LR_z.png" /> 两个向量<span class="math inline">\(a\)</span>,<span class="math inline">\(b\)</span>相乘可以表示为<span class="math inline">\(a \cdot b\)</span>，所以上式可以写为： <span class="math display">\[
+z = w \cdot x + b
+\]</span></p>
+<p>为了以概率的形式表现，将 <span class="math inline">\(z\)</span> 通过<strong>sigmoid</strong>方程使其输出为0到1之间的数值。sigmoid函数图像看起来像<code>s</code>，它也被称为<strong>逻辑方程</strong>，所以逻辑回归模型的名字由此确定。Sigmoid函数表示式为： <img src="/img/sigmoid.png" /></p>
+<p>sigmoid函数图像为： <img src="/img/sigmoid_pic.png" /></p>
+<p>sigmoid函数的有很多优点。它以实数值作为输入，输出<code>[0,1]</code>区间的数值，正好可以作为概率。从图像中可以看出，在输入靠近0的时候图像接近线性，然后两边的图像逐渐变平，它将异常值(过小或者过大)压缩到0或者1。sigmoid函数是可微分的，适合学习过程。</p>
+<p>所以，利用sigmoid函数可以将加权后的特征和映射到[0,1]区间。为了让它符合概率分布，我们要确保两个类别的概率 <span class="math inline">\(p(y=1)\)</span>、<span class="math inline">\(p(y=0)\)</span> 之和为1，方式为：(同时下述公式即为 <span class="math inline">\(\color{purple}{逻辑回归模型}\)</span>) <img src="/img/sentiment_p.png" /></p>
+<p>线性函数<span class="math inline">\(w \cdot x+b\)</span>的值越接近正无穷，概率值<span class="math inline">\(P(Y=1|x)\)</span>越接近于1；线性函数<span class="math inline">\(w \cdot x+b\)</span>的值越接近负无穷，概率值<span class="math inline">\(P(Y=1|x)\)</span>越接近于0。这样的模型就是逻辑回归模型。</p>
+<p>现在我们有了一个给定输入 <span class="math inline">\(x\)</span> 计算概率 <span class="math inline">\(P(y=1|x)\)</span>的算法。那我们该如何决策？方法就是：对于一个测试用例 <span class="math inline">\(x\)</span> ，如果概率 <span class="math inline">\(P(y=1|x)\)</span>大于0.5，那么它就属于<code>1</code>类，如果小于0.5就属于<code>0</code>类，即决策边界为：</p>
+<p><img src="/img/decision_boundary.png" /></p>
+<h2 id="逻辑回归的学习过程">3 逻辑回归的学习过程</h2>
+<p>逻辑回归为有监督学习，通过减小预测值和实际值之间的误差来调整模型参数。</p>
+<p>学习需要两大组件。<strong>第一个</strong>就是衡量预测值和实际值之间差距的metric(度量)，通常使用的度量(metric)是两者之间的<code>distance(距离)</code>而非相似度，<code>distance(距离)</code>被称为<strong>损失</strong>方程或者<strong>代价</strong>方程。经常使用在逻辑回归和神经网络中的损失方程为<strong>交叉熵损失</strong><a href="https://lzmcosmos.github.io/2021/01/09/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">见博客</a>。第二个就是为了最小化损失函数的优化方程，去迭代更新权重参数。常用的方法为<strong>梯度下降</strong>(包含随机梯度下降)等等。</p>
+<p><strong>交叉熵损失函数</strong></p>
+<p>逻辑回归所用的损失函数为交叉熵损失函数 <span class="math inline">\(L_{CE}\)</span>： <img src="/img/L_CE.png" /></p>
+<p>由逻辑回归所用分类函数/激活函数为sigmoid知：<span class="math inline">\(\hat{y}=\sigma(w \cdot x + b)\)</span>，代入得： <img src="/img/L_CE_1.png" /></p>
+<p><strong>梯度下降</strong></p>
+<p>关于梯度下降参考我的另一博客<a href="https://lzmcosmos.github.io/2021/01/22/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">传送门</a></p>
+<p>为了更新参数 <span class="math inline">\(\theta\)</span>，需要知道它在损失函数中的梯度，已知逻辑回归的损失函数为交叉熵损失函数： <img src="/img/loss_lr.png" /></p>
+<p>那么该损失函数的偏微分项就是： <img src="/img/partial_lr.png" /> (分析公式可知上面的梯度是估计值和真实值之差乘以相应的输入值)</p>
+<h1 id="多分类--逻辑回归分类器">多分类--逻辑回归分类器</h1>
+<h2 id="多项式逻辑回归">多项式逻辑回归</h2>
+<p>对于有些任务，它是有多个类别需要区分的，这个时候就开始利用 <span class="math inline">\(\color{green}{多项式逻辑回归(multinomial logistic regression)}\)</span>，也叫做<strong>softmax regression</strong>，或者更历史一点的叫最大熵分类器(maxent classifier)。在多项式逻辑回归中，目标 <span class="math inline">\(y\)</span> 是变化范围为多个类别(多于两个)的变量。在分类的时候，我们需要知道<span class="math inline">\(y\)</span>在每个可能的类别中的概率 <span class="math inline">\(p(y=c|x)\)</span>。</p>
+<p>多项式逻辑回归分类器使用sigmoid的一般形式：<strong>softmax方程</strong>去计算分类的概率 <span class="math inline">\(p(y=c|x)\)</span>。softmax方程将k个任意的值组成的向量 <span class="math inline">\(z=[z_1, z_2, \cdots, z_k]\)</span> 映射到一个概率分布上。对于k维的向量 <span class="math inline">\(z\)</span>的某个元素 <span class="math inline">\(z_i\)</span>，softmax定义为：</p>
+<p><img src="/img/softmax_zi.png" /></p>
+<p>对于向量 <span class="math inline">\(z=[z_1, z_2, \cdots, z_k]\)</span> ，softmax的形式就为：</p>
+<p><img src="/img/softmax_z.png" /></p>
+<p>与sigmoid类似，替换<span class="math inline">\(z = w \cdot x + b\)</span>，与sigmoid不同的是：需要分开k个类别中的每个类别对应的权重向量和偏差向量。： <img src="/img/seperate_softmax.png" /></p>
+<h2 id="多项式逻辑回归的学习过程">多项式逻辑回归的学习过程</h2>
+<p>上面知道了二分类逻辑回归的交叉熵方程： <img src="/img/L_CE.png" /></p>
+<p>多项式逻辑方程的损失函数把上面式子中的两项一般化到K项： <img src="/img/multi_lr_loss.png" /></p>
+<p>实际的y是onehot向量，即只有样本x对应的类别处为1，其余类别为0。 <img src="/img/multi_Lce.png" /></p>
+<p>其中，<span class="math inline">\(\Bbb1 \{y=k\}\)</span>是指示函数，只有 <span class="math inline">\(y=k\)</span> 时为1，其余为0。</p>
+<p>所以实际上该交叉熵损失方程就只是正确类别的估计值的负对数： <img src="/img/Lce_correct.png" /></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">李子梅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lzmcosmos.github.io/2021/02/04/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8/">https://lzmcosmos.github.io/2021/02/04/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8/">逻辑回归分类器</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/02/08/%E6%AD%A3%E5%88%99%E5%8C%96/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">正则化</div></div></a></div><div class="next-post pull-right"><a href="/2021/02/04/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">二分查找</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="twikoo"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/cosmos.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">李子梅</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">89</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">108</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LZMcosmos"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/LZMcosmos" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:609792588@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">“莱布尼茨在他的二进位算术中看到了宇宙创始的原像。他想象1表示上帝，而0表示虚无，上帝从虚无中创造出所有实物，恰如在他的数学系统中用1和0表示了所有的数。”</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E7%B1%BB--%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">二分类--逻辑回归分类器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">1 逻辑回归简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E5%88%86%E7%B1%BB%E5%87%BD%E6%95%B0sigmoid"><span class="toc-number">1.2.</span> <span class="toc-text">2 逻辑回归的分类函数：sigmoid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">3 逻辑回归的学习过程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB--%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">多分类--逻辑回归分类器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="toc-number">2.1.</span> <span class="toc-text">多项式逻辑回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">多项式逻辑回归的学习过程</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/03/13/Mysql%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="MySQL环境搭建">MySQL环境搭建</a><time datetime="2022-03-13T01:08:47.000Z" title="Created 2022-03-13 09:08:47">2022-03-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/11/01/CRF/" title="条件随机场（CRF）">条件随机场（CRF）</a><time datetime="2021-11-01T03:28:44.000Z" title="Created 2021-11-01 11:28:44">2021-11-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/07/14/%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="字符串">字符串</a><time datetime="2021-07-13T16:30:25.000Z" title="Created 2021-07-14 00:30:25">2021-07-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/06/29/Heap/" title="堆">堆</a><time datetime="2021-06-29T04:45:04.000Z" title="Created 2021-06-29 12:45:04">2021-06-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2021/05/14/Stacking-of-Steam/" title="Stacking集成学习案例二：蒸汽量预测">Stacking集成学习案例二：蒸汽量预测</a><time datetime="2021-05-14T03:50:07.000Z" title="Created 2021-05-14 11:50:07">2021-05-14</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Nebula_planets-Universe.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 李子梅</div><div class="footer_custom_text">welcome to my <a href="https://lzmcosmos.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadTwikoo () {
+  function init () {
+    twikoo.init({ 
+      envId: 'lzm-blog-8gx8fhrs09a28b34' 
+    })
+  }
+
+  if (typeof twikoo.init === 'function') {
+    init()
+  } else {
+    $.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js', init)
+  }
+}
+
+if ('Twikoo' === 'Twikoo' || !false) {
+  if (false) btf.loadComment(document.getElementById('twikoo'), loadTwikoo)
+  else loadTwikoo()
+} else {
+  function loadOtherComment () {
+    loadTwikoo()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https'){
+  bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>
